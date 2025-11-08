@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StudyDeck</string>
+    <string name="placeholder_search">Search text...</string>
+
+    <string name="fail_option_back_to_start">Move card back to the start</string>
+    <string name="fail_option_one_level_down">Card is moved one level down</string>
+    <string name="fail_option_stays_on_current_level">Card stays on the current level</string>
+
+    <string name="random_learn_name">Random learning</string>
+    <string name="level_learn_name">Level learning</string>
+    <string name="random_learn_description">Learn all cards randomly</string>
+    <string name="level_learn_description">Learn all cards with the level system</string>
+</resources>
