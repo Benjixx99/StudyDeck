@@ -6,20 +6,24 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import bx.app.data.local.dao.CardDao
 import bx.app.data.local.dao.DeckDao
+import bx.app.data.local.dao.LevelDao
 import bx.app.data.local.entity.CardEntity
 import bx.app.data.local.entity.DeckEntity
+import bx.app.data.local.entity.LevelEntity
 
 @Database(
     version = DatabaseBuilder.LATEST_VERSION,
     entities = [
         DeckEntity::class,
         CardEntity::class,
+        LevelEntity::class,
     ],
 )
 
 abstract class AppDatabase : RoomDatabase() {
     internal abstract fun deckDao(): DeckDao
     internal abstract fun cardDao(): CardDao
+    internal abstract fun levelDao(): LevelDao
 }
 
 object DatabaseBuilder {
