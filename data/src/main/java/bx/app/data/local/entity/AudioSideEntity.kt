@@ -4,9 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import bx.app.data.enums.CardType
+import androidx.room.TypeConverters
+import bx.app.data.enums.CardSide
+import bx.app.data.enums.CardSideConverter
 import bx.app.data.model.AudioSideModel
-import bx.app.data.model.TextSideModel
 
 @Entity(
     tableName = "audio_side",
@@ -18,18 +19,22 @@ import bx.app.data.model.TextSideModel
     )]
 )
 internal data class AudioSideEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
     val path: String,
-    @ColumnInfo(name = "file_mame") val fileName: String,
-    val side: Int,
-    @ColumnInfo(name = "card_id") val cardId: Long,
+    @ColumnInfo(name = "file_mame")
+    val fileName: String,
+    @TypeConverters(CardSideConverter::class)
+    val side: CardSide,
+    @ColumnInfo(name = "card_id")
+    val cardId: Long,
 ) : BaseEntity() {
     override fun toModel(): AudioSideModel {
         return AudioSideModel(
             id = this.id,
             path = this.path,
             fileName = this.fileName,
-            side = if (this.side == 0) CardType.Text else CardType.Audio,
+            side = this.side,
             cardId = this.cardId
         )
     }

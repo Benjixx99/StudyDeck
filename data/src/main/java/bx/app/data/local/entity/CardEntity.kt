@@ -16,12 +16,18 @@ import bx.app.data.model.CardModel
     )]
 )
 internal data class CardEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo(name = "front_side_type") val frontSideType: Int,
-    @ColumnInfo(name = "front_side_id") val frontSideId: Long,
-    @ColumnInfo(name = "back_side_type") val backSideType: Int,
-    @ColumnInfo(name = "back_side_id") val backSideId: Long,
-    @ColumnInfo(name = "deck_id") val deckId: Long,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    @ColumnInfo(name = "front_side_type")
+    val frontSideType: Int,
+    @ColumnInfo(name = "front_side_id")
+    val frontSideId: Long,
+    @ColumnInfo(name = "back_side_type")
+    val backSideType: Int,
+    @ColumnInfo(name = "back_side_id")
+    val backSideId: Long,
+    @ColumnInfo(name = "deck_id")
+    val deckId: Long,
 ) : BaseEntity() {
     override fun toModel(): CardModel {
         return CardModel(

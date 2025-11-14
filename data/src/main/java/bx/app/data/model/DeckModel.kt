@@ -1,5 +1,6 @@
 package bx.app.data.model
 
+import bx.app.data.enums.CardFailing
 import bx.app.data.local.entity.DeckEntity
 
 data class DeckModel(
@@ -8,7 +9,7 @@ data class DeckModel(
     val description: String?,
     val color: Long,
     val learnBothSides: Boolean,
-    val onFailing: Int
+    val onFailing: CardFailing
 ) : BaseModel() {
     override fun toEntity(): DeckEntity {
         return DeckEntity(

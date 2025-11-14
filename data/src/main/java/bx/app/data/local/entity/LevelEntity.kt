@@ -16,10 +16,14 @@ import bx.app.data.model.LevelModel
     )]
 )
 internal data class LevelEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo(name = "interval_number") val intervalNumber: Int,
-    @ColumnInfo(name = "interval_type") val intervalType: Long,
-    @ColumnInfo(name = "deck_id") val deckId: Long,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    @ColumnInfo(name = "interval_number")
+    val intervalNumber: Int,
+    @ColumnInfo(name = "interval_type")
+    val intervalType: Long,
+    @ColumnInfo(name = "deck_id")
+    val deckId: Long,
 ) : BaseEntity() {
     override fun toModel(): LevelModel {
         return LevelModel(
