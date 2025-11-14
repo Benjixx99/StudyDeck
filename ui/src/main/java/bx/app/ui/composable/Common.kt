@@ -50,7 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import bx.app.data.mock.item.CardSide.CardType
+import bx.app.data.enums.CardType
 import bx.app.ui.data.CardTypeText
 import kotlin.math.roundToInt
 import bx.app.ui.R

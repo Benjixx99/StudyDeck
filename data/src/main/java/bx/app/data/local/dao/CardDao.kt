@@ -1,9 +1,11 @@
 package bx.app.data.local.dao
 
+import androidx.room.Dao
 import androidx.room.Query
 import bx.app.data.local.entity.CardEntity
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 internal interface CardDao : BaseDao<CardEntity> {
     @Query("SELECT * FROM card")
     override fun observeAll(): Flow<List<CardEntity>>

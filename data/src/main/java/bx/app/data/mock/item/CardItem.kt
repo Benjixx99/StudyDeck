@@ -1,6 +1,6 @@
 package bx.app.data.mock.item
 
-
+import bx.app.data.enums.CardType
 
 class CardItem(id: Int, name: String, description: String, val frontSide: CardSide, val backSide: CardSide) : BaseItem(id, name, description) {
 //    val counter: Int = 0 // How often did one learn this card
@@ -19,8 +19,6 @@ class CardItem(id: Int, name: String, description: String, val frontSide: CardSi
 }
 
 open class CardSide(val type: CardType) {
-
-    enum class CardType { Text, Audio }
 
     // TODO: Not sure if I wanna do it like that! Just a quick solution
     /**

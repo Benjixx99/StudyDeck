@@ -4,12 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import bx.app.data.local.dao.AudioSideDao
 import bx.app.data.local.dao.CardDao
 import bx.app.data.local.dao.DeckDao
 import bx.app.data.local.dao.LevelDao
+import bx.app.data.local.dao.TextSideDao
+import bx.app.data.local.entity.AudioSideEntity
 import bx.app.data.local.entity.CardEntity
 import bx.app.data.local.entity.DeckEntity
 import bx.app.data.local.entity.LevelEntity
+import bx.app.data.local.entity.TextSideEntity
 
 @Database(
     version = DatabaseBuilder.LATEST_VERSION,
@@ -17,13 +21,16 @@ import bx.app.data.local.entity.LevelEntity
         DeckEntity::class,
         CardEntity::class,
         LevelEntity::class,
+        TextSideEntity::class,
+        AudioSideEntity::class,
     ],
 )
-
 abstract class AppDatabase : RoomDatabase() {
     internal abstract fun deckDao(): DeckDao
     internal abstract fun cardDao(): CardDao
     internal abstract fun levelDao(): LevelDao
+    internal abstract fun textSideDao(): TextSideDao
+    internal abstract fun audioSideDao(): AudioSideDao
 }
 
 object DatabaseBuilder {

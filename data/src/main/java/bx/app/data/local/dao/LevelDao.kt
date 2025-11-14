@@ -1,9 +1,11 @@
 package bx.app.data.local.dao
 
+import androidx.room.Dao
 import androidx.room.Query
 import bx.app.data.local.entity.LevelEntity
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 internal interface LevelDao : BaseDao<LevelEntity> {
     @Query("SELECT * FROM level")
     override fun observeAll(): Flow<List<LevelEntity>>

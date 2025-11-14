@@ -51,7 +51,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import bx.app.core.maxLength
 import bx.app.data.mock.MockData
-import bx.app.data.mock.item.CardSide.CardType
+import bx.app.data.enums.CardType
 import bx.app.data.mock.item.BaseItem
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.composable.AudioPlayer

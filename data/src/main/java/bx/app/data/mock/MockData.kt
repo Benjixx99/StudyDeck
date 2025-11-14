@@ -1,8 +1,8 @@
 package bx.app.data.mock
 
+import bx.app.data.enums.CardType
 import bx.app.data.mock.item.AudioCardSide
 import bx.app.data.mock.item.CardItem
-import bx.app.data.mock.item.CardSide.CardType
 import bx.app.data.mock.item.DeckItem
 import bx.app.data.mock.item.LevelItem
 import bx.app.data.mock.item.TextCardSide
