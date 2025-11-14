@@ -20,61 +20,61 @@ object MockData {
             1,
             "First Card",
             "Not important",
-            TextCardSide(CardType.Text, "Hello"),
-            TextCardSide(CardType.Text, "Hallo")
+            TextCardSide(CardType.TEXT, "Hello"),
+            TextCardSide(CardType.TEXT, "Hallo")
         ),
         CardItem(
             2,
             "Second Card",
             "Not important",
-            TextCardSide(CardType.Text, "Bye"),
-            TextCardSide(CardType.Text, "Aufwiedersehen")
+            TextCardSide(CardType.TEXT, "Bye"),
+            TextCardSide(CardType.TEXT, "Aufwiedersehen")
         ),
         CardItem(
             3,
             "",
             "",
-            TextCardSide(CardType.Text, "Boy"),
-            TextCardSide(CardType.Text, "Junge")
+            TextCardSide(CardType.TEXT, "Boy"),
+            TextCardSide(CardType.TEXT, "Junge")
         ),
         CardItem(
             4,
             "",
             "",
-            TextCardSide(CardType.Text, "Girl"),
-            TextCardSide(CardType.Text, "Mädchen")
+            TextCardSide(CardType.TEXT, "Girl"),
+            TextCardSide(CardType.TEXT, "Mädchen")
         ),
         CardItem(
             5,
             "",
             "",
-            TextCardSide(CardType.Text, "Something differently"),
-            AudioCardSide(CardType.Audio, "Path/to/some/audio/file")
+            TextCardSide(CardType.TEXT, "Something differently"),
+            AudioCardSide(CardType.AUDIO, "Path/to/some/audio/file")
         ),
         CardItem(
             6,
             "",
             "",
-            AudioCardSide(CardType.Audio, "PATH"),
-            AudioCardSide(CardType.Audio, "Another/path/to/another/file")
+            AudioCardSide(CardType.AUDIO, "PATH"),
+            AudioCardSide(CardType.AUDIO, "Another/path/to/another/file")
         ),
         CardItem(
             7,
             "",
             "",
             TextCardSide(
-                CardType.Text,
+                CardType.TEXT,
                 "Very very long long text that is too long for the field but it can fit into 2 lines"
             ),
-            TextCardSide(CardType.Text, "Not to long")
+            TextCardSide(CardType.TEXT, "Not to long")
         ),
         CardItem(
             8,
             "",
             "",
-            TextCardSide(CardType.Text, "available"),
+            TextCardSide(CardType.TEXT, "available"),
             TextCardSide(
-                CardType.Text,
+                CardType.TEXT,
                 "verfügbar, erhältlich, lieferbar,\nvorrätig, erreichbar"
             )
         ),

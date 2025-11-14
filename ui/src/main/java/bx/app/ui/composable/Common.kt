@@ -274,14 +274,14 @@ internal fun ButtonInCorner(onClick: () -> Unit = {}) {
  */
 @Composable
 internal fun cardTypeSegmentedControl(modifier: Modifier = Modifier): CardType {
-    var cardType by remember { mutableStateOf<CardType>(CardType.Text) }
+    var cardType by remember { mutableStateOf<CardType>(CardType.TEXT) }
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        SegmentedControlButton(text = CardTypeText.TEXT, selectedCardType = cardType, onClick = { cardType = CardType.Text })
-        SegmentedControlButton(text = CardTypeText.AUDIO, selectedCardType = cardType, onClick =  { cardType = CardType.Audio })
+        SegmentedControlButton(text = CardTypeText.TEXT, selectedCardType = cardType, onClick = { cardType = CardType.TEXT })
+        SegmentedControlButton(text = CardTypeText.AUDIO, selectedCardType = cardType, onClick =  { cardType = CardType.AUDIO })
     }
     return cardType
 }
@@ -302,8 +302,8 @@ internal fun SegmentedControlButton(
         shape = RectangleShape,
         colors = ButtonColors(
             contentColor = MaterialTheme.colorScheme.primary,
-            containerColor = if ((selectedCardType == CardType.Text && text == CardTypeText.TEXT)
-                || (selectedCardType == CardType.Audio && text == CardTypeText.AUDIO)) MaterialTheme.colorScheme.onPrimary
+            containerColor = if ((selectedCardType == CardType.TEXT && text == CardTypeText.TEXT)
+                || (selectedCardType == CardType.AUDIO && text == CardTypeText.AUDIO)) MaterialTheme.colorScheme.onPrimary
             else MaterialTheme.colorScheme.onSecondary,
             disabledContainerColor = Color.Transparent,
             disabledContentColor = Color.Transparent

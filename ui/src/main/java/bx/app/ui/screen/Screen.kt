@@ -246,7 +246,7 @@ class ScreenManager(modifier: Modifier = Modifier, context: Context, private val
             var cardType = cardTypeSegmentedControl()
 
             // Text Type
-            if (cardType == CardType.Text) {
+            if (cardType == CardType.TEXT) {
                 MultiLineTextField(
                     modifier = ModifierManager.paddingTopModifier.fillMaxSize().padding(start = 10.dp, end = 10.dp, bottom = 100.dp),
                     labelText = "Text to learn",
@@ -256,7 +256,7 @@ class ScreenManager(modifier: Modifier = Modifier, context: Context, private val
 
             // Audio Type
             // Select audio file
-            if (cardType == CardType.Audio) {
+            if (cardType == CardType.AUDIO) {
                 // TODO: Need to write a function like AudioPlayerRow
                 var audioFile by remember { mutableStateOf<Uri?>(null) }
                 var mediaPlayer = if (audioFile != null) MediaPlayer.create(context, audioFile) else null

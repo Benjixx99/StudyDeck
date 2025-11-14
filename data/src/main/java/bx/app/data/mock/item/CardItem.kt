@@ -25,7 +25,7 @@ open class CardSide(val type: CardType) {
      * evaluateCardSideType is just a help function
      */
     fun evaluateCardSideType(): String {
-        return if (this.type == CardType.Text) {
+        return if (this.type == CardType.TEXT) {
             this as TextCardSide
             this.text
         }
