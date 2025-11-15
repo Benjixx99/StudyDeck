@@ -4,4 +4,4 @@ import bx.app.data.converter.BaseEnumConverter
 
 enum class CardSideType { TEXT, AUDIO }
 
-internal class CardTypeConverter : BaseEnumConverter<CardFailing>(CardFailing::class)
+internal class CardSideTypeConverter : BaseEnumConverter<CardSideType>(CardSideType::class)

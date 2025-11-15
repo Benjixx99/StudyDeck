@@ -1,12 +1,13 @@
 package bx.app.data.model
 
+import bx.app.data.enums.CardSideType
 import bx.app.data.local.entity.CardEntity
 
 data class CardModel(
     val id: Long = 0,
-    val frontSideType: Int,
+    val frontSideType: CardSideType,
     val frontSideId: Long,
-    val backSideType: Int,
+    val backSideType: CardSideType,
     val backSideId: Long,
     val deckId: Long,
 ) : BaseModel() {
