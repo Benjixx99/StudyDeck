@@ -1,6 +1,6 @@
 package bx.app.data.mock.item
 
-import bx.app.data.enums.CardType
+import bx.app.data.enums.CardSideType
 
 class CardItem(id: Int, name: String, description: String, val frontSide: CardSide, val backSide: CardSide) : BaseItem(id, name, description) {
 //    val counter: Int = 0 // How often did one learn this card
@@ -18,14 +18,14 @@ class CardItem(id: Int, name: String, description: String, val frontSide: CardSi
     }
 }
 
-open class CardSide(val type: CardType) {
+open class CardSide(val type: CardSideType) {
 
     // TODO: Not sure if I wanna do it like that! Just a quick solution
     /**
      * evaluateCardSideType is just a help function
      */
     fun evaluateCardSideType(): String {
-        return if (this.type == CardType.TEXT) {
+        return if (this.type == CardSideType.TEXT) {
             this as TextCardSide
             this.text
         }
@@ -36,9 +36,9 @@ open class CardSide(val type: CardType) {
     }
 }
 
-class TextCardSide(type: CardType, val text: String) : CardSide(type) {
+class TextCardSide(type: CardSideType, val text: String) : CardSide(type) {
 }
 
-class AudioCardSide(type: CardType, val path: String) : CardSide(type) {
+class AudioCardSide(type: CardSideType, val path: String) : CardSide(type) {
 }
 

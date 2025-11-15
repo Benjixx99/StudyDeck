@@ -51,7 +51,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import bx.app.core.maxLength
 import bx.app.data.mock.MockData
-import bx.app.data.enums.CardType
+import bx.app.data.enums.CardSideType
 import bx.app.data.mock.item.BaseItem
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.composable.AudioPlayer
@@ -246,7 +246,7 @@ class ScreenManager(modifier: Modifier = Modifier, context: Context, private val
             var cardType = cardTypeSegmentedControl()
 
             // Text Type
-            if (cardType == CardType.TEXT) {
+            if (cardType == CardSideType.TEXT) {
                 MultiLineTextField(
                     modifier = ModifierManager.paddingTopModifier.fillMaxSize().padding(start = 10.dp, end = 10.dp, bottom = 100.dp),
                     labelText = "Text to learn",
@@ -256,7 +256,7 @@ class ScreenManager(modifier: Modifier = Modifier, context: Context, private val
 
             // Audio Type
             // Select audio file
-            if (cardType == CardType.AUDIO) {
+            if (cardType == CardSideType.AUDIO) {
                 // TODO: Need to write a function like AudioPlayerRow
                 var audioFile by remember { mutableStateOf<Uri?>(null) }
                 var mediaPlayer = if (audioFile != null) MediaPlayer.create(context, audioFile) else null

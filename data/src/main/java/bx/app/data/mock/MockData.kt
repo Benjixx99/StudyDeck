@@ -1,6 +1,6 @@
 package bx.app.data.mock
 
-import bx.app.data.enums.CardType
+import bx.app.data.enums.CardSideType
 import bx.app.data.mock.item.AudioCardSide
 import bx.app.data.mock.item.CardItem
 import bx.app.data.mock.item.DeckItem
@@ -20,61 +20,61 @@ object MockData {
             1,
             "First Card",
             "Not important",
-            TextCardSide(CardType.TEXT, "Hello"),
-            TextCardSide(CardType.TEXT, "Hallo")
+            TextCardSide(CardSideType.TEXT, "Hello"),
+            TextCardSide(CardSideType.TEXT, "Hallo")
         ),
         CardItem(
             2,
             "Second Card",
             "Not important",
-            TextCardSide(CardType.TEXT, "Bye"),
-            TextCardSide(CardType.TEXT, "Aufwiedersehen")
+            TextCardSide(CardSideType.TEXT, "Bye"),
+            TextCardSide(CardSideType.TEXT, "Aufwiedersehen")
         ),
         CardItem(
             3,
             "",
             "",
-            TextCardSide(CardType.TEXT, "Boy"),
-            TextCardSide(CardType.TEXT, "Junge")
+            TextCardSide(CardSideType.TEXT, "Boy"),
+            TextCardSide(CardSideType.TEXT, "Junge")
         ),
         CardItem(
             4,
             "",
             "",
-            TextCardSide(CardType.TEXT, "Girl"),
-            TextCardSide(CardType.TEXT, "Mädchen")
+            TextCardSide(CardSideType.TEXT, "Girl"),
+            TextCardSide(CardSideType.TEXT, "Mädchen")
         ),
         CardItem(
             5,
             "",
             "",
-            TextCardSide(CardType.TEXT, "Something differently"),
-            AudioCardSide(CardType.AUDIO, "Path/to/some/audio/file")
+            TextCardSide(CardSideType.TEXT, "Something differently"),
+            AudioCardSide(CardSideType.AUDIO, "Path/to/some/audio/file")
         ),
         CardItem(
             6,
             "",
             "",
-            AudioCardSide(CardType.AUDIO, "PATH"),
-            AudioCardSide(CardType.AUDIO, "Another/path/to/another/file")
+            AudioCardSide(CardSideType.AUDIO, "PATH"),
+            AudioCardSide(CardSideType.AUDIO, "Another/path/to/another/file")
         ),
         CardItem(
             7,
             "",
             "",
             TextCardSide(
-                CardType.TEXT,
+                CardSideType.TEXT,
                 "Very very long long text that is too long for the field but it can fit into 2 lines"
             ),
-            TextCardSide(CardType.TEXT, "Not to long")
+            TextCardSide(CardSideType.TEXT, "Not to long")
         ),
         CardItem(
             8,
             "",
             "",
-            TextCardSide(CardType.TEXT, "available"),
+            TextCardSide(CardSideType.TEXT, "available"),
             TextCardSide(
-                CardType.TEXT,
+                CardSideType.TEXT,
                 "verfügbar, erhältlich, lieferbar,\nvorrätig, erreichbar"
             )
         ),

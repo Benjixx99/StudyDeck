@@ -50,7 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import bx.app.data.enums.CardType
+import bx.app.data.enums.CardSideType
 import bx.app.ui.data.CardTypeText
 import kotlin.math.roundToInt
 import bx.app.ui.R
@@ -273,17 +273,17 @@ internal fun ButtonInCorner(onClick: () -> Unit = {}) {
  * CardTypeSegmentedControl is a UI component for the card screen
  */
 @Composable
-internal fun cardTypeSegmentedControl(modifier: Modifier = Modifier): CardType {
-    var cardType by remember { mutableStateOf<CardType>(CardType.TEXT) }
+internal fun cardTypeSegmentedControl(modifier: Modifier = Modifier): CardSideType {
+    var cardSideType by remember { mutableStateOf<CardSideType>(CardSideType.TEXT) }
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        SegmentedControlButton(text = CardTypeText.TEXT, selectedCardType = cardType, onClick = { cardType = CardType.TEXT })
-        SegmentedControlButton(text = CardTypeText.AUDIO, selectedCardType = cardType, onClick =  { cardType = CardType.AUDIO })
+        SegmentedControlButton(text = CardTypeText.TEXT, selectedCardSideType = cardSideType, onClick = { cardSideType = CardSideType.TEXT })
+        SegmentedControlButton(text = CardTypeText.AUDIO, selectedCardSideType = cardSideType, onClick =  { cardSideType = CardSideType.AUDIO })
     }
-    return cardType
+    return cardSideType
 }
 
 /**
@@ -292,7 +292,7 @@ internal fun cardTypeSegmentedControl(modifier: Modifier = Modifier): CardType {
 @Composable
 internal fun SegmentedControlButton(
     text: String,
-    selectedCardType: CardType,
+    selectedCardSideType: CardSideType,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -302,8 +302,8 @@ internal fun SegmentedControlButton(
         shape = RectangleShape,
         colors = ButtonColors(
             contentColor = MaterialTheme.colorScheme.primary,
-            containerColor = if ((selectedCardType == CardType.TEXT && text == CardTypeText.TEXT)
-                || (selectedCardType == CardType.AUDIO && text == CardTypeText.AUDIO)) MaterialTheme.colorScheme.onPrimary
+            containerColor = if ((selectedCardSideType == CardSideType.TEXT && text == CardTypeText.TEXT)
+                || (selectedCardSideType == CardSideType.AUDIO && text == CardTypeText.AUDIO)) MaterialTheme.colorScheme.onPrimary
             else MaterialTheme.colorScheme.onSecondary,
             disabledContainerColor = Color.Transparent,
             disabledContentColor = Color.Transparent
