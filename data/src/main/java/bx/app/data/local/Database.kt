@@ -6,11 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import bx.app.data.local.dao.AudioSideDao
 import bx.app.data.local.dao.CardDao
+import bx.app.data.local.dao.CardInLevelDao
 import bx.app.data.local.dao.DeckDao
 import bx.app.data.local.dao.LevelDao
 import bx.app.data.local.dao.TextSideDao
 import bx.app.data.local.entity.AudioSideEntity
 import bx.app.data.local.entity.CardEntity
+import bx.app.data.local.entity.CardInLevelEntity
 import bx.app.data.local.entity.DeckEntity
 import bx.app.data.local.entity.LevelEntity
 import bx.app.data.local.entity.TextSideEntity
@@ -23,6 +25,7 @@ import bx.app.data.local.entity.TextSideEntity
         LevelEntity::class,
         TextSideEntity::class,
         AudioSideEntity::class,
+        CardInLevelEntity::class,
     ],
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -31,6 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
     internal abstract fun levelDao(): LevelDao
     internal abstract fun textSideDao(): TextSideDao
     internal abstract fun audioSideDao(): AudioSideDao
+    internal abstract fun cardInLevelDao(): CardInLevelDao
 }
 
 object DatabaseBuilder {
