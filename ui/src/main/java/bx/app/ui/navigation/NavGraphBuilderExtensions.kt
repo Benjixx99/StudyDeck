@@ -1,14 +1,13 @@
 package bx.app.ui.navigation
 
 import android.content.Context
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.navigation.data.NavigationRoutes
 import bx.app.ui.data.LearnData
-import bx.app.ui.screen.ScreenManager
+import bx.app.ui.ScreenManager
 
 /**
  * This extension function of [NavGraphBuilder] is the main navigation function of this app
@@ -22,7 +21,7 @@ fun NavGraphBuilder.navHostDestinations(
     context: Context,
     topBarViewModel: TopBarViewModel,
 ) {
-    val screenManager = ScreenManager(Modifier, context, topBarViewModel)
+    val screenManager = ScreenManager(context, topBarViewModel)
 
     composableDecks(navController, screenManager)
     composable(route = NavigationRoutes.DECK_SETTINGS) { screenManager.DeckSettings() }
