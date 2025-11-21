@@ -6,7 +6,7 @@ import bx.app.data.model.TextSideModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class TextSideRepository internal constructor(database: AppDatabase) {
+class TextSideRepository(database: AppDatabase) {
     private val baseRepo = BaseRepository<TextSideEntity>(database.textSideDao())
 
     fun getAll(): Flow<List<TextSideModel>> = baseRepo.flowList.map { it.filterIsInstance<TextSideModel>() }

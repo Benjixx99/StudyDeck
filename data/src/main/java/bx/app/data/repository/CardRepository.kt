@@ -6,7 +6,7 @@ import bx.app.data.model.CardModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class CardRepository internal constructor(database: AppDatabase) {
+class CardRepository(database: AppDatabase) {
     private val baseRepo = BaseRepository<CardEntity>(database.cardDao())
 
     fun getAll(): Flow<List<CardModel>> = baseRepo.flowList.map { it.filterIsInstance<CardModel>() }

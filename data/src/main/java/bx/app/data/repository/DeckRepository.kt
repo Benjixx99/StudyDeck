@@ -6,7 +6,7 @@ import bx.app.data.model.DeckModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class DeckRepository internal constructor(database: AppDatabase) {
+class DeckRepository(database: AppDatabase) {
     private val baseRepo = BaseRepository<DeckEntity>(database.deckDao())
 
     fun getAll(): Flow<List<DeckModel>> = baseRepo.flowList.map { it.filterIsInstance<DeckModel>() }

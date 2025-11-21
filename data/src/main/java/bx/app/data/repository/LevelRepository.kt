@@ -6,7 +6,7 @@ import bx.app.data.model.LevelModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class LevelRepository internal constructor(database: AppDatabase) {
+class LevelRepository(database: AppDatabase) {
     private val baseRepo = BaseRepository<LevelEntity>(database.levelDao())
 
     fun getAll(): Flow<List<LevelModel>> = baseRepo.flowList.map { it.filterIsInstance<LevelModel>() }

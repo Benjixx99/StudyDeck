@@ -6,7 +6,7 @@ import bx.app.data.model.AudioSideModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class AudioSideRepository internal constructor(database: AppDatabase) {
+class AudioSideRepository(database: AppDatabase) {
     private val baseRepo = BaseRepository<AudioSideEntity>(database.audioSideDao())
 
     fun getAll(): Flow<List<AudioSideModel>> = baseRepo.flowList.map { it.filterIsInstance<AudioSideModel>() }
