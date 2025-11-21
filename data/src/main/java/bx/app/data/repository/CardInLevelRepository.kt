@@ -6,7 +6,7 @@ import bx.app.data.model.CardInLevelModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class CardInLevelRepository internal constructor(database: AppDatabase) {
+class CardInLevelRepository(database: AppDatabase) {
     private val dao = database.cardInLevelDao()
     private val baseRepo = BaseRepository<CardInLevelEntity>(dao)
 
