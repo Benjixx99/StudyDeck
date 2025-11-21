@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import bx.app.data.model.BaseModel
+import bx.app.data.model.IdentifiedModel
 import bx.app.data.model.LearnModel
 import bx.app.ui.composable.LargeText
 import bx.app.ui.composable.MediumText
@@ -22,30 +22,32 @@ import bx.app.ui.ModifierManager
  * It is used to list learn items
  */
 internal class LearnListManager(
-    items: List<BaseModel>,
+    items: List<IdentifiedModel>,
     context: Context,
     modifier: Modifier,
     searchText: String,
-    val onLearnClick: (id: Int) -> Unit
+    val onLearnClick: (id: Long) -> Unit
 ) : BaseListManager(items, context, modifier, searchText, {}) {
 
     @Composable
     override fun List() { ItemList { item -> ItemColumn(item) } }
 
     @Composable
-    override fun ItemColumn(item: BaseModel) {
+    override fun ItemColumn(item: IdentifiedModel) {
+        item as LearnModel
+
         Column(
             ModifierManager.listColumnModifier
                 .border(1.dp, MaterialTheme.colorScheme.outlineVariant)
                 .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                .pointerInput(Unit) { detectTapGestures(onTap = { onLearnClick(0) }) }
+                .pointerInput(Unit) { detectTapGestures(onTap = { onLearnClick(item.id) }) }
         ) {
             ItemRow(item)
         }
     }
 
     @Composable
-    override fun ItemRow(item: BaseModel) {
+    override fun ItemRow(item: IdentifiedModel) {
         item as LearnModel
 
         Column(modifier = ModifierManager.paddingListItemRowModifier) {

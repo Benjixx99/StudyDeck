@@ -3,10 +3,10 @@ package bx.app.data.model
 import bx.app.data.local.entity.BaseEntity
 
 data class LearnModel(
-    val id: Int,
+    override val id: Long,
     val name: String,
     val description: String
-) : BaseModel() {
+) : IdentifiedModel() {
     override fun toEntity(): BaseEntity {
         TODO("Not needed")
     }

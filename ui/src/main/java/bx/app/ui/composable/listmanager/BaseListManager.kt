@@ -26,7 +26,7 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import bx.app.data.model.BaseModel
+import bx.app.data.model.IdentifiedModel
 import bx.app.data.model.CardModel
 import bx.app.data.model.DeckModel
 import bx.app.data.model.LevelModel
@@ -36,7 +36,7 @@ import bx.app.ui.ModifierManager
  * ListManager can be used to display a list
  */
 internal abstract class BaseListManager(
-    val items: List<BaseModel>,
+    val items: List<IdentifiedModel>,
     val context: Context,
     val modifier: Modifier,
     val searchText: String,
@@ -46,7 +46,7 @@ internal abstract class BaseListManager(
     open fun List() { ItemList { item -> ItemColumn(item) } }
 
     @Composable
-    protected fun ItemList(content: @Composable (BaseModel) -> Unit) {
+    protected fun ItemList(content: @Composable (IdentifiedModel) -> Unit) {
         Box(modifier = modifier.padding(horizontal = 10.dp).padding(bottom = 40.dp)) {
             LazyColumn {
                 items(items) { item -> content(item) }
@@ -55,7 +55,7 @@ internal abstract class BaseListManager(
     }
 
     @Composable
-    protected open fun ItemColumn(item: BaseModel) {
+    protected open fun ItemColumn(item: IdentifiedModel) {
         if (!displayItem(item)) return
 
         var expandDropDownMenu by remember { mutableStateOf(false) }
@@ -93,12 +93,12 @@ internal abstract class BaseListManager(
     }
 
     @Composable
-    protected abstract fun ItemRow(item: BaseModel)
+    protected abstract fun ItemRow(item: IdentifiedModel)
 
     /**
      * This function is used to filter the items with the search text the user entered
      */
-    private fun displayItem(item: BaseModel): Boolean {
+    private fun displayItem(item: IdentifiedModel): Boolean {
         if (item is DeckModel && !item.name.contains(searchText, true)
             && (!item.description.isNullOrEmpty() && !item.description?.contains(searchText, true)!!)) return false
 

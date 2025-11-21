@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import bx.app.data.model.BaseModel
+import bx.app.data.model.IdentifiedModel
 import bx.app.data.model.DeckModel
 import bx.app.ui.composable.LargeText
 import bx.app.ui.composable.MediumText
@@ -26,7 +26,7 @@ internal class DeckListManager(
 ) : BaseListManager(items, context, modifier, searchText, onClick) {
 
     @Composable
-    override fun ItemRow(item: BaseModel) {
+    override fun ItemRow(item: IdentifiedModel) {
         item as DeckModel
 
         Column(modifier = ModifierManager.paddingListItemRowModifier) {

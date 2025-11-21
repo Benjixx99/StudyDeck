@@ -70,7 +70,7 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
 
     @Composable
     fun DeckLearn(
-        onClickLearn: (id: Int) -> Unit = {},
+        onClickLearn: (id: Long) -> Unit = {},
     ) {
         DeckLearnScreen(context, topBarViewModel, onClickLearn)
     }

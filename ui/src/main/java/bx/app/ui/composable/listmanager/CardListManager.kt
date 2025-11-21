@@ -15,7 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import bx.app.data.model.BaseModel
+import bx.app.data.model.IdentifiedModel
 import bx.app.data.model.CardModel
 import bx.app.ui.composable.LargeText
 import bx.app.ui.ModifierManager
@@ -32,7 +32,7 @@ internal class CardListManager(
 ) : BaseListManager(items, context, modifier, searchText, onClick) {
 
     @Composable
-    override fun ItemRow(item: BaseModel) {
+    override fun ItemRow(item: IdentifiedModel) {
         item as CardModel
         var isFront by remember { mutableStateOf(true) }
 

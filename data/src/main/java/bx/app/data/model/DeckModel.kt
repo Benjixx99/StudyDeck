@@ -4,13 +4,13 @@ import bx.app.data.enums.CardFailing
 import bx.app.data.local.entity.DeckEntity
 
 data class DeckModel(
-    val id: Long = 0,
+    override val id: Long = 0,
     val name: String,
     val description: String?,
     val color: Long,
     val learnBothSides: Boolean,
     val onFailing: CardFailing
-) : BaseModel() {
+) : IdentifiedModel() {
     override fun toEntity(): DeckEntity {
         return DeckEntity(
             id = this.id,

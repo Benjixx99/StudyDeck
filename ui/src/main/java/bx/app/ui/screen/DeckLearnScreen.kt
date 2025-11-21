@@ -19,7 +19,7 @@ import bx.app.ui.data.LearnData
 internal fun DeckLearnScreen(
     context: Context,
     topBarViewModel: TopBarViewModel,
-    onClickLearn: (id: Int) -> Unit = {},
+    onClickLearn: (id: Long) -> Unit = {},
 ) {
     topBarViewModel.setTitle("Learning")
 

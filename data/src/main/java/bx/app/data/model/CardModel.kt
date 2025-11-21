@@ -4,13 +4,13 @@ import bx.app.data.enums.CardSideType
 import bx.app.data.local.entity.CardEntity
 
 data class CardModel(
-    val id: Long = 0,
+    override val id: Long = 0,
     val frontSideType: CardSideType,
     val frontSideId: Long,
     val backSideType: CardSideType,
     val backSideId: Long,
     val deckId: Long,
-) : BaseModel() {
+) : IdentifiedModel() {
     override fun toEntity(): CardEntity {
         return CardEntity(
             id = this.id,

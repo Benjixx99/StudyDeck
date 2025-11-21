@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import bx.app.data.model.BaseModel
+import bx.app.data.model.IdentifiedModel
 import bx.app.data.model.LevelModel
 import bx.app.ui.composable.LargeText
 import bx.app.ui.ModifierManager
@@ -17,7 +17,7 @@ import bx.app.ui.ModifierManager
  * It is used to list level items
  */
 internal class LevelListManager(
-    items: List<BaseModel>,
+    items: List<IdentifiedModel>,
     context: Context,
     modifier: Modifier,
     searchText: String,
@@ -28,7 +28,7 @@ internal class LevelListManager(
     enum class LevelListType { Edit, Learn }
 
     @Composable
-    override fun ItemRow(item: BaseModel) {
+    override fun ItemRow(item: IdentifiedModel) {
         item as LevelModel
 
         Column(modifier = ModifierManager.paddingListItemRowModifier) {
