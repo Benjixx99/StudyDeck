@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import bx.app.data.mock.item.BaseItem
+import bx.app.data.model.LearnModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
 import bx.app.ui.R
@@ -23,13 +23,13 @@ internal fun DeckLearnScreen(
 ) {
     topBarViewModel.setTitle("Learning")
 
-    val items = listOf<BaseItem>(
-        BaseItem(
+    val items = listOf<LearnModel>(
+        LearnModel(
             LearnData.RANDOM_ID,
             stringResource(R.string.random_learn_name),
             stringResource(R.string.random_learn_description)
         ),
-        BaseItem(
+        LearnModel(
             LearnData.LEVEL_ID,
             stringResource(R.string.level_learn_name),
             stringResource(R.string.level_learn_description)

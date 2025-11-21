@@ -3,6 +3,15 @@ package bx.app.ui
 import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import bx.app.data.local.AppDatabase
+import bx.app.data.local.DatabaseBuilder
+import bx.app.data.local.mock.DatabaseMockData
+import bx.app.data.repository.CardRepository
+import bx.app.data.repository.DeckRepository
+import bx.app.data.repository.LevelRepository
+import bx.app.presentation.viewmodel.CardViewModel
+import bx.app.presentation.viewmodel.DeckViewModel
+import bx.app.presentation.viewmodel.LevelViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.screen.CardScreen
 import bx.app.ui.screen.DeckCardsScreen
@@ -18,13 +27,24 @@ import bx.app.ui.screen.LevelScreen
  * Manage all the screens for the app
  */
 class ScreenManager(private var context: Context, private val topBarViewModel: TopBarViewModel) {
+    private val database: AppDatabase = DatabaseBuilder.getInstance(context)
+    private val deckViewModel = DeckViewModel(DeckRepository(database))
+    private val cardViewModel = CardViewModel(CardRepository(database))
+    private val levelViewModel = LevelViewModel(LevelRepository(database))
+
+    init {
+        context.deleteDatabase(DatabaseBuilder.DATABASE_NAME)
+        DatabaseMockData.decks.forEach { deckViewModel.insertDeck(it) }
+        DatabaseMockData.cards.forEach { cardViewModel.insertCard(it) }
+        DatabaseMockData.levels.forEach { levelViewModel.insertLevel(it) }
+    }
 
     @Composable
     fun Decks(
         onClickCreateNewDeck: () -> Unit = {},
         onClickDeck: () -> Unit = {},
     ) {
-        DecksScreen(context, topBarViewModel, onClickCreateNewDeck, onClickDeck)
+        DecksScreen(context, deckViewModel, topBarViewModel, onClickCreateNewDeck, onClickDeck)
     }
 
     @Composable
@@ -32,7 +52,7 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
         onClickCreateNewCard: () -> Unit = {},
         onClickCard: () -> Unit = {},
     ) {
-        DeckCardsScreen(context, topBarViewModel, onClickCreateNewCard, onClickCard)
+        DeckCardsScreen(context, cardViewModel, topBarViewModel, onClickCreateNewCard, onClickCard)
     }
 
     @Composable
@@ -45,7 +65,7 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
         onClickCreateNewLevel: () -> Unit = {},
         onClickLevel: () -> Unit = {},
     ) {
-        DeckLevelsScreen(context, topBarViewModel, onClickCreateNewLevel, onClickLevel)
+        DeckLevelsScreen(context, levelViewModel, topBarViewModel, onClickCreateNewLevel, onClickLevel)
     }
 
     @Composable
@@ -76,6 +96,6 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
     fun LearnLevel(
         onClickLearn: () -> Unit
     ) {
-        LearnLevelScreen(context, topBarViewModel, onClickLearn)
+        LearnLevelScreen(context, levelViewModel, topBarViewModel, onClickLearn)
     }
 }

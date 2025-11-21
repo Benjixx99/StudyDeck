@@ -8,17 +8,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import bx.app.data.mock.item.BaseItem
-import bx.app.data.mock.item.LevelItem
+import bx.app.data.model.BaseModel
+import bx.app.data.model.LevelModel
 import bx.app.ui.composable.LargeText
-import bx.app.ui.composable.MediumText
 import bx.app.ui.ModifierManager
 
 /**
  * It is used to list level items
  */
 internal class LevelListManager(
-    items: List<LevelItem>,
+    items: List<BaseModel>,
     context: Context,
     modifier: Modifier,
     searchText: String,
@@ -29,22 +28,25 @@ internal class LevelListManager(
     enum class LevelListType { Edit, Learn }
 
     @Composable
-    override fun ItemRow(item: BaseItem) {
-        item as LevelItem
+    override fun ItemRow(item: BaseModel) {
+        item as LevelModel
 
         Column(modifier = ModifierManager.paddingListItemRowModifier) {
             Row {
-                LargeText(text = item.name)
+                // TODO: Need to add the name to the table later!
+                //LargeText(text = item.name)
                 Spacer(modifier = Modifier.weight(1f))
 
                 if (type == LevelListType.Learn) {
                     LargeText(
-                        text = item.position.toString(),
+                        text = "Dummy",
                         modifier = Modifier.padding(end = 10.dp)
                     )
+                    // TODO: Display the amount of cards the level contains
                 }
             }
-            MediumText(text = item.description)
+            // TODO: Display maybe the interval number and type
+           // MediumText(text = item.description)
         }
     }
 }

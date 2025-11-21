@@ -26,17 +26,17 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import bx.app.data.mock.item.CardItem
-import bx.app.data.mock.item.DeckItem
-import bx.app.data.mock.item.BaseItem
-import bx.app.data.mock.item.LevelItem
+import bx.app.data.model.BaseModel
+import bx.app.data.model.CardModel
+import bx.app.data.model.DeckModel
+import bx.app.data.model.LevelModel
 import bx.app.ui.ModifierManager
 
 /**
  * ListManager can be used to display a list
  */
 internal abstract class BaseListManager(
-    val items: List<BaseItem>,
+    val items: List<BaseModel>,
     val context: Context,
     val modifier: Modifier,
     val searchText: String,
@@ -46,7 +46,7 @@ internal abstract class BaseListManager(
     open fun List() { ItemList { item -> ItemColumn(item) } }
 
     @Composable
-    protected fun ItemList(content: @Composable (BaseItem) -> Unit) {
+    protected fun ItemList(content: @Composable (BaseModel) -> Unit) {
         Box(modifier = modifier.padding(horizontal = 10.dp).padding(bottom = 40.dp)) {
             LazyColumn {
                 items(items) { item -> content(item) }
@@ -55,7 +55,7 @@ internal abstract class BaseListManager(
     }
 
     @Composable
-    protected open fun ItemColumn(item: BaseItem) {
+    protected open fun ItemColumn(item: BaseModel) {
         if (!displayItem(item)) return
 
         var expandDropDownMenu by remember { mutableStateOf(false) }
@@ -93,17 +93,20 @@ internal abstract class BaseListManager(
     }
 
     @Composable
-    protected abstract fun ItemRow(item: BaseItem)
+    protected abstract fun ItemRow(item: BaseModel)
 
     /**
      * This function is used to filter the items with the search text the user entered
      */
-    private fun displayItem(item: BaseItem): Boolean {
-        if ((item is DeckItem || item is LevelItem) && !item.name.contains(searchText, true) && !item.description.contains(searchText, true)) return false
+    private fun displayItem(item: BaseModel): Boolean {
+        if (item is DeckModel && !item.name.contains(searchText, true)
+            && (!item.description.isNullOrEmpty() && !item.description?.contains(searchText, true)!!)) return false
 
-        if (item is CardItem) {
-            val cardValues = item.getValuesFromCard()
-            if (!cardValues.first.contains(searchText, true) && !cardValues.second.contains(searchText, true)) return false
+        //if (item is LevelModel) return false
+
+        if (item is CardModel) {
+//            val cardValues = item.getValuesFromCard()
+//            if (!cardValues.first.contains(searchText, true) && !cardValues.second.contains(searchText, true)) return false
         }
         return true
     }

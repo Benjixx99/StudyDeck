@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import bx.app.data.mock.item.BaseItem
-import bx.app.data.mock.item.DeckItem
+import bx.app.data.model.BaseModel
+import bx.app.data.model.DeckModel
 import bx.app.ui.composable.LargeText
 import bx.app.ui.composable.MediumText
 import bx.app.ui.ModifierManager
@@ -18,7 +18,7 @@ import bx.app.ui.ModifierManager
  * It is used to list deck items
  */
 internal class DeckListManager(
-    items: List<DeckItem>,
+    items: List<DeckModel>,
     context: Context,
     modifier: Modifier,
     searchText: String,
@@ -26,17 +26,17 @@ internal class DeckListManager(
 ) : BaseListManager(items, context, modifier, searchText, onClick) {
 
     @Composable
-    override fun ItemRow(item: BaseItem) {
-        item as DeckItem
+    override fun ItemRow(item: BaseModel) {
+        item as DeckModel
 
         Column(modifier = ModifierManager.paddingListItemRowModifier) {
             Row {
                 LargeText(text = item.name)
                 Spacer(modifier = Modifier.weight(1f))
-                LargeText(text = item.counter.toString(), modifier = Modifier.padding(end = 10.dp))
+                LargeText(text = "0", modifier = Modifier.padding(end = 10.dp)) // TODO: Get count of cards
             }
             MediumText(
-                text = item.description,
+                text = item.description.toString(),
                 maxLines = 1,
                 //modifier = Modifier.background(if (item.isFavorite) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.background)
             )

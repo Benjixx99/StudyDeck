@@ -39,7 +39,7 @@ abstract class AppDatabase : RoomDatabase() {
 
 object DatabaseBuilder {
     private var instance: AppDatabase? = null
-    const val DATABASE_NAME = "test-database"
+    const val DATABASE_NAME = "dev-database"
     const val LATEST_VERSION = 1
 
     fun getInstance(context: Context): AppDatabase {
