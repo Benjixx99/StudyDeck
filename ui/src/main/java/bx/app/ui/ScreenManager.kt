@@ -42,7 +42,7 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
     @Composable
     fun Decks(
         onClickCreateNewDeck: () -> Unit = {},
-        onClickDeck: () -> Unit = {},
+        onClickDeck: (id: Long) -> Unit = {},
     ) {
         DecksScreen(context, deckViewModel, topBarViewModel, onClickCreateNewDeck, onClickDeck)
     }
@@ -50,7 +50,7 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
     @Composable
     fun DeckCards(
         onClickCreateNewCard: () -> Unit = {},
-        onClickCard: () -> Unit = {},
+        onClickCard: (id: Long) -> Unit = {},
     ) {
         DeckCardsScreen(context, cardViewModel, topBarViewModel, onClickCreateNewCard, onClickCard)
     }
@@ -63,7 +63,7 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
     @Composable
     fun DeckLevels(
         onClickCreateNewLevel: () -> Unit = {},
-        onClickLevel: () -> Unit = {},
+        onClickLevel: (id: Long) -> Unit = {},
     ) {
         DeckLevelsScreen(context, levelViewModel, topBarViewModel, onClickCreateNewLevel, onClickLevel)
     }
@@ -94,7 +94,7 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
 
     @Composable
     fun LearnLevel(
-        onClickLearn: () -> Unit
+        onClickLearn: (id: Long) -> Unit
     ) {
         LearnLevelScreen(context, levelViewModel, topBarViewModel, onClickLearn)
     }

@@ -26,7 +26,7 @@ internal fun DecksScreen(
     deckViewModel: DeckViewModel,
     topBarViewModel: TopBarViewModel,
     onClickCreateNewDeck: () -> Unit = {},
-    onClickDeck: () -> Unit = {},
+    onClickDeck: (id: Long) -> Unit = {},
 ) {
     topBarViewModel.setTitle("Decks")
     val decks by deckViewModel.decks.collectAsState()

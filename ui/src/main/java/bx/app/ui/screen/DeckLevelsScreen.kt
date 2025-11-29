@@ -25,7 +25,7 @@ internal fun DeckLevelsScreen(
     levelViewModel: LevelViewModel,
     topBarViewModel: TopBarViewModel,
     onClickCreateNewLevel: () -> Unit = {},
-    onClickLevel: () -> Unit = {},
+    onClickLevel: (id: Long) -> Unit = {},
 ) {
     topBarViewModel.setTitle("Levels")
     val levels by levelViewModel.levels.collectAsState()

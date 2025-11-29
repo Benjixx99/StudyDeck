@@ -24,7 +24,7 @@ internal fun DeckCardsScreen(
     cardViewModel: CardViewModel,
     topBarViewModel: TopBarViewModel,
     onClickCreateNewCard: () -> Unit = {},
-    onClickCard: () -> Unit = {},
+    onClickCard: (id: Long) -> Unit = {},
 ) {
     topBarViewModel.setTitle("Cards")
     val cards by cardViewModel.cards.collectAsState()
@@ -38,7 +38,7 @@ internal fun DeckCardsScreen(
             context = context,
             modifier = ModifierManager.paddingTopModifier.fillMaxSize().padding(bottom = 40.dp),
             searchText = searchText,
-            onClick = onClickCreateNewCard,
+            onClick = onClickCard,
         )
         cardListManager.List()
     }

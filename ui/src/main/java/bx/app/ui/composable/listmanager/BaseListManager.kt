@@ -40,7 +40,7 @@ internal abstract class BaseListManager(
     val context: Context,
     val modifier: Modifier,
     val searchText: String,
-    val onClick: () -> Unit
+    val onClick: (id: Long) -> Unit
 ) {
     @Composable
     open fun List() { ItemList { item -> ItemColumn(item) } }
@@ -68,7 +68,7 @@ internal abstract class BaseListManager(
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onLongPress = { expandDropDownMenu = !expandDropDownMenu },
-                        onTap = { onClick() }
+                        onTap = { onClick(item.id) }
                     )
                 }
                 .onGloballyPositioned { coordinates -> posInParent = coordinates.positionInParent() }

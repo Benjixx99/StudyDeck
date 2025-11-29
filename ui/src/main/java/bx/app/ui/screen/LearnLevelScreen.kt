@@ -20,7 +20,7 @@ internal fun LearnLevelScreen(
     context: Context,
     levelViewModel: LevelViewModel,
     topBarViewModel: TopBarViewModel,
-    onClickLearn: () -> Unit
+    onClickLearn: (id: Long) -> Unit
 ) {
     topBarViewModel.setTitle("Level system learning")
     val levels by levelViewModel.levels.collectAsState()

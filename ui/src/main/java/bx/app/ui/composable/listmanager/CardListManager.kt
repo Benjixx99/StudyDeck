@@ -28,7 +28,7 @@ internal class CardListManager(
     context: Context,
     modifier: Modifier,
     searchText: String,
-    onClick: () -> Unit
+    onClick: (id: Long) -> Unit
 ) : BaseListManager(items, context, modifier, searchText, onClick) {
 
     @Composable
