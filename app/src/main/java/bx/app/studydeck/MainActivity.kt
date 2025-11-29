@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.composable.BottomBarComponent
 import bx.app.ui.composable.TopBarComponent
-import bx.app.ui.navigation.data.NavigationRoutes
+import bx.app.ui.navigation.data.NavigationRoute
 import bx.app.ui.navigation.navHostDestinations
 import bx.app.ui.theme.StudyDeckTheme
 
@@ -45,7 +45,7 @@ fun StudyDeck(context: Context) {
         innerPadding ->
             NavHost(
                 navController = navHostController,
-                startDestination = NavigationRoutes.DECKS,
+                startDestination = NavigationRoute.Decks,
             ) {
                 navHostDestinations(navHostController, context, topBarViewModel)
             }

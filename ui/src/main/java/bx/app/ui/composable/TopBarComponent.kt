@@ -15,20 +15,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import bx.app.ui.helper.GetTopBarMenuAction
-import bx.app.ui.navigation.data.NavigationRoutes
+import bx.app.ui.navigation.data.NavigationRoute
 
 object TopBarComponent {
     @Composable
     fun Manager(title: String, navHostController: NavHostController) {
         val currentBackStack by navHostController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
-        val currentRoute = NavigationRoutes.list.find { it == currentDestination?.route } ?: NavigationRoutes.DECKS
+        val currentRoute = NavigationRoute.getCurrentNavigationRoute(currentDestination?.route)
 
         TopBar(
             title = title,
             onBackClick = {
-                if (currentRoute != NavigationRoutes.DECKS) { navHostController.popBackStack() }
+                if (currentRoute !is NavigationRoute.Decks) navHostController.popBackStack()
             },
             actions = { GetTopBarMenuAction(currentRoute) }
         )
@@ -59,5 +58,15 @@ object TopBarComponent {
             },
             actions = actions
         )
+    }
+
+    @Composable
+    private fun GetTopBarMenuAction(route: NavigationRoute) {
+        return when(route) {
+            is NavigationRoute.Decks -> {
+                MainDropdownMenu()
+            }
+            else -> {  }
+        }
     }
 }

@@ -12,7 +12,7 @@ internal fun NavHostController.navigateSingleTopTo(route: String) = this.navigat
 /**
  * This extension function of [NavHostController] navigates to the passed route and sets backStackRoute as the back stack route
  */
-internal fun NavHostController.navigateWithSettingBackStack(route: String, backStackRoute: String) {
+internal fun <T: Any> NavHostController.navigateWithSettingBackStack(route: T, backStackRoute: T) {
     this.navigate(
         route = route,
         navOptions = navOptions {

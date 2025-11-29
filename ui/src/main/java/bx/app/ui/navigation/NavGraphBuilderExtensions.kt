@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import bx.app.presentation.viewmodel.TopBarViewModel
-import bx.app.ui.navigation.data.NavigationRoutes
 import bx.app.ui.data.LearnData
 import bx.app.ui.ScreenManager
+import bx.app.ui.navigation.data.NavigationRoute
 
 /**
  * This extension function of [NavGraphBuilder] is the main navigation function of this app
@@ -24,74 +25,84 @@ fun NavGraphBuilder.navHostDestinations(
     val screenManager = ScreenManager(context, topBarViewModel)
 
     composableDecks(navController, screenManager)
-    composable(route = NavigationRoutes.DECK_SETTINGS) { screenManager.DeckSettings() }
+    composable<NavigationRoute.DeckSettings> { screenManager.DeckSettings() }
     composableDeckCards(navController, screenManager)
     composableDeckLearn(navController, screenManager)
-    composableDeckLevel(navController, screenManager)
-    composable(route = NavigationRoutes.CARD_FRONT) { screenManager.Card() }
-    composable(route = NavigationRoutes.CARD_BACK) { screenManager.Card() }
-    composable(route = NavigationRoutes.LEVEL) { screenManager.Level() }
-    composable(route = NavigationRoutes.LEARN_PHASE) { screenManager.LearnPhase() }
+    composableDeckLevels(navController, screenManager)
+    composable<NavigationRoute.CardFront> { screenManager.Card() }
+    composable<NavigationRoute.CardBack> { screenManager.Card() }
+    composable<NavigationRoute.Level> { screenManager.Level() }
+    composable<NavigationRoute.LearnPhase> { screenManager.LearnPhase() }
     composableLearnLevel(navController, screenManager)
 }
 
 internal fun NavGraphBuilder.composableDecks(navController: NavHostController, screenManager: ScreenManager) {
-    composable(route = NavigationRoutes.DECKS) {
+    composable<NavigationRoute.Decks> {
         screenManager.Decks(
             onClickCreateNewDeck = {
-                navController.navigateWithSettingBackStack(NavigationRoutes.DECK_SETTINGS, NavigationRoutes.DECKS)
+                navController.navigateWithSettingBackStack(NavigationRoute.DeckSettings(), NavigationRoute.Decks)
             },
             onClickDeck = {
-                navController.navigateWithSettingBackStack(NavigationRoutes.DECK_CARDS, NavigationRoutes.DECKS)
+                id ->
+                navController.navigateWithSettingBackStack(NavigationRoute.DeckCards(id = id.toString()), NavigationRoute.Decks)
             },
         )
     }
 }
 
 internal fun NavGraphBuilder.composableDeckCards(navController: NavHostController, screenManager: ScreenManager) {
-    composable(route = NavigationRoutes.DECK_CARDS) {
+    composable<NavigationRoute.DeckCards> {
+        backStackEntry ->
         screenManager.DeckCards(
             onClickCreateNewCard = {
-                navController.navigateWithSettingBackStack(NavigationRoutes.CARD_FRONT, NavigationRoutes.DECK_CARDS)
+                navController.navigateWithSettingBackStack(NavigationRoute.CardFront(), backStackEntry.toRoute())
+            },
+            onClickCard =  {
+                id ->
+                navController.navigateWithSettingBackStack(NavigationRoute.CardFront(id = id.toString()), backStackEntry.toRoute())
+            }
+        )
+    }
+}
+
+internal fun NavGraphBuilder.composableDeckLevels(navController: NavHostController, screenManager: ScreenManager) {
+    composable<NavigationRoute.DeckLevels> {
+        backStackEntry ->
+        screenManager.DeckLevels(
+            onClickCreateNewLevel = {
+                navController.navigateWithSettingBackStack(NavigationRoute.Level(), backStackEntry.toRoute())
+            },
+            onClickLevel = {
+                id ->
+                navController.navigateWithSettingBackStack(NavigationRoute.Level(id = id.toString()), backStackEntry.toRoute())
             }
         )
     }
 }
 
 internal fun NavGraphBuilder.composableDeckLearn(navController: NavHostController, screenManager: ScreenManager) {
-    composable(route = NavigationRoutes.DECK_LEARN) {
+    composable<NavigationRoute.DeckLearn> {
+        backStackEntry ->
         screenManager.DeckLearn(
             onClickLearn = {
-                    id ->
+                id ->
                 if (id == LearnData.RANDOM_ID) {
-                    navController.navigateWithSettingBackStack(NavigationRoutes.LEARN_PHASE, NavigationRoutes.DECK_LEARN)
+                    navController.navigateWithSettingBackStack(NavigationRoute.LearnPhase(id = id.toString()), backStackEntry.toRoute())
                 }
                 else {
-                    navController.navigateWithSettingBackStack(NavigationRoutes.LEARN_LEVEL, NavigationRoutes.DECK_LEARN)
+                    navController.navigateWithSettingBackStack(NavigationRoute.LearnLevel(id = id.toString()), backStackEntry.toRoute())
                 }
-            }
-        )
-    }
-}
-
-internal fun NavGraphBuilder.composableDeckLevel(navController: NavHostController, screenManager: ScreenManager) {
-    composable(route = NavigationRoutes.DECK_LEVELS) {
-        screenManager.DeckLevels(
-            onClickCreateNewLevel = {
-                navController.navigateWithSettingBackStack(NavigationRoutes.LEVEL, NavigationRoutes.DECK_LEVELS)
-            },
-            onClickLevel = {
-                navController.navigateWithSettingBackStack(NavigationRoutes.LEVEL, NavigationRoutes.DECK_LEVELS)
             }
         )
     }
 }
 
 internal fun NavGraphBuilder.composableLearnLevel(navController: NavHostController, screenManager: ScreenManager) {
-    composable(route = NavigationRoutes.LEARN_LEVEL) {
+    composable<NavigationRoute.LearnLevel> {
+        backStackEntry ->
         screenManager.LearnLevel(
             onClickLearn = {
-                navController.navigateWithSettingBackStack(NavigationRoutes.LEARN_PHASE, NavigationRoutes.LEARN_LEVEL)
+                navController.navigateWithSettingBackStack(NavigationRoute.LearnPhase(), backStackEntry.toRoute())
             }
         )
     }
