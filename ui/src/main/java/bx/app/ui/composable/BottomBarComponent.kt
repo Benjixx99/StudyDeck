@@ -16,13 +16,6 @@ object BottomBarComponent {
         val currentDestination = currentBackStack?.destination
         val currentRoute = NavigationRoute.getCurrentNavigationRoute(currentDestination?.route)
 
-        if (currentRoute is NavigationRoute.DeckCards || currentRoute is NavigationRoute.DeckSettings) {
-            NavigationBarItems.deckId = currentBackStack?.arguments?.getString("id").toString()
-        }
-        else if (currentRoute is NavigationRoute.CardFront) {
-            NavigationBarItems.cardId = currentBackStack?.arguments?.getString("id").toString()
-        }
-
         // TODO: Probably I need a function like DisplayBottomNavigationBar()
         if (currentRoute is NavigationRoute.Decks || currentRoute is NavigationRoute.Level
             || currentRoute is NavigationRoute.LearnPhase || currentRoute is NavigationRoute.LearnLevel) return

@@ -63,12 +63,16 @@ internal fun BaseTextField(
     placeholderText: String = "",
     isSingleLine: Boolean = true,
     maxLines: Int = 1,
+    onValueChange: (String) -> Unit = {},
 ) {
     var basicTextField by remember { mutableStateOf(valueText) }
 
     TextField(
         value = basicTextField,
-        onValueChange = { if (it.length < 100) basicTextField = it },
+        onValueChange = {
+            if (it.length < 100) basicTextField = it
+            onValueChange(basicTextField)
+        },
         label = { Text(labelText) },
         placeholder = { Text(placeholderText) },
         colors = TextFieldDefaults.colors(
@@ -88,6 +92,7 @@ internal fun MultiLineTextField(
     labelText: String = "",
     placeholderText: String = "",
     maxLines: Int = 4,
+    onValueChange: (String) -> Unit = {},
 ) {
     BaseTextField(
         modifier = modifier.height(160.dp),
@@ -96,6 +101,7 @@ internal fun MultiLineTextField(
         placeholderText = placeholderText,
         isSingleLine = false,
         maxLines = maxLines,
+        onValueChange = onValueChange,
     )
 }
 
@@ -107,12 +113,14 @@ internal fun SingleLineTextField(
     modifier: Modifier = Modifier,
     valueText: String = "",
     labelText: String = "",
+    onValueChange: (String) -> Unit = {},
 ) {
     BaseTextField(
         modifier = modifier.height(60.dp),
         valueText = valueText,
         labelText = labelText,
         placeholderText = "",
+        onValueChange = onValueChange
     )
 }
 

@@ -3,19 +3,16 @@ package bx.app.ui.navigation.data
 import bx.app.ui.navigation.item.NavigationItem
 
 internal object NavigationBarItems {
-    var deckId: String = "0"
-    var cardId: String = "0"
-
     private val deckItems = listOf<NavigationItem>(
-        NavigationItem("Settings", NavigationRoute.DeckSettings(deckId), NavigationRoute.Decks),
-        NavigationItem("Cards", NavigationRoute.DeckCards(deckId), NavigationRoute.Decks),
-        NavigationItem("Level", NavigationRoute.DeckLevels(deckId), NavigationRoute.Decks),
-        NavigationItem("Learn", NavigationRoute.DeckLearn(deckId), NavigationRoute.Decks),
+        NavigationItem("Settings", NavigationRoute.DeckSettings(DatabaseOperation.UPDATE.toString()), NavigationRoute.Decks),
+        NavigationItem("Cards", NavigationRoute.DeckCards(DatabaseOperation.UPDATE.toString()), NavigationRoute.Decks),
+        NavigationItem("Level", NavigationRoute.DeckLevels(DatabaseOperation.UPDATE.toString()), NavigationRoute.Decks),
+        NavigationItem("Learn", NavigationRoute.DeckLearn(DatabaseOperation.UPDATE.toString()), NavigationRoute.Decks),
     )
 
     private val cardItems = listOf<NavigationItem>(
-        NavigationItem("Front", NavigationRoute.CardFront(cardId), NavigationRoute.DeckCards(deckId)),
-        NavigationItem("Back", NavigationRoute.CardBack(cardId), NavigationRoute.DeckCards(deckId)),
+        NavigationItem("Front", NavigationRoute.CardFront(DatabaseOperation.UPDATE.toString()), NavigationRoute.DeckCards()),
+        NavigationItem("Back", NavigationRoute.CardBack(DatabaseOperation.UPDATE.toString()), NavigationRoute.DeckCards()),
     )
 
     /**

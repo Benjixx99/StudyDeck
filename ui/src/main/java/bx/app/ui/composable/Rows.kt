@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 
 /**
@@ -48,9 +49,10 @@ internal fun SwitchTextRow(
     headerText: String,
     bodyText: String,
     modifier: Modifier = Modifier,
+    isChecked: Boolean = false,
     onCheckedChange: (Boolean) -> Unit = {}
 ) {
-    var isChecked by remember { mutableStateOf(false) }
+    var isChecked by remember { mutableStateOf(isChecked) }
     BaseRow(modifier) {
         Column(
             modifier = Modifier.weight(1f),
@@ -61,7 +63,10 @@ internal fun SwitchTextRow(
         }
         Switch(
             checked = isChecked,
-            onCheckedChange = { isChecked = !isChecked }
+            onCheckedChange = {
+                isChecked = !isChecked
+                onCheckedChange(isChecked)
+            }
         )
     }
 }
@@ -75,11 +80,13 @@ internal fun SwitchTextRow(
 internal fun ClickableRow(
     text: String,
     optionList: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedOptionId: Int = 0,
+    onOptionChanged: (Int) -> Unit = {},
 ) {
     var openDialog by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf("") }
-    var selectedOptionID by remember { mutableIntStateOf(0) }
+    var selectedOptionText by remember { mutableStateOf(optionList[selectedOptionId]) }
+    var selectedOptionId by remember { mutableIntStateOf(selectedOptionId) }
 
     BaseRow(modifier = modifier.combinedClickable(onClick = { openDialog = !openDialog })) {
         Column(
@@ -93,13 +100,15 @@ internal fun ClickableRow(
     if (openDialog) {
         RadioButtonGroupDialog(
             headerText = text,
-            selectedOption = selectedOptionID,
+            selectedOption = selectedOptionId,
             optionList = optionList,
             onDismissRequest = { openDialog = false },
-            onSelectOption = { optionID, optionText ->
+            onSelectOption = {
+                optionID, optionText ->
                 selectedOptionText = optionText
-                selectedOptionID = optionID
+                selectedOptionId = optionID
                 openDialog = false
+                onOptionChanged(optionID)
             }
         )
     }
@@ -109,9 +118,13 @@ internal fun ClickableRow(
  * This component displays a text and a button that has the selected color
  */
 @Composable
-internal fun ColorPickerRow(modifier: Modifier = Modifier) {
+internal fun ColorPickerRow(
+    modifier: Modifier = Modifier,
+    color: Color = Color.Red,
+    onColorChanged: (Long) -> Unit = {},
+) {
     var openDialog by remember { mutableStateOf(false) }
-    var deckColor by remember { mutableStateOf(Color.Red) }
+    var deckColor by remember { mutableStateOf(color) }
     BaseRow(modifier) {
         MediumText(text = "Select color")
         Spacer(modifier = Modifier.weight(1f))
@@ -132,9 +145,11 @@ internal fun ColorPickerRow(modifier: Modifier = Modifier) {
         ColorPickerDialog(
             selectedColor = deckColor,
             onDismissRequest = { openDialog = false },
-            onSaveColorClick = { color ->
+            onSaveColorClick = {
+                color ->
                 deckColor = color
                 openDialog = false
+                onColorChanged(color.toArgb().toLong())
             }
         )
     }

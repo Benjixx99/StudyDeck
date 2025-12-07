@@ -13,6 +13,7 @@ import bx.app.presentation.viewmodel.CardViewModel
 import bx.app.presentation.viewmodel.DeckViewModel
 import bx.app.presentation.viewmodel.LevelViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
+import bx.app.ui.navigation.data.DatabaseOperation
 import bx.app.ui.screen.CardScreen
 import bx.app.ui.screen.DeckCardsScreen
 import bx.app.ui.screen.DeckLearnScreen
@@ -49,15 +50,18 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
 
     @Composable
     fun DeckCards(
+        id: Long,
         onClickCreateNewCard: () -> Unit = {},
         onClickCard: (id: Long) -> Unit = {},
     ) {
+        if (id > 0) { deckViewModel.getDeckById(id) }
         DeckCardsScreen(context, cardViewModel, topBarViewModel, onClickCreateNewCard, onClickCard)
     }
 
     @Composable
-    fun DeckSettings() {
-        DeckSettingsScreen(topBarViewModel)
+    fun DeckSettings(id: Long) {
+        if (id == DatabaseOperation.INSERT) deckViewModel.resetDeck()
+        DeckSettingsScreen(deckViewModel, topBarViewModel, context)
     }
 
     @Composable

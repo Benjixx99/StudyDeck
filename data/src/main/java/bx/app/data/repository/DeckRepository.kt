@@ -14,4 +14,13 @@ class DeckRepository(database: AppDatabase) {
     suspend fun insert(user: DeckModel) = baseRepo.insert(user.toEntity())
     suspend fun update(user: DeckModel) = baseRepo.update(user.toEntity())
     suspend fun delete(user: DeckModel) = baseRepo.delete(user.toEntity())
+
+    suspend fun upsert(deck: DeckModel): Long {
+        if (deck.id <= 0)
+            return insert(deck)
+        else {
+            update(deck)
+            return deck.id
+        }
+    }
 }
