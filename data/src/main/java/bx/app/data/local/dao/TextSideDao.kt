@@ -13,6 +13,9 @@ internal interface TextSideDao : BaseDao<TextSideEntity> {
     @Query("SELECT * FROM text_side WHERE id = :id LIMIT 1")
     override suspend fun getById(id: Long): TextSideEntity
 
+    @Query("SELECT text FROM text_side WHERE id = :id")
+    fun getTextById(id: Long): Flow<String?>
+
     @Query("DELETE FROM text_side")
     override suspend fun deleteAll()
 
