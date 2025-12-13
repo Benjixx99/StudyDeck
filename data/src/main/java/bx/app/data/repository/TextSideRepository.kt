@@ -13,7 +13,7 @@ class TextSideRepository(private val database: AppDatabase) {
     fun getTextById(id: Long) = database.textSideDao().getTextById(id)
 
     suspend fun getById(id: Long) = baseRepo.getById(id) as TextSideModel
-    suspend fun insert(user: TextSideModel) = baseRepo.insert(user.toEntity())
-    suspend fun update(user: TextSideModel) = baseRepo.update(user.toEntity())
-    suspend fun delete(user: TextSideModel) = baseRepo.delete(user.toEntity())
+    suspend fun insert(textSide: TextSideModel) = baseRepo.insert(textSide.toEntity())
+    suspend fun update(textSide: TextSideModel) = baseRepo.update(textSide.toEntity())
+    suspend fun delete(textSide: TextSideModel) = baseRepo.delete(textSide.toEntity())
 }

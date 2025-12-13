@@ -13,7 +13,7 @@ class AudioSideRepository(private val database: AppDatabase) {
     fun getFileNameById(id: Long) = database.audioSideDao().getFileNameById(id)
 
     suspend fun getById(id: Long) = baseRepo.getById(id) as AudioSideModel
-    suspend fun insert(user: AudioSideModel) = baseRepo.insert(user.toEntity())
-    suspend fun update(user: AudioSideModel) = baseRepo.update(user.toEntity())
-    suspend fun delete(user: AudioSideModel) = baseRepo.delete(user.toEntity())
+    suspend fun insert(audioSide: AudioSideModel) = baseRepo.insert(audioSide.toEntity())
+    suspend fun update(audioSide: AudioSideModel) = baseRepo.update(audioSide.toEntity())
+    suspend fun delete(audioSide: AudioSideModel) = baseRepo.delete(audioSide.toEntity())
 }
