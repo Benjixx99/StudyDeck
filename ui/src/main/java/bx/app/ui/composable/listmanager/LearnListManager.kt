@@ -58,4 +58,6 @@ internal class LearnListManager(
             MediumText(text = item.description)
         }
     }
+
+    override fun displayItem(item: IdentifiedModel): Boolean { return true }
 }
