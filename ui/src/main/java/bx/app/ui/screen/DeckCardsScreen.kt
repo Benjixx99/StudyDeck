@@ -8,7 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
+import bx.app.data.enums.CardSideType
+import bx.app.presentation.viewmodel.AudioSideViewModel
 import bx.app.presentation.viewmodel.CardViewModel
+import bx.app.presentation.viewmodel.TextSideViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
 import bx.app.ui.composable.ButtonInCorner
@@ -22,12 +25,23 @@ import bx.app.ui.composable.listmanager.CardListManager
 internal fun DeckCardsScreen(
     context: Context,
     cardViewModel: CardViewModel,
+    textSideViewModel: TextSideViewModel,
+    audioSideViewModel: AudioSideViewModel,
     topBarViewModel: TopBarViewModel,
     onClickCreateNewCard: () -> Unit = {},
     onClickCard: (id: Long) -> Unit = {},
 ) {
     topBarViewModel.setTitle("Cards")
     val cards by cardViewModel.cards.collectAsState()
+    val textById by textSideViewModel.textById.collectAsState()
+    val fileNameById by audioSideViewModel.fileNameById.collectAsState()
+
+    cards.forEach {
+        if (it.frontSideType == CardSideType.TEXT) { textSideViewModel.getTextFlowById(it.frontSideId) }
+        if (it.frontSideType == CardSideType.AUDIO) { audioSideViewModel.getFileNameById(it.frontSideId) }
+        if (it.backSideType == CardSideType.TEXT) { textSideViewModel.getTextFlowById(it.backSideId) }
+        if (it.backSideType == CardSideType.AUDIO) { audioSideViewModel.getFileNameById(it.backSideId) }
+    }
 
     Column(
         modifier = ModifierManager.paddingMostTopModifier
@@ -39,6 +53,8 @@ internal fun DeckCardsScreen(
             modifier = ModifierManager.paddingTopModifier.fillMaxSize().padding(bottom = 40.dp),
             searchText = searchText,
             onClick = onClickCard,
+            textById = textById,
+            fileNameById = fileNameById,
         )
         cardListManager.List()
     }

@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import bx.app.data.enums.CardSideType
 import bx.app.data.model.IdentifiedModel
 import bx.app.data.model.CardModel
 import bx.app.ui.composable.LargeText
@@ -28,7 +29,9 @@ internal class CardListManager(
     context: Context,
     modifier: Modifier,
     searchText: String,
-    onClick: (id: Long) -> Unit
+    onClick: (id: Long) -> Unit,
+    val textById: Map<Long, String?>,
+    val fileNameById: Map<Long, String?>,
 ) : BaseListManager(items, context, modifier, searchText, onClick) {
 
     @Composable
@@ -38,7 +41,7 @@ internal class CardListManager(
 
         Row(modifier = ModifierManager.paddingListItemRowModifier) {
             LargeText(
-                text = "dummy", //if (isFront) item.frontSide.evaluateCardSideType() else item.backSide.evaluateCardSideType(),
+                text = if (isFront) getFrontValue(item) else getBackValue(item),
                 maxLines = 2,
                 modifier = Modifier.weight(6.0f)
             )
@@ -56,5 +59,23 @@ internal class CardListManager(
                 Text(text = if (isFront) "Back" else "Front")
             }
         }
+    }
+
+    private fun getFrontValue(item: CardModel): String {
+        return (
+            if (item.frontSideType == CardSideType.TEXT)
+                textById[item.frontSideId]
+            else
+                fileNameById[item.frontSideId]
+        ).toString()
+    }
+
+    private fun getBackValue(item: CardModel): String {
+        return (
+            if (item.backSideType == CardSideType.TEXT)
+                textById[item.backSideId]
+            else
+                fileNameById[item.backSideId]
+        ).toString()
     }
 }
