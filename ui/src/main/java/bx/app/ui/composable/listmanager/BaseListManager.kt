@@ -27,9 +27,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import bx.app.data.model.IdentifiedModel
-import bx.app.data.model.CardModel
-import bx.app.data.model.DeckModel
-import bx.app.data.model.LevelModel
 import bx.app.ui.ModifierManager
 
 /**
@@ -98,16 +95,5 @@ internal abstract class BaseListManager(
     /**
      * This function is used to filter the items with the search text the user entered
      */
-    private fun displayItem(item: IdentifiedModel): Boolean {
-        if (item is DeckModel && !item.name.contains(searchText, true)
-            && (!item.description.isNullOrEmpty() && !item.description?.contains(searchText, true)!!)) return false
-
-        //if (item is LevelModel) return false
-
-        if (item is CardModel) {
-//            val cardValues = item.getValuesFromCard()
-//            if (!cardValues.first.contains(searchText, true) && !cardValues.second.contains(searchText, true)) return false
-        }
-        return true
-    }
+    protected abstract fun displayItem(item: IdentifiedModel): Boolean
 }
