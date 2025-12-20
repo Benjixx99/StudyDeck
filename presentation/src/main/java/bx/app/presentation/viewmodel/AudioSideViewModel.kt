@@ -1,6 +1,5 @@
 package bx.app.presentation.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bx.app.data.enums.CardSide
 import bx.app.data.model.AudioSideModel
@@ -12,14 +11,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.collections.plus
 
-class AudioSideViewModel(private val repo: AudioSideRepository) : ViewModel() {
+class AudioSideViewModel(private val repo: AudioSideRepository) : DebouncedAutoSaveViewModel() {
     private val _fileNameById = MutableStateFlow<Map<Long, String?>>(emptyMap())
-    private var _audioSide = MutableStateFlow<AudioSideModel>(AudioSideModel(
-        path = "",
-        fileName = "",
-        side = CardSide.FRONT,
-        cardId = 0
-    ))
+    private var _audioSide = MutableStateFlow<AudioSideModel>(getInitialAudioSide())
 
     val fileNameById: StateFlow<Map<Long, String?>> = _fileNameById
     var audioSide: StateFlow<AudioSideModel> = _audioSide
@@ -35,4 +29,21 @@ class AudioSideViewModel(private val repo: AudioSideRepository) : ViewModel() {
     fun insertAudioSide(audioSide: AudioSideModel) = viewModelScope.launch { repo.insert(audioSide) }
     fun updateAudioSide(audioSide: AudioSideModel) = viewModelScope.launch { repo.update(audioSide) }
     fun deleteAudioSide(audioSide: AudioSideModel) = viewModelScope.launch { repo.delete(audioSide) }
+
+    fun changeAudioData(path: String, fileName: String) =
+        upsertAudioSide { _audioSide.value.copy(path = path, fileName = fileName) }
+
+    private fun upsertAudioSide(transform: AudioSideModel.() -> AudioSideModel) {
+        _audioSide.value = _audioSide.value.transform()
+        scheduleAutoSave { getAudioSideById(repo.upsert(_audioSide.value)) }
+    }
+
+    private fun getInitialAudioSide(): AudioSideModel {
+        return AudioSideModel(
+            path = "",
+            fileName = "",
+            side = CardSide.FRONT,
+            cardId = 0
+        )
+    }
 }
