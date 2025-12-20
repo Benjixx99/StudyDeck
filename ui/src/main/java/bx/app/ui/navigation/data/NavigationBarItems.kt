@@ -15,6 +15,15 @@ internal object NavigationBarItems {
         NavigationItem("Back", NavigationRoute.CardBack(DatabaseOperation.UPDATE.toString()), NavigationRoute.DeckCards()),
     )
 
+    fun setDeckId(id: Long) {
+        deckItems.forEach { (it.route as NavigationRoute.WithId).id = id.toString() }
+        cardItems.forEach { (it.backStackRoute as NavigationRoute.WithId).id = id.toString() }
+    }
+
+    fun setCardId(id: Long) {
+        cardItems.forEach { (it.route as NavigationRoute.WithId).id = id.toString() }
+    }
+
     /**
      * Get the corresponding navigation item list for the passed route
      */

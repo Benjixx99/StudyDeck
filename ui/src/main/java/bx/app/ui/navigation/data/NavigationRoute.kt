@@ -4,16 +4,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class NavigationRoute() {
+    @Serializable abstract class WithId() : NavigationRoute() { abstract var id: String? }
+
     @Serializable object Decks : NavigationRoute()
-    @Serializable data class DeckSettings(val id: String? = null) : NavigationRoute()
-    @Serializable data class DeckCards(val id: String? = null) : NavigationRoute()
-    @Serializable data class DeckLevels(val id: String? = null) : NavigationRoute()
-    @Serializable data class DeckLearn(val id: String? = null) : NavigationRoute()
-    @Serializable data class CardFront(val id: String? = null) : NavigationRoute()
-    @Serializable data class CardBack(val id: String? = null) : NavigationRoute()
-    @Serializable data class Level(val id: String? = null) : NavigationRoute()
-    @Serializable data class LearnLevel(val id: String? = null) : NavigationRoute()
-    @Serializable data class LearnPhase(val id: String? = null) : NavigationRoute()
+    @Serializable data class DeckSettings(override var id: String? = null) : WithId()
+    @Serializable data class DeckCards(override var id: String? = null) : WithId()
+    @Serializable data class DeckLevels(override var id: String? = null) : WithId()
+    @Serializable data class DeckLearn(override var id: String? = null) : WithId()
+    @Serializable data class CardFront(override var id: String? = null) : WithId()
+    @Serializable data class CardBack(override var id: String? = null) : WithId()
+    @Serializable data class Level(override var id: String? = null) : WithId()
+    @Serializable data class LearnLevel(override var id: String? = null) : WithId()
+    @Serializable data class LearnPhase(override var id: String? = null) : WithId()
 
     fun sameRoute(other: NavigationRoute) = this::class.simpleName == other::class.simpleName
 
