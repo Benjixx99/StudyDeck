@@ -65,19 +65,16 @@ internal fun BaseTextField(
     maxLines: Int = 1,
     onValueChange: (String) -> Unit = {},
 ) {
-    var basicTextField by remember { mutableStateOf(valueText) }
-
     TextField(
-        value = basicTextField,
+        value = valueText,
         onValueChange = {
-            if (it.length < 100) basicTextField = it
-            onValueChange(basicTextField)
+            if (it.length < 100) onValueChange(it)
         },
         label = { Text(labelText) },
         placeholder = { Text(placeholderText) },
         colors = TextFieldDefaults.colors(
             unfocusedTextColor = MaterialTheme.colorScheme.primary,
-            focusedTextColor = if (basicTextField.contains("5")) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
+            focusedTextColor = if (valueText.contains("5")) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
         ),
         singleLine = isSingleLine,
         maxLines = maxLines,
