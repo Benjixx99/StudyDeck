@@ -5,10 +5,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import bx.app.data.enums.CardSide
+import bx.app.presentation.data.IdValidator
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.data.LearnData
 import bx.app.ui.ScreenManager
-import bx.app.ui.navigation.data.DatabaseOperation
 import bx.app.ui.navigation.data.NavigationRoute
 
 /**
@@ -41,11 +42,17 @@ internal fun NavGraphBuilder.composableDecks(navHostController: NavHostControlle
     composable<NavigationRoute.Decks> {
         screenManager.Decks(
             onClickCreateNewDeck = {
-                navHostController.navigateWithSettingBackStack(NavigationRoute.DeckSettings(id = DatabaseOperation.INSERT.toString()), NavigationRoute.Decks)
+                navHostController.navigateWithSettingBackStack(
+                    route = NavigationRoute.DeckSettings(id = IdValidator.INSERT.toString()),
+                    backStackRoute = NavigationRoute.Decks
+                )
             },
             onClickDeck = {
                 id ->
-                navHostController.navigateWithSettingBackStack(NavigationRoute.DeckCards(id = id.toString()), NavigationRoute.Decks)
+                navHostController.navigateWithSettingBackStack(
+                    route = NavigationRoute.DeckCards(id = id.toString()),
+                    backStackRoute = NavigationRoute.Decks
+                )
             },
         )
     }
@@ -54,24 +61,27 @@ internal fun NavGraphBuilder.composableDecks(navHostController: NavHostControlle
 internal fun NavGraphBuilder.composableDeckSettings(screenManager: ScreenManager) {
     composable<NavigationRoute.DeckSettings> {
         backStackEntry ->
-        val id = backStackEntry.arguments?.getString("id").toString().toLong()
-        screenManager.DeckSettings(id = id)
+        screenManager.DeckSettings(id = backStackEntry.arguments?.getString("id").toString().toLong())
     }
 }
 
 internal fun NavGraphBuilder.composableDeckCards(navHostController: NavHostController, screenManager: ScreenManager) {
     composable<NavigationRoute.DeckCards> {
         backStackEntry ->
-        val id = backStackEntry.arguments?.getString("id").toString().toLong()
-
         screenManager.DeckCards(
-            id = id,
+            id = backStackEntry.arguments?.getString("id").toString().toLong(),
             onClickCreateNewCard = {
-                navHostController.navigateWithSettingBackStack(NavigationRoute.CardFront(), backStackEntry.toRoute())
+                navHostController.navigateWithSettingBackStack(
+                    route = NavigationRoute.CardFront(id = IdValidator.INSERT.toString()),
+                    backStackRoute = backStackEntry.toRoute()
+                )
             },
             onClickCard =  {
                 id ->
-                navHostController.navigateWithSettingBackStack(NavigationRoute.CardFront(id = id.toString()), backStackEntry.toRoute())
+                navHostController.navigateWithSettingBackStack(
+                    route = NavigationRoute.CardFront(id = id.toString()),
+                    backStackRoute = backStackEntry.toRoute()
+                )
             }
         )
     }
@@ -82,11 +92,17 @@ internal fun NavGraphBuilder.composableDeckLevels(navHostController: NavHostCont
         backStackEntry ->
         screenManager.DeckLevels(
             onClickCreateNewLevel = {
-                navHostController.navigateWithSettingBackStack(NavigationRoute.Level(), backStackEntry.toRoute())
+                navHostController.navigateWithSettingBackStack(
+                    route = NavigationRoute.Level(),
+                    backStackRoute = backStackEntry.toRoute()
+                )
             },
             onClickLevel = {
                 id ->
-                navHostController.navigateWithSettingBackStack(NavigationRoute.Level(id = id.toString()), backStackEntry.toRoute())
+                navHostController.navigateWithSettingBackStack(
+                    route = NavigationRoute.Level(id = id.toString()),
+                    backStackRoute = backStackEntry.toRoute()
+                )
             }
         )
     }
@@ -99,23 +115,37 @@ internal fun NavGraphBuilder.composableDeckLearn(navHostController: NavHostContr
             onClickLearn = {
                 id ->
                 if (id == LearnData.RANDOM_ID) {
-                    navHostController.navigateWithSettingBackStack(NavigationRoute.LearnPhase(id = id.toString()), backStackEntry.toRoute())
+                    navHostController.navigateWithSettingBackStack(
+                        route = NavigationRoute.LearnPhase(id = id.toString()),
+                        backStackRoute = backStackEntry.toRoute()
+                    )
                 }
                 else {
-                    navHostController.navigateWithSettingBackStack(NavigationRoute.LearnLevel(id = id.toString()), backStackEntry.toRoute())
+                    navHostController.navigateWithSettingBackStack(
+                        route = NavigationRoute.LearnLevel(id = id.toString()),
+                        backStackRoute = backStackEntry.toRoute()
+                    )
                 }
             }
         )
     }
 }
 
-internal fun NavGraphBuilder.composableLearnLevel(navController: NavHostController, screenManager: ScreenManager) {
+internal fun NavGraphBuilder.composableLearnLevel(navHostController: NavHostController, screenManager: ScreenManager) {
     composable<NavigationRoute.LearnLevel> {
         backStackEntry ->
         screenManager.LearnLevel(
             onClickLearn = {
                 navController.navigateWithSettingBackStack(NavigationRoute.LearnPhase(), backStackEntry.toRoute())
             }
+                navHostController.navigateWithSettingBackStack(
+                    route = NavigationRoute.LearnPhase(),
+                    backStackRoute = backStackEntry.toRoute()
+                )
+            }
+        )
+    }
+}
         )
     }
 }
