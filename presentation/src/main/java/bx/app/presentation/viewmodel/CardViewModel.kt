@@ -27,6 +27,12 @@ class CardViewModel(private val repo: CardRepository) : ViewModel() {
 
     fun setDeckId(id: Long) { _deckId.value = id }
 
+    fun resetCard() { _card.value = getInitialCard() }
+    fun resetCard(card: CardModel) {
+        resetCard()
+        _card.value = card
+    }
+
     private fun getInitialCard(): CardModel {
         return CardModel(
             frontSideId = 0,
