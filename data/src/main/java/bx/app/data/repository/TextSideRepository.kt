@@ -16,13 +16,4 @@ class TextSideRepository(private val database: AppDatabase) {
     suspend fun insert(textSide: TextSideModel) = baseRepo.insert(textSide.toEntity())
     suspend fun update(textSide: TextSideModel) = baseRepo.update(textSide.toEntity())
     suspend fun delete(textSide: TextSideModel) = baseRepo.delete(textSide.toEntity())
-
-    suspend fun upsert(textSide: TextSideModel): Long {
-        if (textSide.id <= 0)
-            return insert(textSide)
-        else {
-            update(textSide)
-            return textSide.id
-        }
-    }
 }
