@@ -26,9 +26,9 @@ import bx.app.ui.composable.SwitchTextRow
  */
 @Composable
 internal fun DeckSettingsScreen(
+    context: Context,
     deckViewModel: DeckViewModel,
     topBarViewModel: TopBarViewModel,
-    context: Context
 ) {
     val deck by deckViewModel.deck.collectAsState()
 

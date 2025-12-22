@@ -76,6 +76,7 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
     fun DeckSettings(id: Long) {
         if (id == DatabaseOperation.INSERT) deckViewModel.resetDeck()
         DeckSettingsScreen(deckViewModel, topBarViewModel, context)
+        DeckSettingsScreen(context, deckViewModel, topBarViewModel)
     }
 
     @Composable

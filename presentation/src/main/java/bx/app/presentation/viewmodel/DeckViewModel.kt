@@ -24,7 +24,7 @@ class DeckViewModel(private val repo: DeckRepository) : DebouncedAutoSaveViewMod
     fun resetDeck() { _deck.value = getInitialDeck() }
 
     fun changeName(value: String) = upsertDeck { _deck.value.copy(name = value) }
-    fun changeDescription(value: String) = upsertDeck {_deck.value.copy(description = value) }
+    fun changeDescription(value: String) = upsertDeck { _deck.value.copy(description = value) }
     fun changeColor(value: Long) = upsertDeck { _deck.value.copy(color = value) }
     fun changeLearnBothSides(value: Boolean) = upsertDeck { _deck.value.copy(learnBothSides = value) }
     fun changeOnFailing(value: CardFailing) = upsertDeck { _deck.value.copy(onFailing = value) }
