@@ -37,9 +37,9 @@ internal fun DeckCardsScreen(
     val fileNameById by audioSideViewModel.fileNameById.collectAsState()
 
     cards.forEach {
-        if (it.frontSideType == CardSideType.TEXT) { textSideViewModel.getTextFlowById(it.frontSideId) }
+        if (it.frontSideType == CardSideType.TEXT) { textSideViewModel.getTextById(it.frontSideId) }
         if (it.frontSideType == CardSideType.AUDIO) { audioSideViewModel.getFileNameById(it.frontSideId) }
-        if (it.backSideType == CardSideType.TEXT) { textSideViewModel.getTextFlowById(it.backSideId) }
+        if (it.backSideType == CardSideType.TEXT) { textSideViewModel.getTextById(it.backSideId) }
         if (it.backSideType == CardSideType.AUDIO) { audioSideViewModel.getFileNameById(it.backSideId) }
     }
 
