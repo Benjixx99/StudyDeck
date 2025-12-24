@@ -14,10 +14,12 @@ class CardRepository(private val database: AppDatabase) {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun observeById(idFlow: Flow<Long>): Flow<List<CardModel>> =
-        idFlow.flatMapLatest { id -> database.cardDao().observeById(id).map { list -> list.map { it.toModel() } } }
+        idFlow.flatMapLatest { id ->
+            database.cardDao().observeById(id).map { list -> list.map { it.toModel() } }
+        }
 
     suspend fun getById(id: Long) = baseRepo.getById(id) as CardModel
-    suspend fun insert(user: CardModel) = baseRepo.insert(user.toEntity())
-    suspend fun update(user: CardModel) = baseRepo.update(user.toEntity())
-    suspend fun delete(user: CardModel) = baseRepo.delete(user.toEntity())
+    suspend fun insert(card: CardModel) = baseRepo.insert(card.toEntity())
+    suspend fun update(card: CardModel) = baseRepo.update(card.toEntity())
+    suspend fun delete(card: CardModel) = baseRepo.delete(card.toEntity())
 }
