@@ -278,17 +278,27 @@ internal fun ButtonInCorner(onClick: () -> Unit = {}) {
  * CardTypeSegmentedControl is a UI component for the card screen
  */
 @Composable
-internal fun cardTypeSegmentedControl(modifier: Modifier = Modifier): CardSideType {
-    var cardSideType by remember { mutableStateOf<CardSideType>(CardSideType.TEXT) }
+internal fun CardTypeSegmentedControl(
+    selectedCardSideType: CardSideType,
+    modifier: Modifier = Modifier,
+    onClick: (CardSideType) -> Unit = {}
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        SegmentedControlButton(text = CardTypeText.TEXT, selectedCardSideType = cardSideType, onClick = { cardSideType = CardSideType.TEXT })
-        SegmentedControlButton(text = CardTypeText.AUDIO, selectedCardSideType = cardSideType, onClick =  { cardSideType = CardSideType.AUDIO })
+        SegmentedControlButton(
+            text = CardTypeText.TEXT,
+            selectedCardSideType = selectedCardSideType,
+            onClick = { onClick(CardSideType.TEXT) }
+        )
+        SegmentedControlButton(
+            text = CardTypeText.AUDIO,
+            selectedCardSideType = selectedCardSideType,
+            onClick =  { onClick(CardSideType.AUDIO) }
+        )
     }
-    return cardSideType
 }
 
 /**

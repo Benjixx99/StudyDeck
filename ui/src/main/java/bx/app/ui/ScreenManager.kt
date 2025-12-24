@@ -27,7 +27,9 @@ import bx.app.ui.screen.LearnLevelScreen
 import bx.app.ui.screen.LearnPhaseScreen
 import bx.app.ui.screen.LevelScreen
 import bx.app.data.enums.CardSide
+import bx.app.data.repository.CardWithSidesRepository
 import bx.app.presentation.data.IdValidator
+import bx.app.presentation.viewmodel.CardWithSidesViewModel
 import bx.app.ui.navigation.data.NavigationBarItems
 
 /**
@@ -40,7 +42,9 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
     private val levelViewModel = LevelViewModel(LevelRepository(database))
     private val textSideViewModel = TextSideViewModel(TextSideRepository(database))
     private val audioSideViewModel = AudioSideViewModel(AudioSideRepository(database))
-    private var deckId: Long = 0
+    private val cardWithSidesViewModel = CardWithSidesViewModel(
+        CardWithSidesRepository(database), cardViewModel, textSideViewModel, audioSideViewModel
+    )
     private var deckId = 0L
 
     init {
@@ -73,12 +77,14 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
         }
         DeckCardsScreen(context, cardViewModel, textSideViewModel, audioSideViewModel,
             topBarViewModel, onClickCreateNewCard, onClickCard)
+        NavigationBarItems.SetDeckId(deckViewModel)
     }
 
     @Composable
     fun DeckSettings(id: Long) {
         if (id == IdValidator.INSERT) deckViewModel.resetDeck()
         DeckSettingsScreen(context, deckViewModel, topBarViewModel)
+        NavigationBarItems.SetDeckId(deckViewModel)
     }
 
     @Composable
@@ -97,8 +103,17 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
     }
 
     @Composable
-    fun Card() {
-        CardScreen(context, topBarViewModel)
+    fun Card(id: Long, cardSide: CardSide) {
+        if (id >= IdValidator.MIN_VALID_ID) {
+            cardViewModel.getCardById(id)
+        }
+        else if (id == IdValidator.INSERT) {
+            cardViewModel.resetCard()
+            textSideViewModel.resetTextSide()
+            audioSideViewModel.resetAudioSide()
+        }
+        CardScreen(context, cardWithSidesViewModel, topBarViewModel, cardSide)
+        NavigationBarItems.SetCardId(cardViewModel)
     }
 
     @OptIn(ExperimentalFoundationApi::class)
