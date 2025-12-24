@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import bx.app.data.local.dao.AudioSideDao
 import bx.app.data.local.dao.CardDao
 import bx.app.data.local.dao.CardInLevelDao
+import bx.app.data.local.dao.CardWithSidesDao
 import bx.app.data.local.dao.DeckDao
 import bx.app.data.local.dao.LevelDao
 import bx.app.data.local.dao.TextSideDao
@@ -35,6 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
     internal abstract fun textSideDao(): TextSideDao
     internal abstract fun audioSideDao(): AudioSideDao
     internal abstract fun cardInLevelDao(): CardInLevelDao
+    internal abstract fun cardWithSidesDao(): CardWithSidesDao
 }
 
 object DatabaseBuilder {
