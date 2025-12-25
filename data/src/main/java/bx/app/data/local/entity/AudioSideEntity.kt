@@ -4,9 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 import bx.app.data.enums.CardSide
-import bx.app.data.enums.CardSideConverter
 import bx.app.data.model.AudioSideModel
 
 @Entity(
@@ -24,7 +22,6 @@ internal data class AudioSideEntity(
     val path: String,
     @ColumnInfo(name = "file_mame")
     val fileName: String,
-    @TypeConverters(CardSideConverter::class)
     val side: CardSide,
     @ColumnInfo(name = "card_id")
     val cardId: Long,

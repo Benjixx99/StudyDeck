@@ -4,9 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 import bx.app.data.enums.CardSideType
-import bx.app.data.enums.CardSideTypeConverter
 import bx.app.data.model.CardModel
 
 @Entity(
@@ -22,12 +20,10 @@ internal data class CardEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     @ColumnInfo(name = "front_side_type")
-    @TypeConverters(CardSideTypeConverter::class)
     val frontSideType: CardSideType,
     @ColumnInfo(name = "front_side_id")
     val frontSideId: Long,
     @ColumnInfo(name = "back_side_type")
-    @TypeConverters(CardSideTypeConverter::class)
     val backSideType: CardSideType,
     @ColumnInfo(name = "back_side_id")
     val backSideId: Long,

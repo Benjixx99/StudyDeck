@@ -3,9 +3,7 @@ package bx.app.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 import bx.app.data.enums.CardFailing
-import bx.app.data.enums.CardFailingConverter
 import bx.app.data.model.DeckModel
 
 @Entity(tableName = "deck")
@@ -18,7 +16,6 @@ internal data class DeckEntity(
     @ColumnInfo(name = "learn_both_sides")
     val learnBothSides: Boolean = false,
     @ColumnInfo(name = "on_failing")
-    @TypeConverters(CardFailingConverter::class)
     val onFailing: CardFailing = CardFailing.MOVE_TO_START,
 ) : BaseEntity() {
     override fun toModel(): DeckModel {
