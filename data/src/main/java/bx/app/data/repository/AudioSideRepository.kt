@@ -16,13 +16,4 @@ class AudioSideRepository(private val database: AppDatabase) {
     suspend fun insert(audioSide: AudioSideModel) = baseRepo.insert(audioSide.toEntity())
     suspend fun update(audioSide: AudioSideModel) = baseRepo.update(audioSide.toEntity())
     suspend fun delete(audioSide: AudioSideModel) = baseRepo.delete(audioSide.toEntity())
-
-    suspend fun upsert(audioSide: AudioSideModel): Long {
-        if (audioSide.id <= 0)
-            return insert(audioSide)
-        else {
-            update(audioSide)
-            return audioSide.id
-        }
-    }
 }

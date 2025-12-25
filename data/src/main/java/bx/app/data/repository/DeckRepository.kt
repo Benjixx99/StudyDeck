@@ -11,9 +11,9 @@ class DeckRepository(database: AppDatabase) {
 
     fun getAll(): Flow<List<DeckModel>> = baseRepo.flowList.map { it.filterIsInstance<DeckModel>() }
     suspend fun getById(id: Long) = baseRepo.getById(id) as DeckModel
-    suspend fun insert(user: DeckModel) = baseRepo.insert(user.toEntity())
-    suspend fun update(user: DeckModel) = baseRepo.update(user.toEntity())
-    suspend fun delete(user: DeckModel) = baseRepo.delete(user.toEntity())
+    suspend fun insert(deck: DeckModel) = baseRepo.insert(deck.toEntity())
+    suspend fun update(deck: DeckModel) = baseRepo.update(deck.toEntity())
+    suspend fun delete(deck: DeckModel) = baseRepo.delete(deck.toEntity())
 
     suspend fun upsert(deck: DeckModel): Long {
         if (deck.id <= 0)
