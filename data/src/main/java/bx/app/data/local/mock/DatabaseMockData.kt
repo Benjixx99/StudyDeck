@@ -3,6 +3,7 @@ package bx.app.data.local.mock
 import bx.app.data.enums.CardFailing
 import bx.app.data.enums.CardSide
 import bx.app.data.enums.CardSideType
+import bx.app.data.enums.IntervalType
 import bx.app.data.model.AudioSideModel
 import bx.app.data.model.CardModel
 import bx.app.data.model.DeckModel
@@ -121,18 +122,33 @@ object DatabaseMockData {
 
     val levels = listOf<LevelModel>(
         LevelModel(
-            intervalNumber = 2,
-            intervalType = 1,
+            name = "1. Level: every day",
+            intervalNumber = 7,
+            intervalType = IntervalType.WEEK,
             deckId = 1
         ),
         LevelModel(
+            name = "2. Level: four times a week",
             intervalNumber = 4,
-            intervalType = 1,
+            intervalType = IntervalType.WEEK,
             deckId = 1
         ),
         LevelModel(
-            intervalNumber = 6,
-            intervalType = 1,
+            name = "3. Level: once a week",
+            intervalNumber = 1,
+            intervalType = IntervalType.WEEK,
+            deckId = 1
+        ),
+        LevelModel(
+            name = "4. Level: every two weeks",
+            intervalNumber = 2,
+            intervalType = IntervalType.MONTH,
+            deckId = 1
+        ),
+        LevelModel(
+            name = "5. Level: once a month",
+            intervalNumber = 1,
+            intervalType = IntervalType.MONTH,
             deckId = 1
         )
     )
