@@ -10,7 +10,7 @@ internal interface DeckDao : BaseDao<DeckEntity> {
     @Query("SELECT * FROM deck")
     override fun observeAll(): Flow<List<DeckEntity>>
 
-    @Query("SELECT * FROM deck WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM deck WHERE id = :id")
     override suspend fun getById(id: Long): DeckEntity
 
     @Query("DELETE FROM deck")

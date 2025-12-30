@@ -10,10 +10,11 @@ internal interface CardInLevelDao : BaseDao<CardInLevelEntity> {
     @Query("SELECT * FROM card_in_level")
     override fun observeAll(): Flow<List<CardInLevelEntity>>
 
-    @Query("SELECT * FROM card_in_level WHERE level_id = :id LIMIT 1")
+    // TODO: This query is useless because the primary key consists of level id and card id
+    @Query("SELECT * FROM card_in_level WHERE level_id = :id")
     override suspend fun getById(id: Long): CardInLevelEntity
 
-    @Query("SELECT * FROM card_in_level WHERE card_id = :cardId AND level_id = :levelId LIMIT 1")
+    @Query("SELECT * FROM card_in_level WHERE card_id = :cardId AND level_id = :levelId")
     suspend fun getByIds(cardId: Long, levelId: Long): CardInLevelEntity
 
     @Query("DELETE FROM card_in_level")

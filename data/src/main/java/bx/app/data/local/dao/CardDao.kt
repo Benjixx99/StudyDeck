@@ -13,7 +13,7 @@ internal interface CardDao : BaseDao<CardEntity> {
     @Query("SELECT * FROM card WHERE deck_id = :id")
     fun observeById(id: Long): Flow<List<CardEntity>>
 
-    @Query("SELECT * FROM card WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM card WHERE id = :id")
     override suspend fun getById(id: Long): CardEntity
 
     @Query("DELETE FROM card")

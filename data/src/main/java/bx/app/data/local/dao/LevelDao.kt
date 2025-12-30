@@ -13,7 +13,7 @@ internal interface LevelDao : BaseDao<LevelEntity> {
     @Query("SELECT * FROM level WHERE deck_id = :id ORDER BY interval_type, interval_number DESC")
     fun observeById(id: Long): Flow<List<LevelEntity>>
 
-    @Query("SELECT * FROM level WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM level WHERE id = :id")
     override suspend fun getById(id: Long): LevelEntity
 
     @Query("DELETE FROM level")
