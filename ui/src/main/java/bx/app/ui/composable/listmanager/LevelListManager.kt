@@ -33,22 +33,21 @@ internal class LevelListManager(
 
         Column(modifier = ModifierManager.paddingListItemRowModifier) {
             Row {
-                // TODO: Need to add the name to the table later!
-                //LargeText(text = item.name)
+                LargeText(text = item.name)
                 Spacer(modifier = Modifier.weight(1f))
 
                 if (type == LevelListType.Learn) {
                     LargeText(
-                        text = "Dummy",
+                        text = "is coming soon", // TODO: Display the amount of cards the level contains
                         modifier = Modifier.padding(end = 10.dp)
                     )
-                    // TODO: Display the amount of cards the level contains
                 }
             }
-            // TODO: Display maybe the interval number and type
-           // MediumText(text = item.description)
         }
     }
 
-    override fun displayItem(item: IdentifiedModel): Boolean { return true }
+    override fun displayItem(item: IdentifiedModel): Boolean {
+        item as LevelModel
+        return item.name.contains(searchText, true)
+    }
 }

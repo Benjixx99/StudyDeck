@@ -33,7 +33,7 @@ fun NavGraphBuilder.navHostDestinations(
     composableDeckLevels(navController, screenManager)
     composableCardFront(screenManager)
     composableCardBack(screenManager)
-    composable<NavigationRoute.Level> { screenManager.Level() }
+    composableLevel(screenManager)
     composable<NavigationRoute.LearnPhase> { screenManager.LearnPhase() }
     composableLearnLevel(navController, screenManager)
 }
@@ -93,7 +93,7 @@ internal fun NavGraphBuilder.composableDeckLevels(navHostController: NavHostCont
         screenManager.DeckLevels(
             onClickCreateNewLevel = {
                 navHostController.navigateWithSettingBackStack(
-                    route = NavigationRoute.Level(),
+                    route = NavigationRoute.Level(id = IdValidator.INSERT.toString()),
                     backStackRoute = backStackEntry.toRoute()
                 )
             },
@@ -161,6 +161,15 @@ internal fun NavGraphBuilder.composableCardBack(screenManager: ScreenManager) {
         screenManager.Card(
             id = backStackEntry.arguments?.getString("id").toString().toLong(),
             cardSide = CardSide.BACK
+        )
+    }
+}
+
+internal fun NavGraphBuilder.composableLevel(screenManager: ScreenManager) {
+    composable<NavigationRoute.Level> {
+        backStackEntry ->
+        screenManager.Level(
+            id = backStackEntry.arguments?.getString("id").toString().toLong()
         )
     }
 }

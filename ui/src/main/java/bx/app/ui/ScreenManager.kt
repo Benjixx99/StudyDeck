@@ -1,7 +1,6 @@
 package bx.app.ui
 
 import android.content.Context
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import bx.app.data.local.AppDatabase
 import bx.app.data.local.DatabaseBuilder
@@ -92,6 +91,7 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
         onClickCreateNewLevel: () -> Unit = {},
         onClickLevel: (id: Long) -> Unit = {},
     ) {
+        levelViewModel.setDeckId(deckId)
         DeckLevelsScreen(context, levelViewModel, topBarViewModel, onClickCreateNewLevel, onClickLevel)
     }
 
@@ -116,10 +116,15 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
         NavigationBarItems.SetCardId(cardViewModel)
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    fun Level() {
-        LevelScreen(topBarViewModel)
+    fun Level(id: Long) {
+        if (id >= IdValidator.MIN_VALID_ID) {
+            levelViewModel.getLevelById(id)
+        }
+        else if (id == IdValidator.INSERT) {
+            levelViewModel.resetLevel()
+        }
+        LevelScreen(levelViewModel, topBarViewModel)
     }
 
     @Composable

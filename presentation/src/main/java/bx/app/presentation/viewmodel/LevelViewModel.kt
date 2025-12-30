@@ -1,6 +1,5 @@
 package bx.app.presentation.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bx.app.data.enums.IntervalType
 import bx.app.data.model.LevelModel
@@ -11,21 +10,32 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class LevelViewModel(private val repo: LevelRepository) : ViewModel() {
-    private var _level = MutableStateFlow<LevelModel>(LevelModel(
-        intervalType = 1, // TODO: need a enum for that!
-        intervalNumber = 1,
-        deckId = 0
-    ))
+class LevelViewModel(private val repo: LevelRepository) : DebouncedAutoSaveViewModel() {
+    private val _deckId = MutableStateFlow<Long>(0L)
     private val _level = MutableStateFlow<LevelModel>(getInitialLevel())
 
-    val levels: StateFlow<List<LevelModel>> = repo.getAll().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
-    var level: StateFlow<LevelModel> = _level
+    val level: StateFlow<LevelModel> = _level
+    val levels: StateFlow<List<LevelModel>> =
+        repo.observeById(_deckId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     fun getLevelById(id: Long) = viewModelScope.launch { _level.value = repo.getById(id) }
     fun insertLevel(level: LevelModel) = viewModelScope.launch { repo.insert(level) }
     fun updateLevel(level: LevelModel) = viewModelScope.launch { repo.update(level) }
     fun deleteLevel(level: LevelModel) = viewModelScope.launch { repo.delete(level) }
+
+    fun setDeckId(id: Long) { _deckId.value = id }
+    fun resetLevel() { _level.value = getInitialLevel() }
+
+    fun changeName(value: String) = upsertLevel { _level.value.copy(name = value) }
+    fun changeIntervalType(intervalType: IntervalType, intervalNumber: Int = 1) =
+        upsertLevel { _level.value.copy(intervalType = intervalType, intervalNumber = intervalNumber) }
+    fun changeIntervalNumber(value: Int) = upsertLevel { _level.value.copy(intervalNumber = value) }
+
+    private fun upsertLevel(transform: LevelModel.() -> LevelModel) {
+        _level.value = _level.value.transform().copy(deckId = _deckId.value)
+        scheduleAutoSave { getLevelById(repo.upsert(_level.value)) }
+    }
+
     fun getInitialLevel(): LevelModel {
         return LevelModel(
             name = "",
