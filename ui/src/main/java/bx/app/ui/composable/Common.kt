@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
@@ -56,38 +57,51 @@ import kotlin.math.roundToInt
 import bx.app.ui.R
 
 @Composable
-internal fun BaseTextField(
+private fun BaseTextField(
     modifier: Modifier = Modifier,
     valueText: String = "",
     labelText: String = "",
     placeholderText: String = "",
+    isError: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     isSingleLine: Boolean = true,
     maxLines: Int = 1,
     onValueChange: (String) -> Unit = {},
 ) {
     TextField(
         value = valueText,
-        onValueChange = {
-            if (it.length < 100) onValueChange(it)
-        },
+        onValueChange = { if (it.length < 100) onValueChange(it) },
+        modifier = modifier.fillMaxWidth(),
         label = { Text(labelText) },
         placeholder = { Text(placeholderText) },
-        colors = TextFieldDefaults.colors(
-            unfocusedTextColor = MaterialTheme.colorScheme.primary,
-            focusedTextColor = if (valueText.contains("5")) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
-        ),
+        isError = isError,
+        keyboardOptions = keyboardOptions,
         singleLine = isSingleLine,
         maxLines = maxLines,
-        modifier = modifier.fillMaxWidth(),
+        colors = TextFieldDefaults.colors(
+            focusedIndicatorColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            unfocusedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        ),
     )
 }
 
+/**
+ * This composable displays a TextField with multiple lines
+ */
 @Composable
 internal fun MultiLineTextField(
     modifier: Modifier = Modifier,
     valueText: String = "",
     labelText: String = "",
     placeholderText: String = "",
+    isError: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     maxLines: Int = 4,
     onValueChange: (String) -> Unit = {},
 ) {
@@ -96,6 +110,8 @@ internal fun MultiLineTextField(
         valueText = valueText,
         labelText = labelText,
         placeholderText = placeholderText,
+        isError = isError,
+        keyboardOptions = keyboardOptions,
         isSingleLine = false,
         maxLines = maxLines,
         onValueChange = onValueChange,
@@ -103,26 +119,31 @@ internal fun MultiLineTextField(
 }
 
 /**
- * SingleLineTextField
+ * This composable displays a TextField with one line
  */
 @Composable
 internal fun SingleLineTextField(
     modifier: Modifier = Modifier,
     valueText: String = "",
     labelText: String = "",
+    placeholderText: String = "",
+    isError: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onValueChange: (String) -> Unit = {},
 ) {
     BaseTextField(
         modifier = modifier.height(60.dp),
         valueText = valueText,
         labelText = labelText,
-        placeholderText = "",
-        onValueChange = onValueChange
+        placeholderText = placeholderText,
+        isError = isError,
+        keyboardOptions = keyboardOptions,
+        onValueChange = onValueChange,
     )
 }
 
 @Composable
-internal fun BaseText(text: String, style: TextStyle, modifier: Modifier, color: Color, textAlign: TextAlign?, maxLines: Int) {
+private fun BaseText(text: String, style: TextStyle, modifier: Modifier, color: Color, textAlign: TextAlign?, maxLines: Int) {
     Text(
         text = text,
         style = style,
