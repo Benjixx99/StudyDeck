@@ -13,9 +13,9 @@ import kotlinx.coroutines.launch
 
 class CardViewModel(private val repo: CardRepository) : ViewModel() {
     private val _deckId = MutableStateFlow(0L)
-    private var _card = MutableStateFlow<CardModel>(getInitialCard())
+    private val _card = MutableStateFlow<CardModel>(getInitialCard())
 
-    var card: StateFlow<CardModel> = _card
+    val card: StateFlow<CardModel> = _card
     val deckId: StateFlow<Long> = _deckId
     val cards: StateFlow<List<CardModel>> =
         repo.observeById(_deckId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())

@@ -17,10 +17,10 @@ import kotlin.collections.plus
 
 class AudioSideViewModel(private val repo: AudioSideRepository) : ViewModel() {
     private val _fileNameById = MutableStateFlow<Map<Long, String?>>(emptyMap())
-    private var _audioSide = MutableStateFlow<AudioSideModel>(getInitialAudioSide())
+    private val _audioSide = MutableStateFlow<AudioSideModel>(getInitialAudioSide())
 
     val fileNameById: StateFlow<Map<Long, String?>> = _fileNameById
-    var audioSide: StateFlow<AudioSideModel> = _audioSide
+    val audioSide: StateFlow<AudioSideModel> = _audioSide
 
     fun getAudioSideById(id: Long) = viewModelScope.launch { _audioSide.value = repo.getById(id) }
 

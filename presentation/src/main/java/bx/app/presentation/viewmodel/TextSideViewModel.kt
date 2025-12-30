@@ -16,10 +16,10 @@ import kotlinx.coroutines.launch
 
 class TextSideViewModel(private val repo: TextSideRepository) : ViewModel() {
     private val _textById = MutableStateFlow<Map<Long, String?>>(emptyMap())
-    private var _textSide = MutableStateFlow<TextSideModel>(getInitialTextSide())
+    private val _textSide = MutableStateFlow<TextSideModel>(getInitialTextSide())
 
     val textById: StateFlow<Map<Long, String?>> = _textById
-    var textSide: StateFlow<TextSideModel> = _textSide
+    val textSide: StateFlow<TextSideModel> = _textSide
 
     fun getTextSideById(id: Long) = viewModelScope.launch { _textSide.value = repo.getById(id) }
 

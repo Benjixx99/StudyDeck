@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class DeckViewModel(private val repo: DeckRepository) : DebouncedAutoSaveViewModel() {
-    private var _deck = MutableStateFlow<DeckModel>(getInitialDeck())
+    private val _deck = MutableStateFlow<DeckModel>(getInitialDeck())
 
     val decks: StateFlow<List<DeckModel>> = repo.getAll().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
-    var deck: StateFlow<DeckModel> = _deck
+    val deck: StateFlow<DeckModel> = _deck
 
     fun getDeckById(id: Long) = viewModelScope.launch { _deck.value = repo.getById(id) }
     fun insertDeck(deck: DeckModel) = viewModelScope.launch { repo.insert(deck) }
