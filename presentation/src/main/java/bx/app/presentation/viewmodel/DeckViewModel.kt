@@ -1,5 +1,6 @@
 package bx.app.presentation.viewmodel
 
+import android.graphics.Color
 import androidx.lifecycle.viewModelScope
 import bx.app.data.enums.CardFailing
 import bx.app.data.model.DeckModel
@@ -38,7 +39,7 @@ class DeckViewModel(private val repo: DeckRepository) : DebouncedAutoSaveViewMod
         return DeckModel(
             name = "",
             description = "",
-            color = 0,
+            color = Color.RED.toLong(),
             learnBothSides = false,
             onFailing = CardFailing.MOVE_TO_START
         )

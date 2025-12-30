@@ -12,7 +12,7 @@ internal data class DeckEntity(
     val id: Long = 0,
     val name: String,
     val description: String?,
-    val color: Long = 0xFFFF0000,
+    val color: Long,
     @ColumnInfo(name = "learn_both_sides")
     val learnBothSides: Boolean = false,
     @ColumnInfo(name = "on_failing")
