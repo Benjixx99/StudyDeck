@@ -18,7 +18,7 @@ class CardViewModel(private val repo: CardRepository) : ViewModel() {
     var card: StateFlow<CardModel> = _card
     val deckId: StateFlow<Long> = _deckId
     val cards: StateFlow<List<CardModel>> =
-        repo.observeById(deckId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+        repo.observeById(_deckId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     fun getCardById(id: Long) = viewModelScope.launch { _card.value = repo.getById(id) }
     fun insertCard(card: CardModel) = viewModelScope.launch { repo.insert(card) }
