@@ -45,7 +45,6 @@ internal class DeckListManager(
 
     override fun displayItem(item: IdentifiedModel): Boolean {
         item as DeckModel
-        return !(!item.name.contains(searchText, true) && (!item.description.isNullOrEmpty()
-                && !item.description?.contains(searchText, true)!!))
+        return item.name.contains(searchText, true) || (item.description?.contains(searchText, true) == true)
     }
 }

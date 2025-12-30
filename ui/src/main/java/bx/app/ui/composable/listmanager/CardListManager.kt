@@ -83,6 +83,6 @@ internal class CardListManager(
         item as CardModel
         val frontValue = getFrontValue(item)
         val backValue = getBackValue(item)
-        return !(!frontValue.contains(searchText, true) && !backValue.contains(searchText, true))
+        return frontValue.contains(searchText, true) || backValue.contains(searchText, true)
     }
 }
