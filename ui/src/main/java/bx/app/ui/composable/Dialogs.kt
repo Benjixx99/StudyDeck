@@ -14,9 +14,7 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -112,11 +109,42 @@ internal fun ColorPickerDialog(
                 )
 
                 Row {
-                    TextButton(onClick = onDismissRequest) { Text("Cancel") }
+                    TextButton(onClick = onDismissRequest) { MediumText("Cancel") }
                     Spacer(Modifier.weight(1.0f))
-                    TextButton(onClick = { onSaveColorClick(color) }) { Text("Save") }
+                    TextButton(onClick = { onSaveColorClick(color) }) { MediumText("Save") }
                 }
             }
         }
     }
+}
+
+/**
+ * A dialog to let the user confirm something
+ */
+@Composable
+fun ConfirmationDialog(
+    visible: Boolean,
+    message: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+    confirmText: String = "Yes",
+    dismissText: String = "No"
+) {
+    if (!visible) return
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = null,
+        text = { LargeText(message) },
+        confirmButton = {
+            TextButton(onClick = { onConfirm() }) {
+                MediumText(confirmText)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                MediumText(dismissText)
+            }
+        }
+    )
 }
