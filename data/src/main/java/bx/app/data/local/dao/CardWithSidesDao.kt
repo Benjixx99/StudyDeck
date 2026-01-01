@@ -15,10 +15,13 @@ import bx.app.data.local.entity.TextSideEntity
 @Dao
 internal interface CardWithSidesDao : CardDao {
     @Query("SELECT id FROM text_side WHERE card_id = :id AND side = :cardSide")
-    fun getTextSideIdByCardId(id: Long, cardSide: CardSide): Long?
+    suspend fun getTextSideIdByCardId(id: Long, cardSide: CardSide): Long?
 
     @Query("SELECT id FROM audio_side WHERE card_id = :id AND side = :cardSide")
-    fun getAudioSideIdByCardId(id: Long, cardSide: CardSide): Long?
+    suspend fun getAudioSideIdByCardId(id: Long, cardSide: CardSide): Long?
+
+    @Query("DELETE FROM card WHERE deck_id = :id")
+    suspend fun deleteCardsByDeckId(id: Long)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(textSide: TextSideEntity): Long

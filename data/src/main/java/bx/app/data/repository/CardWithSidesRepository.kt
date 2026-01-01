@@ -10,6 +10,8 @@ import bx.app.data.model.TextSideModel
 class CardWithSidesRepository(database: AppDatabase) {
     private val dao = database.cardWithSidesDao()
 
+    suspend fun deleteCardsByDeckId(id: Long) = dao.deleteCardsByDeckId(id)
+
     suspend fun updateCardSide(
         card: CardModel,
         textSide: TextSideModel,
@@ -59,5 +61,4 @@ class CardWithSidesRepository(database: AppDatabase) {
         audioSide: AudioSideModel,
         cardSide: CardSide
     ) = dao.updateCardWithAudioSide(card.toEntity(), audioSide.toEntity(), cardSide)
-
 }

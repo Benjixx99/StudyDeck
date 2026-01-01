@@ -1,9 +1,11 @@
 package bx.app.presentation.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import bx.app.data.enums.CardSide
 import bx.app.data.enums.CardSideType
 import bx.app.data.repository.CardWithSidesRepository
 import bx.app.presentation.data.IdValidator
+import kotlinx.coroutines.launch
 
 class CardWithSidesViewModel(
     private val repo: CardWithSidesRepository,
@@ -48,6 +50,8 @@ class CardWithSidesViewModel(
             }
         }
     }
+
+    fun deleteCardsByDeckId(id: Long) = viewModelScope.launch { repo.deleteCardsByDeckId(id) }
 
     private fun insertCardWithTextSide(value: String, cardSide: CardSide) {
         textSideViewModel.resetTextSide(textSide.value.copy(text = value))
