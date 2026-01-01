@@ -60,7 +60,15 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
         onClickCreateNewDeck: () -> Unit = {},
         onClickDeck: (id: Long) -> Unit = {},
     ) {
-        DecksScreen(context, deckViewModel, topBarViewModel, onClickCreateNewDeck, onClickDeck)
+        DecksScreen(
+            context = context,
+            deckViewModel = deckViewModel,
+            cardWithSidesViewModel = cardWithSidesViewModel,
+            levelViewModel = levelViewModel,
+            topBarViewModel = topBarViewModel,
+            onClickCreateNewDeck = onClickCreateNewDeck,
+            onClickDeck = onClickDeck
+        )
     }
 
     @Composable
@@ -74,8 +82,15 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
             cardViewModel.setDeckId(id)
             deckViewModel.getDeckById(id)
         }
-        DeckCardsScreen(context, cardViewModel, textSideViewModel, audioSideViewModel,
-            topBarViewModel, onClickCreateNewCard, onClickCard)
+        DeckCardsScreen(
+            context = context,
+            cardViewModel = cardViewModel,
+            textSideViewModel = textSideViewModel,
+            audioSideViewModel = audioSideViewModel,
+            topBarViewModel = topBarViewModel,
+            onClickCreateNewCard = onClickCreateNewCard,
+            onClickCard = onClickCard
+        )
         NavigationBarItems.SetDeckId(deckViewModel)
     }
 
@@ -92,7 +107,13 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
         onClickLevel: (id: Long) -> Unit = {},
     ) {
         levelViewModel.setDeckId(deckId)
-        DeckLevelsScreen(context, levelViewModel, topBarViewModel, onClickCreateNewLevel, onClickLevel)
+        DeckLevelsScreen(
+            context = context,
+            levelViewModel = levelViewModel,
+            topBarViewModel = topBarViewModel,
+            onClickCreateNewLevel = onClickCreateNewLevel,
+            onClickLevel = onClickLevel
+        )
     }
 
     @Composable
@@ -112,7 +133,12 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
             textSideViewModel.resetTextSide()
             audioSideViewModel.resetAudioSide()
         }
-        CardScreen(context, cardWithSidesViewModel, topBarViewModel, cardSide)
+        CardScreen(
+            context = context,
+            cardWithSidesViewModel = cardWithSidesViewModel,
+            topBarViewModel = topBarViewModel,
+            cardSide = cardSide
+        )
         NavigationBarItems.SetCardId(cardViewModel)
     }
 
@@ -136,6 +162,11 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
     fun LearnLevel(
         onClickLearn: (id: Long) -> Unit
     ) {
-        LearnLevelScreen(context, levelViewModel, topBarViewModel, onClickLearn)
+        LearnLevelScreen(
+            context = context,
+            levelViewModel = levelViewModel,
+            topBarViewModel = topBarViewModel,
+            onClickLearn = onClickLearn
+        )
     }
 }

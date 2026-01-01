@@ -22,14 +22,16 @@ internal class DeckListManager(
     context: Context,
     modifier: Modifier,
     searchText: String,
-    onClick: (id: Long) -> Unit
-) : BaseListManager(items, context, modifier, searchText, onClick) {
+    onClick: (id: Long) -> Unit,
+    onSelect: (id: Long) -> Unit,
+    selectedIds: Set<Long>,
+) : BaseListManager(items, context, modifier, searchText, onClick, onSelect, selectedIds) {
 
     @Composable
     override fun ItemRow(item: IdentifiedModel) {
         item as DeckModel
 
-        Column(modifier = ModifierManager.paddingListItemRowModifier) {
+        Column(ModifierManager.paddingListItemRowModifier) {
             Row {
                 LargeText(text = item.name)
                 Spacer(modifier = Modifier.weight(1f))
