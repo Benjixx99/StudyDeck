@@ -16,12 +16,11 @@ class LevelViewModel(private val repo: LevelRepository) : DebouncedAutoSaveViewM
 
     val level: StateFlow<LevelModel> = _level
     val levels: StateFlow<List<LevelModel>> =
-        repo.observeById(_deckId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+        repo.observeByDeckId(_deckId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     fun getLevelById(id: Long) = viewModelScope.launch { _level.value = repo.getById(id) }
     fun insertLevel(level: LevelModel) = viewModelScope.launch { repo.insert(level) }
-    fun updateLevel(level: LevelModel) = viewModelScope.launch { repo.update(level) }
-    fun deleteLevel(level: LevelModel) = viewModelScope.launch { repo.delete(level) }
+    fun deleteLevelsByDeckId(id: Long) = viewModelScope.launch { repo.deleteByDeckId(id) }
 
     fun setDeckId(id: Long) { _deckId.value = id }
     fun resetLevel() { _level.value = getInitialLevel() }

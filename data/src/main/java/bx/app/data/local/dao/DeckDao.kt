@@ -16,6 +16,9 @@ internal interface DeckDao : BaseDao<DeckEntity> {
     @Query("DELETE FROM deck")
     override suspend fun deleteAll()
 
+    @Query("DELETE FROM deck WHERE id = :id")
+    suspend fun deleteById(id: Long)
+
     @Query("SELECT count(*) FROM deck WHERE id = :id")
     fun countById(id: Long): Int
 }

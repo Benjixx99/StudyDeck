@@ -19,8 +19,7 @@ class DeckViewModel(private val repo: DeckRepository) : DebouncedAutoSaveViewMod
 
     fun getDeckById(id: Long) = viewModelScope.launch { _deck.value = repo.getById(id) }
     fun insertDeck(deck: DeckModel) = viewModelScope.launch { repo.insert(deck) }
-    fun updateDeck(deck: DeckModel) = viewModelScope.launch { repo.update(deck) }
-    fun deleteDeck(deck: DeckModel) = viewModelScope.launch { repo.delete(deck) }
+    fun deleteDeckByIe(id: Long) = viewModelScope.launch { repo.deleteById(id) }
 
     fun resetDeck() { _deck.value = getInitialDeck() }
 
