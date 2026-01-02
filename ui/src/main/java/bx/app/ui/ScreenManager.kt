@@ -104,7 +104,12 @@ class ScreenManager(
     @Composable
     fun DeckSettings(id: Long) {
         if (id == IdValidator.INSERT) deckViewModel.resetDeck()
-        DeckSettingsScreen(context, deckViewModel, topBarViewModel)
+        DeckSettingsScreen(
+            context = context,
+            deckViewModel = deckViewModel,
+            topBarViewModel = topBarViewModel,
+            hideNavigationBarViewModel = hideNavigationBarViewModel
+        )
         NavigationBarItems.SetDeckId(deckViewModel)
     }
 

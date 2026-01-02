@@ -11,7 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import bx.app.data.enums.CardFailing
+import bx.app.presentation.data.IdValidator
 import bx.app.presentation.viewmodel.DeckViewModel
+import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
 import bx.app.ui.R
@@ -29,8 +31,10 @@ internal fun DeckSettingsScreen(
     context: Context,
     deckViewModel: DeckViewModel,
     topBarViewModel: TopBarViewModel,
+    hideNavigationBarViewModel: HideNavigationBarViewModel,
 ) {
     val deck by deckViewModel.deck.collectAsState()
+    if (deck.id >= IdValidator.MIN_VALID_ID) hideNavigationBarViewModel.setHide(false)
 
     topBarViewModel.setTitle("Deck settings")
     val optionList = listOf(

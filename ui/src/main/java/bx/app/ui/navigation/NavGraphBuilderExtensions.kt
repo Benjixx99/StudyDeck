@@ -28,9 +28,9 @@ fun NavGraphBuilder.navHostDestinations(
 ) {
     val screenManager = ScreenManager(context, topBarViewModel, hideNavigationBarViewModel)
 
-    composableDecks(navHostController, screenManager)
+    composableDecks(navHostController, screenManager, hideNavigationBarViewModel)
     composableDeckSettings(screenManager)
-    composableDeckCards(navHostController, screenManager, hideNavigationBarViewModel)
+    composableDeckCards(navHostController, screenManager)
     composableDeckLearn(navHostController, screenManager)
     composableDeckLevels(navHostController, screenManager)
     composableCardFront(screenManager)
@@ -40,10 +40,15 @@ fun NavGraphBuilder.navHostDestinations(
     composableLearnLevel(navHostController, screenManager)
 }
 
-internal fun NavGraphBuilder.composableDecks(navHostController: NavHostController, screenManager: ScreenManager) {
+internal fun NavGraphBuilder.composableDecks(
+    navHostController: NavHostController,
+    screenManager: ScreenManager,
+    hideNavigationBarViewModel: HideNavigationBarViewModel
+) {
     composable<NavigationRoute.Decks> {
         screenManager.Decks(
             onClickCreateNewDeck = {
+                hideNavigationBarViewModel.setHide(true)
                 navHostController.navigateWithSettingBackStack(
                     route = NavigationRoute.DeckSettings(id = IdValidator.INSERT.toString()),
                     backStackRoute = NavigationRoute.Decks
@@ -51,6 +56,7 @@ internal fun NavGraphBuilder.composableDecks(navHostController: NavHostControlle
             },
             onClickDeck = {
                 id ->
+                hideNavigationBarViewModel.setHide(false)
                 navHostController.navigateWithSettingBackStack(
                     route = NavigationRoute.DeckCards(id = id.toString()),
                     backStackRoute = NavigationRoute.Decks
@@ -67,11 +73,7 @@ internal fun NavGraphBuilder.composableDeckSettings(screenManager: ScreenManager
     }
 }
 
-internal fun NavGraphBuilder.composableDeckCards(
-    navHostController: NavHostController,
-    screenManager: ScreenManager,
-    selectionViewModel: HideNavigationBarViewModel
-) {
+internal fun NavGraphBuilder.composableDeckCards(navHostController: NavHostController, screenManager: ScreenManager) {
     composable<NavigationRoute.DeckCards> {
         backStackEntry ->
         screenManager.DeckCards(
@@ -90,7 +92,6 @@ internal fun NavGraphBuilder.composableDeckCards(
                 )
             }
         )
-        selectionViewModel.setHide(false)
     }
 }
 
