@@ -19,9 +19,10 @@ class LevelRepository(database: AppDatabase) {
         }
 
     suspend fun getById(id: Long) = baseRepo.getById(id) as LevelModel
-    suspend fun insert(level: LevelModel) = baseRepo.insert(level.toEntity())
+    suspend fun deleteById(id: Long) = levelDao.deleteById(id)
     suspend fun deleteByDeckId(id: Long) = levelDao.deleteByDeckId(id)
 
+    suspend fun insert(level: LevelModel) = baseRepo.insert(level.toEntity())
     suspend fun upsert(level: LevelModel): Long {
         if (level.id <= 0) {
             return baseRepo.insert(level.toEntity())

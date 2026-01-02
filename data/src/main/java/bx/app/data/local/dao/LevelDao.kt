@@ -22,6 +22,9 @@ internal interface LevelDao : BaseDao<LevelEntity> {
     @Query("DELETE FROM level WHERE deck_id = :id")
     suspend fun deleteByDeckId(id: Long)
 
+    @Query("DELETE FROM level WHERE id = :id")
+    suspend fun deleteById(id: Long)
+
     @Query("SELECT count(*) FROM level WHERE id = :id")
     fun countById(id: Long): Int
 }

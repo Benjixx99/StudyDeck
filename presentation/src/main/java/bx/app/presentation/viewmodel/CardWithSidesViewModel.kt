@@ -52,6 +52,7 @@ class CardWithSidesViewModel(
     }
 
     fun deleteCardsByDeckId(id: Long) = viewModelScope.launch { repo.deleteCardsByDeckId(id) }
+    fun deleteCardById(id: Long) = viewModelScope.launch { repo.deleteCardById(id) }
 
     private fun insertCardWithTextSide(value: String, cardSide: CardSide) {
         textSideViewModel.resetTextSide(textSide.value.copy(text = value))

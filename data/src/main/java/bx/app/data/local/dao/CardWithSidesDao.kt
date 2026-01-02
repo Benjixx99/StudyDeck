@@ -23,6 +23,9 @@ internal interface CardWithSidesDao : CardDao {
     @Query("DELETE FROM card WHERE deck_id = :id")
     suspend fun deleteCardsByDeckId(id: Long)
 
+    @Query("DELETE FROM card WHERE id = :id")
+    suspend fun deleteCardById(id: Long)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(textSide: TextSideEntity): Long
 

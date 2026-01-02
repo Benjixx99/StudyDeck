@@ -11,6 +11,7 @@ class CardWithSidesRepository(database: AppDatabase) {
     private val dao = database.cardWithSidesDao()
 
     suspend fun deleteCardsByDeckId(id: Long) = dao.deleteCardsByDeckId(id)
+    suspend fun deleteCardById(id: Long) = dao.deleteCardById(id)
 
     suspend fun updateCardSide(
         card: CardModel,
