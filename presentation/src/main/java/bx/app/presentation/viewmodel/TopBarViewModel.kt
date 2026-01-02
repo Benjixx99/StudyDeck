@@ -6,9 +6,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class TopBarViewModel : ViewModel() {
-    private val _title = MutableStateFlow("") // Study Deck
+    private val _title = MutableStateFlow("")
     val title: StateFlow<String> = _title.asStateFlow()
 
     fun setTitle(title: String) { _title.value = title }
-    fun getTitle(): String { return _title.value }
 }
