@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import bx.app.data.enums.CardSide
 import bx.app.presentation.data.IdValidator
+import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.data.LearnData
 import bx.app.ui.ScreenManager
@@ -16,26 +17,27 @@ import bx.app.ui.navigation.data.NavigationRoute
  * This extension function of [NavGraphBuilder] is the main navigation function of this app
  * and contains all the destinations
  *
- * @param navController Is the main navigation controller
+ * @param navHostController Is the main navigation controller
  * @param context Is the application context
  */
 fun NavGraphBuilder.navHostDestinations(
-    navController: NavHostController,
+    navHostController: NavHostController,
     context: Context,
     topBarViewModel: TopBarViewModel,
+    hideNavigationBarViewModel: HideNavigationBarViewModel,
 ) {
-    val screenManager = ScreenManager(context, topBarViewModel)
+    val screenManager = ScreenManager(context, topBarViewModel, hideNavigationBarViewModel)
 
-    composableDecks(navController, screenManager)
+    composableDecks(navHostController, screenManager)
     composableDeckSettings(screenManager)
-    composableDeckCards(navController, screenManager)
-    composableDeckLearn(navController, screenManager)
-    composableDeckLevels(navController, screenManager)
+    composableDeckCards(navHostController, screenManager, hideNavigationBarViewModel)
+    composableDeckLearn(navHostController, screenManager)
+    composableDeckLevels(navHostController, screenManager)
     composableCardFront(screenManager)
     composableCardBack(screenManager)
     composableLevel(screenManager)
     composable<NavigationRoute.LearnPhase> { screenManager.LearnPhase() }
-    composableLearnLevel(navController, screenManager)
+    composableLearnLevel(navHostController, screenManager)
 }
 
 internal fun NavGraphBuilder.composableDecks(navHostController: NavHostController, screenManager: ScreenManager) {
@@ -65,7 +67,11 @@ internal fun NavGraphBuilder.composableDeckSettings(screenManager: ScreenManager
     }
 }
 
-internal fun NavGraphBuilder.composableDeckCards(navHostController: NavHostController, screenManager: ScreenManager) {
+internal fun NavGraphBuilder.composableDeckCards(
+    navHostController: NavHostController,
+    screenManager: ScreenManager,
+    selectionViewModel: HideNavigationBarViewModel
+) {
     composable<NavigationRoute.DeckCards> {
         backStackEntry ->
         screenManager.DeckCards(
@@ -84,6 +90,7 @@ internal fun NavGraphBuilder.composableDeckCards(navHostController: NavHostContr
                 )
             }
         )
+        selectionViewModel.setHide(false)
     }
 }
 

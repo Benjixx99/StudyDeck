@@ -22,8 +22,10 @@ internal class LevelListManager(
     modifier: Modifier,
     searchText: String,
     onClick: (id: Long) -> Unit,
+    onSelect: (id: Long) -> Unit = {},
+    selectedIds: Set<Long> = emptySet<Long>(),
     val type: LevelListType
-) : BaseListManager(items, context, modifier, searchText, onClick) {
+) : BaseListManager(items, context, modifier, searchText, onClick, onSelect, selectedIds) {
 
     enum class LevelListType { Edit, Learn }
 

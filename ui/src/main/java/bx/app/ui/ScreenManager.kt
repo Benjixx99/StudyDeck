@@ -29,12 +29,17 @@ import bx.app.data.enums.CardSide
 import bx.app.data.repository.CardWithSidesRepository
 import bx.app.presentation.data.IdValidator
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
+import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.ui.navigation.data.NavigationBarItems
 
 /**
  * Manage all the screens for the app
  */
-class ScreenManager(private var context: Context, private val topBarViewModel: TopBarViewModel) {
+class ScreenManager(
+    private var context: Context,
+    private val topBarViewModel: TopBarViewModel,
+    private val hideNavigationBarViewModel: HideNavigationBarViewModel
+) {
     private val database: AppDatabase = DatabaseBuilder.getInstance(context)
     private val deckViewModel = DeckViewModel(DeckRepository(database))
     private val cardViewModel = CardViewModel(CardRepository(database))
@@ -84,10 +89,12 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
         }
         DeckCardsScreen(
             context = context,
+            cardWithSidesViewModel = cardWithSidesViewModel,
             cardViewModel = cardViewModel,
             textSideViewModel = textSideViewModel,
             audioSideViewModel = audioSideViewModel,
             topBarViewModel = topBarViewModel,
+            hideNavigationBarViewModel = hideNavigationBarViewModel,
             onClickCreateNewCard = onClickCreateNewCard,
             onClickCard = onClickCard
         )
@@ -111,6 +118,7 @@ class ScreenManager(private var context: Context, private val topBarViewModel: T
             context = context,
             levelViewModel = levelViewModel,
             topBarViewModel = topBarViewModel,
+            hideNavigationBarViewModel = hideNavigationBarViewModel,
             onClickCreateNewLevel = onClickCreateNewLevel,
             onClickLevel = onClickLevel
         )

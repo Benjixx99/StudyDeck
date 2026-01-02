@@ -30,9 +30,11 @@ internal class CardListManager(
     modifier: Modifier,
     searchText: String,
     onClick: (id: Long) -> Unit,
+    onSelect: (id: Long) -> Unit,
+    selectedIds: Set<Long>,
     val textById: Map<Long, String?>,
     val fileNameById: Map<Long, String?>,
-) : BaseListManager(items, context, modifier, searchText, onClick) {
+) : BaseListManager(items, context, modifier, searchText, onClick, onSelect, selectedIds) {
 
     @Composable
     override fun ItemRow(item: IdentifiedModel) {

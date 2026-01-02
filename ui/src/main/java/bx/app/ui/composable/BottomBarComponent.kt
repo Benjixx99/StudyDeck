@@ -11,10 +11,12 @@ import bx.app.ui.navigation.navigateWithSettingBackStack
 
 object BottomBarComponent {
     @Composable
-    fun Manager(navHostController: NavHostController) {
+    fun Manager(hide: Boolean, navHostController: NavHostController) {
         val currentBackStack by navHostController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
         val currentRoute = NavigationRoute.getCurrentNavigationRoute(currentDestination?.route)
+
+        if (hide) return
 
         // TODO: Probably I need a function like DisplayBottomNavigationBar()
         if (currentRoute is NavigationRoute.Decks || currentRoute is NavigationRoute.Level

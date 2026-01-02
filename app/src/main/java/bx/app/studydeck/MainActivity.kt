@@ -12,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.composable.BottomBarComponent
 import bx.app.ui.composable.TopBarComponent
@@ -37,17 +38,24 @@ fun StudyDeck(context: Context) {
     val navHostController = rememberNavController()
     val topBarViewModel = TopBarViewModel()
     val title by topBarViewModel.title.collectAsState()
+    val hideNavigationBarViewModel = HideNavigationBarViewModel()
+    val hide by hideNavigationBarViewModel.hide.collectAsState()
 
     Scaffold(
         topBar = { TopBarComponent.Manager(title, navHostController) },
-        bottomBar = { BottomBarComponent.Manager(navHostController) }
+        bottomBar = { BottomBarComponent.Manager(hide, navHostController) }
     ) {
         innerPadding ->
             NavHost(
                 navController = navHostController,
                 startDestination = NavigationRoute.Decks,
             ) {
-                navHostDestinations(navHostController, context, topBarViewModel)
+                navHostDestinations(
+                    navHostController = navHostController,
+                    context = context,
+                    topBarViewModel = topBarViewModel,
+                    hideNavigationBarViewModel = hideNavigationBarViewModel
+                )
             }
     }
 }
