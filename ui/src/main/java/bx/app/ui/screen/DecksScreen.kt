@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
@@ -19,9 +17,8 @@ import bx.app.presentation.viewmodel.LevelViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
 import bx.app.ui.composable.ButtonInCorner
-import bx.app.ui.composable.ConfirmationDialog
+import bx.app.ui.composable.DeleteSelectionBar
 import bx.app.ui.composable.SearchBar
-import bx.app.ui.composable.SelectionBottomBar
 import bx.app.ui.composable.listmanager.DeckListManager
 
 /**
@@ -61,22 +58,13 @@ internal fun DecksScreen(
         ButtonInCorner(onClickCreateNewDeck)
     }
     else {
-        var delete by remember { mutableStateOf(false) }
-        SelectionBottomBar(onDelete = { delete = true })
-        ConfirmationDialog(
-            visible = delete,
-            message = "Delete selected " + if (selectedIds.size == 1) "item?" else "items?",
-            onConfirm = {
-                selectedIds.forEach {
-                    cardWithSidesViewModel.deleteCardsByDeckId(it)
-                    levelViewModel.deleteLevelsByDeckId(it)
-                    deckViewModel.deleteDeckByIe(it)
-                }
-                selectedIds.clear()
-            },
-            onDismiss = { delete = false },
-            confirmText = "Delete",
-            dismissText = "Cancel"
+        DeleteSelectionBar(
+            selectedIds = selectedIds,
+            deleteAction = {
+                cardWithSidesViewModel.deleteCardsByDeckId(it)
+                levelViewModel.deleteLevelsByDeckId(it)
+                deckViewModel.deleteDeckByIe(it)
+            }
         )
     }
 }

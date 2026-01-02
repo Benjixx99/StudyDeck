@@ -343,6 +343,30 @@ internal fun SelectionBottomBar(onDelete: () -> Unit = {}) {
 }
 
 /**
+ * This composable is used to display a bottom bar with a deletion button
+ * and let the user confirm the decision
+ */
+@Composable
+internal fun DeleteSelectionBar(
+    selectedIds: MutableSet<Long>,
+    deleteAction: (id: Long) -> Unit
+) {
+    var delete by remember { mutableStateOf(false) }
+    SelectionBottomBar(onDelete = { delete = true })
+    ConfirmationDialog(
+        visible = delete,
+        message = "Delete selected " + if (selectedIds.size == 1) "item?" else "items?",
+        onConfirm = {
+            selectedIds.forEach { deleteAction(it) }
+            selectedIds.clear()
+        },
+        onDismiss = { delete = false },
+        confirmText = "Delete",
+        dismissText = "Cancel"
+    )
+}
+
+/**
  * CardTypeSegmentedControl is a UI component for the card screen
  */
 @Composable
