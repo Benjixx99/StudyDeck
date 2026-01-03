@@ -6,7 +6,7 @@ import bx.app.data.model.DeckModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class DeckRepository(database: AppDatabase) {
+class DeckRepository(private val database: AppDatabase) {
     private val baseRepo = BaseRepository<DeckEntity>(database.deckDao())
     private val deckDao  = database.deckDao()
 
@@ -17,7 +17,7 @@ class DeckRepository(database: AppDatabase) {
 
     suspend fun upsert(deck: DeckModel): Long {
         if (deck.id <= 0) {
-            return baseRepo.insert(deck.toEntity())
+            return deckDao.insertWithDefaultLevel(database, deck.toEntity())
         }
         else {
             baseRepo.update(deck.toEntity())

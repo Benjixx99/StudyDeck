@@ -2,7 +2,11 @@ package bx.app.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
+import bx.app.data.enums.IntervalType
+import bx.app.data.local.AppDatabase
 import bx.app.data.local.entity.DeckEntity
+import bx.app.data.local.entity.LevelEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -21,4 +25,20 @@ internal interface DeckDao : BaseDao<DeckEntity> {
 
     @Query("SELECT count(*) FROM deck WHERE id = :id")
     fun countById(id: Long): Int
+
+    @Transaction
+    suspend fun insertWithDefaultLevel(database: AppDatabase, deck: DeckEntity): Long {
+        val id = insert(deck)
+        if (id > 0) {
+            database.levelDao().insert(
+                LevelEntity(
+                    name = "Once a day",
+                    intervalNumber = 7,
+                    intervalType = IntervalType.WEEK,
+                    deckId = id
+                )
+            )
+        }
+        return id
+    }
 }
