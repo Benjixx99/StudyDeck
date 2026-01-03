@@ -2,6 +2,7 @@ package bx.app.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import bx.app.data.enums.CardSide
 import bx.app.data.local.entity.TextSideEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -21,4 +22,7 @@ internal interface TextSideDao : BaseDao<TextSideEntity> {
 
     @Query("SELECT count(*) FROM text_side WHERE id = :id")
     fun countById(id: Long): Int
+
+    @Query("SELECT id FROM text_side WHERE card_id = :id AND side = :cardSide")
+    suspend fun getTextSideIdByCardId(id: Long, cardSide: CardSide): Long?
 }

@@ -1,43 +1,17 @@
 package bx.app.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Update
 import bx.app.data.enums.CardSide
 import bx.app.data.enums.CardSideType
+import bx.app.data.local.AppDatabase
 import bx.app.data.local.entity.AudioSideEntity
 import bx.app.data.local.entity.CardEntity
+import bx.app.data.local.entity.CardInLevelEntity
 import bx.app.data.local.entity.TextSideEntity
 
 @Dao
 internal interface CardWithSidesDao : CardDao {
-    @Query("SELECT id FROM text_side WHERE card_id = :id AND side = :cardSide")
-    suspend fun getTextSideIdByCardId(id: Long, cardSide: CardSide): Long?
-
-    @Query("SELECT id FROM audio_side WHERE card_id = :id AND side = :cardSide")
-    suspend fun getAudioSideIdByCardId(id: Long, cardSide: CardSide): Long?
-
-    @Query("DELETE FROM card WHERE deck_id = :id")
-    suspend fun deleteCardsByDeckId(id: Long)
-
-    @Query("DELETE FROM card WHERE id = :id")
-    suspend fun deleteCardById(id: Long)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(textSide: TextSideEntity): Long
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(textSide: TextSideEntity)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(audioSide: AudioSideEntity): Long
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(audioSide: AudioSideEntity)
-
     @Transaction
     suspend fun updateCardSide(
         card: CardEntity,
@@ -45,10 +19,11 @@ internal interface CardWithSidesDao : CardDao {
         audioSide: AudioSideEntity,
         cardSideType: CardSideType,
         cardSide: CardSide,
+        database: AppDatabase,
     ): Long {
         val id = when (cardSideType) {
-            CardSideType.TEXT -> getTextSideIdByCardId(card.id, cardSide)
-            CardSideType.AUDIO -> getAudioSideIdByCardId(card.id, cardSide)
+            CardSideType.TEXT -> database.textSideDao().getTextSideIdByCardId(card.id, cardSide)
+            CardSideType.AUDIO -> database.audioSideDao().getAudioSideIdByCardId(card.id, cardSide)
         }
         if (id == null) return 0L
 
@@ -64,9 +39,16 @@ internal interface CardWithSidesDao : CardDao {
         card: CardEntity,
         textSide: TextSideEntity,
         cardSide: CardSide,
+        database: AppDatabase,
     ): Pair<Long, Long> {
         val cardId = insert(card)
-        val textSideId = insert(textSide.copy(cardId = cardId, side = cardSide))
+        val textSideId = database.textSideDao().insert(textSide.copy(cardId = cardId, side = cardSide))
+        database.cardInLevelDao().insert(
+            CardInLevelEntity(
+                cardId = cardId,
+                levelId = database.levelDao().getFirstByDeckId(card.deckId)
+            )
+        )
         update(cardSide.setTextSide(getById(cardId), textSideId))
         return Pair(cardId, textSideId)
     }
@@ -76,8 +58,9 @@ internal interface CardWithSidesDao : CardDao {
         card: CardEntity,
         textSide: TextSideEntity,
         cardSide: CardSide,
+        database: AppDatabase,
     ): Long {
-        val textSideId = insert(textSide.copy(side = cardSide))
+        val textSideId = database.textSideDao().insert(textSide.copy(side = cardSide))
         update(cardSide.setTextSide(getById(card.id), textSideId))
         return textSideId
     }
@@ -87,8 +70,9 @@ internal interface CardWithSidesDao : CardDao {
         card: CardEntity,
         textSide: TextSideEntity,
         cardSide: CardSide,
+        database: AppDatabase,
     ) {
-        update(textSide)
+        database.textSideDao().update(textSide)
         update(cardSide.setTextSide(card, textSide.id))
     }
 
@@ -97,9 +81,16 @@ internal interface CardWithSidesDao : CardDao {
         card: CardEntity,
         audioSide: AudioSideEntity,
         cardSide: CardSide,
+        database: AppDatabase,
     ): Pair<Long, Long> {
         val cardId = insert(card)
-        val audioSideId = insert(audioSide.copy(cardId = cardId, side = cardSide))
+        val audioSideId = database.audioSideDao().insert(audioSide.copy(cardId = cardId, side = cardSide))
+        database.cardInLevelDao().insert(
+            CardInLevelEntity(
+                cardId = cardId,
+                levelId = database.levelDao().getFirstByDeckId(card.deckId)
+            )
+        )
         update(cardSide.setAudioSide(getById(cardId), audioSideId))
         return Pair(cardId, audioSideId)
     }
@@ -109,8 +100,9 @@ internal interface CardWithSidesDao : CardDao {
         card: CardEntity,
         audioSide: AudioSideEntity,
         cardSide: CardSide,
+        database: AppDatabase,
     ): Long {
-        val audioSideId = insert(audioSide.copy(side = cardSide))
+        val audioSideId = database.audioSideDao().insert(audioSide.copy(side = cardSide))
         update(cardSide.setAudioSide(getById(card.id), audioSideId))
         return audioSideId
     }
@@ -120,8 +112,9 @@ internal interface CardWithSidesDao : CardDao {
         card: CardEntity,
         audioSide: AudioSideEntity,
         cardSide: CardSide,
+        database: AppDatabase,
     ) {
-        update(audioSide)
+        database.audioSideDao().update(audioSide)
         update(cardSide.setAudioSide(card, audioSide.id))
     }
 

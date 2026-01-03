@@ -16,6 +16,9 @@ internal interface LevelDao : BaseDao<LevelEntity> {
     @Query("SELECT * FROM level WHERE id = :id")
     override suspend fun getById(id: Long): LevelEntity
 
+    @Query("SELECT id FROM level WHERE deck_id = :id ORDER BY interval_type, interval_number DESC LIMIT 1")
+    suspend fun getFirstByDeckId(id: Long): Long
+
     @Query("DELETE FROM level")
     override suspend fun deleteAll()
 
