@@ -99,6 +99,7 @@ internal fun NavGraphBuilder.composableDeckLevels(navHostController: NavHostCont
     composable<NavigationRoute.DeckLevels> {
         backStackEntry ->
         screenManager.DeckLevels(
+            id = backStackEntry.arguments?.getString("id").toString().toLong(),
             onClickCreateNewLevel = {
                 navHostController.navigateWithSettingBackStack(
                     route = NavigationRoute.Level(id = IdValidator.INSERT.toString()),

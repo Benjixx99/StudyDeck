@@ -115,10 +115,15 @@ class ScreenManager(
 
     @Composable
     fun DeckLevels(
+        id: Long,
         onClickCreateNewLevel: () -> Unit = {},
         onClickLevel: (id: Long) -> Unit = {},
     ) {
-        levelViewModel.setDeckId(deckId)
+        if (id >= IdValidator.MIN_VALID_ID) {
+            deckId = id
+            levelViewModel.setDeckId(deckId)
+            deckViewModel.getDeckById(id)
+        }
         DeckLevelsScreen(
             context = context,
             levelViewModel = levelViewModel,
