@@ -2,12 +2,12 @@ package bx.app.ui.screen
 
 import android.content.Context
 import android.media.MediaPlayer
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +22,6 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -35,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.navigation.NavHostController
 import bx.app.core.maxLength
 import bx.app.data.enums.CardSide
 import bx.app.data.enums.CardSideType
@@ -44,6 +44,7 @@ import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
 import bx.app.ui.composable.AudioPlayer
 import bx.app.ui.composable.CardTypeSegmentedControl
+import bx.app.ui.composable.ConfirmationDialog
 import bx.app.ui.composable.LargeText
 import bx.app.ui.composable.MultiLineTextField
 import bx.app.ui.getFileNameFromUri
@@ -57,14 +58,34 @@ internal fun CardScreen(
     cardWithSidesViewModel: CardWithSidesViewModel,
     topBarViewModel: TopBarViewModel,
     cardSide: CardSide,
+    navHostController: NavHostController,
+    deleteCard: (id: Long) -> Unit,
 ) {
     topBarViewModel.setTitle("Card")
 
     val card by cardWithSidesViewModel.cardViewModel.card.collectAsState()
     val activeId = if (cardSide == CardSide.FRONT) card.frontSideId else card.backSideId
     val activeType = if (cardSide == CardSide.FRONT) card.frontSideType else card.backSideType
+    var showExitDialog by remember { mutableStateOf(false) }
     var cardSideType by remember { mutableStateOf<CardSideType>(activeType) }
     LaunchedEffect(activeType) { cardSideType = activeType }
+
+    BackHandler {
+        showExitDialog = (card.frontSideId < IdValidator.MIN_VALID_ID) xor (card.backSideId < IdValidator.MIN_VALID_ID)
+        if (!showExitDialog) navHostController.popBackStack()
+    }
+
+    ConfirmationDialog(
+        visible = showExitDialog,
+        message = (if (card.frontSideId < IdValidator.MIN_VALID_ID) "Front" else "Back")
+                + " side of the card has no value! Delete changes?",
+        onConfirm = {
+            deleteCard(card.id)
+            showExitDialog = false
+            navHostController.popBackStack()
+        },
+        onDismiss = { showExitDialog = false }
+    )
 
     if (card.id >= IdValidator.MIN_VALID_ID) {
         if (activeId < IdValidator.MIN_VALID_ID) {

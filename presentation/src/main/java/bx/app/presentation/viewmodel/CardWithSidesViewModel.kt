@@ -74,6 +74,7 @@ class CardWithSidesViewModel(
                 card = card.value,
                 textSide = textSide.value.copy(text = value, cardId = card.value.id),
                 cardSide = cardSide)
+            cardViewModel.getCardById(card.value.id)
             textSideViewModel.getTextSideById(id)
         }
     }
@@ -106,6 +107,7 @@ class CardWithSidesViewModel(
                 audioSide = audioSide.value.copy(path = path, fileName = fileName, cardId = card.value.id),
                 cardSide = cardSide
             )
+            cardViewModel.getCardById(card.value.id)
             audioSideViewModel.getAudioSideById(id)
         }
     }

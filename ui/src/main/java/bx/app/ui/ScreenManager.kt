@@ -2,6 +2,11 @@ package bx.app.ui
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.navigation.NavHostController
 import bx.app.data.local.AppDatabase
 import bx.app.data.local.DatabaseBuilder
 import bx.app.data.local.mock.DatabaseMockData
@@ -142,7 +147,9 @@ class ScreenManager(
     }
 
     @Composable
-    fun Card(id: Long, cardSide: CardSide) {
+    fun Card(id: Long, cardSide: CardSide, navHostController: NavHostController) {
+        var cardId by remember { mutableLongStateOf(0L) }
+
         if (id >= IdValidator.MIN_VALID_ID) {
             cardViewModel.getCardById(id)
         }
@@ -155,8 +162,12 @@ class ScreenManager(
             context = context,
             cardWithSidesViewModel = cardWithSidesViewModel,
             topBarViewModel = topBarViewModel,
-            cardSide = cardSide
+            cardSide = cardSide,
+            navHostController = navHostController,
+            deleteCard = { cardId = it }
         )
+        if (cardId >= IdValidator.MIN_VALID_ID) cardWithSidesViewModel.deleteCardById(cardId)
+
         NavigationBarItems.SetCardId(cardViewModel)
     }
 

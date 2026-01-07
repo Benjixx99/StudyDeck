@@ -215,7 +215,7 @@ internal fun MainDropdownMenu() {
     Box {
         IconButton(onClick = { expanded = !expanded }) {
             Icon(
-                imageVector = Icons.Filled.Menu,
+                imageVector = Icons.Filled.MoreVert,
                 contentDescription = ""
             )
         }
