@@ -26,15 +26,20 @@ fun NavGraphBuilder.navHostDestinations(
     topBarViewModel: TopBarViewModel,
     hideNavigationBarViewModel: HideNavigationBarViewModel,
 ) {
-    val screenManager = ScreenManager(context, topBarViewModel, hideNavigationBarViewModel)
+    val screenManager = ScreenManager(
+        context = context,
+        navHostController = navHostController,
+        topBarViewModel = topBarViewModel,
+        hideNavigationBarViewModel = hideNavigationBarViewModel
+    )
 
     composableDecks(navHostController, screenManager, hideNavigationBarViewModel)
     composableDeckSettings(screenManager)
     composableDeckCards(navHostController, screenManager)
     composableDeckLearn(navHostController, screenManager)
     composableDeckLevels(navHostController, screenManager)
-    composableCardFront(navHostController, screenManager)
-    composableCardBack(navHostController, screenManager)
+    composableCardFront(screenManager)
+    composableCardBack(screenManager)
     composableLevel(screenManager)
     composable<NavigationRoute.LearnPhase> { screenManager.LearnPhase() }
     composableLearnLevel(navHostController, screenManager)
@@ -121,6 +126,7 @@ internal fun NavGraphBuilder.composableDeckLearn(navHostController: NavHostContr
     composable<NavigationRoute.DeckLearn> {
         backStackEntry ->
         screenManager.DeckLearn(
+            id = backStackEntry.arguments?.getString("id").toString().toLong(),
             onClickLearn = {
                 id ->
                 if (id == LearnData.RANDOM_ID) {
@@ -154,24 +160,22 @@ internal fun NavGraphBuilder.composableLearnLevel(navHostController: NavHostCont
     }
 }
 
-internal fun NavGraphBuilder.composableCardFront(navHostController: NavHostController, screenManager: ScreenManager) {
+internal fun NavGraphBuilder.composableCardFront(screenManager: ScreenManager) {
     composable<NavigationRoute.CardFront> {
         backStackEntry ->
          screenManager.Card(
             id = backStackEntry.arguments?.getString("id").toString().toLong(),
             cardSide = CardSide.FRONT,
-             navHostController = navHostController
         )
     }
 }
 
-internal fun NavGraphBuilder.composableCardBack(navHostController: NavHostController, screenManager: ScreenManager) {
+internal fun NavGraphBuilder.composableCardBack(screenManager: ScreenManager) {
     composable<NavigationRoute.CardBack> {
         backStackEntry ->
         screenManager.Card(
             id = backStackEntry.arguments?.getString("id").toString().toLong(),
             cardSide = CardSide.BACK,
-            navHostController = navHostController
         )
     }
 }

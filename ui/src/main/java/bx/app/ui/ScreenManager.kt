@@ -41,7 +41,8 @@ import bx.app.ui.navigation.data.NavigationBarItems
  * Manage all the screens for the app
  */
 class ScreenManager(
-    private var context: Context,
+    private val context: Context,
+    private val navHostController: NavHostController,
     private val topBarViewModel: TopBarViewModel,
     private val hideNavigationBarViewModel: HideNavigationBarViewModel
 ) {
@@ -55,6 +56,14 @@ class ScreenManager(
         CardWithSidesRepository(database), cardViewModel, textSideViewModel, audioSideViewModel
     )
     private var deckId = 0L
+        set(id) {
+            if (id >= IdValidator.MIN_VALID_ID) {
+                field = id
+                cardViewModel.setDeckId(id)
+                levelViewModel.setDeckId(id)
+                deckViewModel.getDeckById(id)
+            }
+        }
 
     init {
         context.deleteDatabase(DatabaseBuilder.DATABASE_NAME)
@@ -87,11 +96,7 @@ class ScreenManager(
         onClickCreateNewCard: () -> Unit = {},
         onClickCard: (id: Long) -> Unit = {},
     ) {
-        if (id >= IdValidator.MIN_VALID_ID) {
-            deckId = id
-            cardViewModel.setDeckId(id)
-            deckViewModel.getDeckById(id)
-        }
+        deckId = id
         DeckCardsScreen(
             context = context,
             cardWithSidesViewModel = cardWithSidesViewModel,
@@ -124,11 +129,7 @@ class ScreenManager(
         onClickCreateNewLevel: () -> Unit = {},
         onClickLevel: (id: Long) -> Unit = {},
     ) {
-        if (id >= IdValidator.MIN_VALID_ID) {
-            deckId = id
-            levelViewModel.setDeckId(deckId)
-            deckViewModel.getDeckById(id)
-        }
+        deckId = id
         DeckLevelsScreen(
             context = context,
             levelViewModel = levelViewModel,
@@ -141,13 +142,15 @@ class ScreenManager(
 
     @Composable
     fun DeckLearn(
+        id: Long,
         onClickLearn: (id: Long) -> Unit = {},
     ) {
+        deckId = id
         DeckLearnScreen(context, topBarViewModel, onClickLearn)
     }
 
     @Composable
-    fun Card(id: Long, cardSide: CardSide, navHostController: NavHostController) {
+    fun Card(id: Long, cardSide: CardSide) {
         var cardId by remember { mutableLongStateOf(0L) }
 
         if (id >= IdValidator.MIN_VALID_ID) {
