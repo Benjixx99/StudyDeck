@@ -354,7 +354,7 @@ internal fun DeleteSelectionBar(
     var delete by remember { mutableStateOf(false) }
     SelectionBottomBar(onDelete = { delete = true })
     ConfirmationDialog(
-        visible = delete,
+        isVisible = delete,
         message = "Delete selected " + if (selectedIds.size == 1) "item?" else "items?",
         onConfirm = {
             selectedIds.forEach { deleteAction(it) }

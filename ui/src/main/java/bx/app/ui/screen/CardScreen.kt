@@ -76,7 +76,7 @@ internal fun CardScreen(
     }
 
     ConfirmationDialog(
-        visible = showExitDialog,
+        isVisible = showExitDialog,
         message = (if (card.frontSideId < IdValidator.MIN_VALID_ID) "Front" else "Back")
                 + " side of the card has no value! Delete changes?",
         onConfirm = {

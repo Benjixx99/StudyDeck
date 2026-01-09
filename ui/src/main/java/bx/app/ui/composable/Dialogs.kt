@@ -123,14 +123,14 @@ internal fun ColorPickerDialog(
  */
 @Composable
 fun ConfirmationDialog(
-    visible: Boolean,
+    isVisible: Boolean,
     message: String,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     confirmText: String = "Yes",
     dismissText: String = "No"
 ) {
-    if (!visible) return
+    if (!isVisible) return
 
     AlertDialog(
         onDismissRequest = onDismiss,
