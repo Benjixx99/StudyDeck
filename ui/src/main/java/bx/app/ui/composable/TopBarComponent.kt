@@ -26,9 +26,7 @@ object TopBarComponent {
 
         TopBar(
             title = title,
-            onBackClick = {
-                if (currentRoute !is NavigationRoute.Decks) navHostController.popBackStack()
-            },
+            onBackClick = {},
             actions = { GetTopBarMenuAction(currentRoute) }
         )
     }
@@ -47,15 +45,7 @@ object TopBarComponent {
 
         TopAppBar(
             title = { Text(text = "$title - $versionName DEV", fontSize = 20.sp) },
-            navigationIcon = {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = null,
-                        tint = Color.Companion.White
-                    )
-                }
-            },
+            navigationIcon = {},
             actions = actions
         )
     }
