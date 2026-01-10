@@ -66,6 +66,7 @@ private fun BaseTextField(
     valueText: String = "",
     labelText: String = "",
     placeholderText: String = "",
+    readOnly: Boolean = false,
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     isSingleLine: Boolean = true,
@@ -76,6 +77,7 @@ private fun BaseTextField(
         value = valueText,
         onValueChange = { if (it.length < 100) onValueChange(it) },
         modifier = modifier.fillMaxWidth(),
+        readOnly = readOnly,
         label = { Text(labelText) },
         placeholder = { Text(placeholderText) },
         isError = isError,
@@ -104,6 +106,7 @@ internal fun MultiLineTextField(
     valueText: String = "",
     labelText: String = "",
     placeholderText: String = "",
+    readOnly: Boolean = false,
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     maxLines: Int = 4,
@@ -114,6 +117,7 @@ internal fun MultiLineTextField(
         valueText = valueText,
         labelText = labelText,
         placeholderText = placeholderText,
+        readOnly = readOnly,
         isError = isError,
         keyboardOptions = keyboardOptions,
         isSingleLine = false,
@@ -131,6 +135,7 @@ internal fun SingleLineTextField(
     valueText: String = "",
     labelText: String = "",
     placeholderText: String = "",
+    readOnly: Boolean = false,
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onValueChange: (String) -> Unit = {},
@@ -140,6 +145,7 @@ internal fun SingleLineTextField(
         valueText = valueText,
         labelText = labelText,
         placeholderText = placeholderText,
+        readOnly = readOnly,
         isError = isError,
         keyboardOptions = keyboardOptions,
         onValueChange = onValueChange,
@@ -266,7 +272,10 @@ internal fun SearchBar(modifier: Modifier = Modifier): String {
             focusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
             unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer
         ),
-        modifier = modifier.fillMaxWidth().heightIn(min = 20.dp).padding(horizontal = 10.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = 20.dp)
+            .padding(horizontal = 10.dp)
     )
     return basicTextField
 }
@@ -278,7 +287,9 @@ internal fun SearchBar(modifier: Modifier = Modifier): String {
 @Composable
 internal fun ButtonInCorner(onClick: () -> Unit = {}) {
     Box(
-        modifier = Modifier.fillMaxSize().padding(10.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
     ) {
         var offsetX by remember { mutableFloatStateOf(0f) }
         Button(

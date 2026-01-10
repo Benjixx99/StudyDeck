@@ -41,6 +41,7 @@ import bx.app.ui.composable.SingleLineTextField
 internal fun LevelScreen(
     levelViewModel: LevelViewModel,
     topBarViewModel: TopBarViewModel,
+    isInsert: Boolean,
 ) {
     topBarViewModel.setTitle("Level")
 
@@ -60,7 +61,7 @@ internal fun LevelScreen(
         )
 
         Row(
-            modifier = ModifierManager.paddingTopModifier.padding(horizontal = 10.dp),
+            modifier = ModifierManager.paddingTopModifier,
             verticalAlignment = Alignment.CenterVertically
         ) {
             var openDialog by remember { mutableStateOf(false) }
@@ -72,6 +73,7 @@ internal fun LevelScreen(
                 modifier = Modifier.width(100.dp),
                 valueText = intervalNumber,
                 labelText = "Number",
+                readOnly = !isInsert,
                 isError = isError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = {
@@ -103,7 +105,7 @@ internal fun LevelScreen(
                 )
             }
 
-            if (!openDialog) return
+            if (!openDialog || !isInsert) return
             RadioButtonGroupDialog(
                 headerText = "Select interval type",
                 selectedOption = level.intervalType.ordinal,

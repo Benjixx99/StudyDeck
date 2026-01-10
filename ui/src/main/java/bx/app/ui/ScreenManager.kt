@@ -182,7 +182,7 @@ class ScreenManager(
         else if (id == IdValidator.INSERT) {
             levelViewModel.resetLevel()
         }
-        LevelScreen(levelViewModel, topBarViewModel)
+        LevelScreen(levelViewModel, topBarViewModel, (id == IdValidator.INSERT))
     }
 
     @Composable
