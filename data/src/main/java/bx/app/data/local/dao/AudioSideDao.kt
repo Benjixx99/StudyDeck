@@ -17,6 +17,9 @@ internal interface AudioSideDao : BaseDao<AudioSideEntity> {
     @Query("SELECT file_mame FROM audio_side WHERE id = :id")
     fun getFileNameById(id: Long): Flow<String?>
 
+    @Query("SELECT path FROM audio_side WHERE id = :id")
+    fun getPathById(id: Long): Flow<String?>
+
     @Query("DELETE FROM audio_side")
     override suspend fun deleteAll()
 
