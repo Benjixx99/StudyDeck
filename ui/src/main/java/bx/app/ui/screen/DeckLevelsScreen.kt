@@ -47,6 +47,7 @@ internal fun DeckLevelsScreen(
             searchText = searchText,
             onClick = onClickLevel,
             onSelect = {
+                if (it == levels.first().id) return@LevelListManager
                 if (!selectedIds.add(it)) selectedIds.remove(it)
                 hideNavigationBarViewModel.setHide(selectedIds.isNotEmpty())
             },
