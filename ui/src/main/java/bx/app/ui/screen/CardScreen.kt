@@ -172,7 +172,7 @@ private fun AudioSide(
             },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AudioPlayer(mediaPlayer, audioSide.path.toUri())
+        AudioPlayer(mediaPlayer)
         LargeText(
             text = if (audioSide.fileName.isNotEmpty()) audioSide.fileName else "Select file",
             maxLines = 1,

@@ -2,7 +2,6 @@ package bx.app.ui.composable
 
 import android.annotation.SuppressLint
 import android.media.MediaPlayer
-import android.net.Uri
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -24,7 +23,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
@@ -435,27 +433,27 @@ internal fun SegmentedControlButton(
  * AudioPlayer is a UI component to let the user play and stop a audio file
  */
 @Composable
-internal fun AudioPlayer(mediaPlayer: MediaPlayer?, audioFile: Uri?) {
-    var mediaPlayerState by remember { mutableStateOf<Boolean>(true) }
+internal fun AudioPlayer(mediaPlayer: MediaPlayer?) {
+    var mediaPlayerState by remember { mutableStateOf(true) }
 
-    mediaPlayerState = audioFile != null
+    mediaPlayerState = true
     Column {
         Row {
             IconButton(
                 onClick = {
-                    if (mediaPlayer != null) { if (mediaPlayerState) mediaPlayer.start() else mediaPlayer.pause() }
+                    if (mediaPlayer == null) return@IconButton
+                    if (mediaPlayerState) mediaPlayer.start() else mediaPlayer.pause()
                     mediaPlayerState = !mediaPlayerState
-                },
-                enabled = (audioFile != null)
+                }
             ) {
                 Icon(
                     painter =
                         if (mediaPlayerState)
-                            painterResource(id = android.R.drawable.ic_media_play)
+                            painterResource(android.R.drawable.ic_media_play)
                         else
-                            painterResource(id = android.R.drawable.ic_media_pause),
+                            painterResource(android.R.drawable.ic_media_pause),
                     contentDescription = "",
-                    Modifier.size(100.dp)
+                    Modifier.size(48.dp)
                 )
             }
         }
