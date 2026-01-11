@@ -22,4 +22,7 @@ internal interface CardInLevelDao : BaseDao<CardInLevelEntity> {
 
     @Query("SELECT count(*) FROM card_in_level WHERE card_id = :cardId AND level_id = :levelId")
     fun countById(cardId: Long, levelId: Long): Int
+
+    @Query("SELECT count(*) FROM card_in_level WHERE level_id = :levelId")
+    fun countCardsByLevelId(levelId: Long): Flow<Int?>
 }
