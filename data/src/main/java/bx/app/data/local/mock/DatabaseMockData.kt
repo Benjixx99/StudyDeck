@@ -5,6 +5,7 @@ import bx.app.data.enums.CardSide
 import bx.app.data.enums.CardSideType
 import bx.app.data.enums.IntervalType
 import bx.app.data.model.AudioSideModel
+import bx.app.data.model.CardInLevelModel
 import bx.app.data.model.CardModel
 import bx.app.data.model.DeckModel
 import bx.app.data.model.LevelModel
@@ -35,6 +36,7 @@ object DatabaseMockData {
         ),
     )
     val cards = listOf<CardModel>(
+        // card 1
         CardModel(
             frontSideType = CardSideType.TEXT,
             frontSideId = 1,
@@ -42,6 +44,7 @@ object DatabaseMockData {
             backSideId = 2,
             deckId = 1,
         ),
+        // card 2
         CardModel(
             frontSideType = CardSideType.TEXT,
             frontSideId = 3,
@@ -49,6 +52,7 @@ object DatabaseMockData {
             backSideId = 4,
             deckId = 1,
         ),
+        // card 3
         CardModel(
             frontSideType = CardSideType.TEXT,
             frontSideId = 5,
@@ -56,15 +60,23 @@ object DatabaseMockData {
             backSideId = 6,
             deckId = 1,
         ),
+        // card 4
         CardModel(
             frontSideType = CardSideType.TEXT,
             frontSideId = 7,
             backSideType = CardSideType.AUDIO,
             backSideId = 1,
             deckId = 2,
-        )
+        ),
+        // card 5
+        CardModel(
+            frontSideType = CardSideType.TEXT,
+            frontSideId = 8,
+            backSideType = CardSideType.TEXT,
+            backSideId = 9,
+            deckId = 1,
+        ),
     )
-
     val textSide = listOf<TextSideModel>(
         TextSideModel(
             id = 1,
@@ -107,9 +119,20 @@ object DatabaseMockData {
             text = "You can do it",
             side = CardSide.FRONT,
             cardId = 4
-        )
+        ),
+        TextSideModel(
+            id = 8,
+            text = "allow",
+            side = CardSide.FRONT,
+            cardId = 5
+        ),
+        TextSideModel(
+            id = 9,
+            text = "erlauben",
+            side = CardSide.BACK,
+            cardId = 5
+        ),
     )
-
     val audioSide = listOf<AudioSideModel>(
         AudioSideModel(
             id = 1,
@@ -119,7 +142,6 @@ object DatabaseMockData {
             cardId = 4
         )
     )
-
     val levels = listOf<LevelModel>(
         LevelModel(
             name = "1. Level: every day",
@@ -151,5 +173,23 @@ object DatabaseMockData {
             intervalType = IntervalType.MONTH,
             deckId = 1
         )
+    )
+    val cardInLevel = listOf<CardInLevelModel>(
+        CardInLevelModel(
+            cardId = 1,
+            levelId = 1,
+        ),
+        CardInLevelModel(
+            cardId = 2,
+            levelId = 1,
+        ),
+        CardInLevelModel(
+            cardId = 3,
+            levelId = 1,
+        ),
+        CardInLevelModel(
+            cardId = 5,
+            levelId = 2,
+        ),
     )
 }
