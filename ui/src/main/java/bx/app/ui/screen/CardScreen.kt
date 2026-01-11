@@ -56,9 +56,9 @@ import bx.app.ui.getFileNameFromUri
 internal fun CardScreen(
     context: Context,
     cardWithSidesViewModel: CardWithSidesViewModel,
+    navHostController: NavHostController,
     topBarViewModel: TopBarViewModel,
     cardSide: CardSide,
-    navHostController: NavHostController,
     deleteCard: (id: Long) -> Unit,
 ) {
     topBarViewModel.setTitle("Card")
@@ -78,7 +78,7 @@ internal fun CardScreen(
     ConfirmationDialog(
         isVisible = showExitDialog,
         message = (if (card.frontSideId < IdValidator.MIN_VALID_ID) "Front" else "Back")
-                + " side of the card has no value! Delete changes?",
+                + " side of the card has no value! \nDiscard changes?",
         onConfirm = {
             deleteCard(card.id)
             showExitDialog = false
