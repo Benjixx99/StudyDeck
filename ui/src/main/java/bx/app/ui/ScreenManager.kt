@@ -31,8 +31,10 @@ import bx.app.ui.screen.LearnLevelScreen
 import bx.app.ui.screen.LearnPhaseScreen
 import bx.app.ui.screen.LevelScreen
 import bx.app.data.enums.CardSide
+import bx.app.data.repository.CardInLevelRepository
 import bx.app.data.repository.CardWithSidesRepository
 import bx.app.presentation.data.IdValidator
+import bx.app.presentation.viewmodel.CardInLevelViewModel
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.ui.navigation.data.NavigationBarItems
@@ -50,6 +52,7 @@ class ScreenManager(
     private val deckViewModel = DeckViewModel(DeckRepository(database))
     private val cardViewModel = CardViewModel(CardRepository(database))
     private val levelViewModel = LevelViewModel(LevelRepository(database))
+    private val cardInLevelViewModel = CardInLevelViewModel(CardInLevelRepository(database))
     private val textSideViewModel = TextSideViewModel(TextSideRepository(database))
     private val audioSideViewModel = AudioSideViewModel(AudioSideRepository(database))
     private val cardWithSidesViewModel = CardWithSidesViewModel(
@@ -70,6 +73,7 @@ class ScreenManager(
         DatabaseMockData.decks.forEach { deckViewModel.insertDeck(it) }
         DatabaseMockData.cards.forEach { cardViewModel.insertCard(it) }
         DatabaseMockData.levels.forEach { levelViewModel.insertLevel(it) }
+        DatabaseMockData.cardInLevel.forEach { cardInLevelViewModel.insertCardInLevel(it) }
         DatabaseMockData.textSide.forEach { textSideViewModel.insertTextSide(it) }
         DatabaseMockData.audioSide.forEach { audioSideViewModel.insertAudioSide(it) }
     }
@@ -164,9 +168,9 @@ class ScreenManager(
         CardScreen(
             context = context,
             cardWithSidesViewModel = cardWithSidesViewModel,
+            navHostController = navHostController,
             topBarViewModel = topBarViewModel,
             cardSide = cardSide,
-            navHostController = navHostController,
             deleteCard = { cardId = it }
         )
         if (cardId >= IdValidator.MIN_VALID_ID) cardWithSidesViewModel.deleteCardById(cardId)
@@ -206,6 +210,7 @@ class ScreenManager(
         LearnLevelScreen(
             context = context,
             levelViewModel = levelViewModel,
+            cardInLevelViewModel = cardInLevelViewModel,
             topBarViewModel = topBarViewModel,
             onClickLearn = onClickLearn
         )

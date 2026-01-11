@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import bx.app.presentation.viewmodel.CardInLevelViewModel
 import bx.app.presentation.viewmodel.LevelViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
@@ -19,11 +20,15 @@ import bx.app.ui.composable.listmanager.LevelListManager.LevelListType
 internal fun LearnLevelScreen(
     context: Context,
     levelViewModel: LevelViewModel,
+    cardInLevelViewModel: CardInLevelViewModel,
     topBarViewModel: TopBarViewModel,
     onClickLearn: (id: Long) -> Unit
 ) {
     topBarViewModel.setTitle("Level system learning")
     val levels by levelViewModel.levels.collectAsState()
+    val cardsCountByLevelId by cardInLevelViewModel.cardsCountByLevelId.collectAsState()
+
+    levels.forEach { cardInLevelViewModel.countCardsByLevelId(it.id) }
 
     Column(
         modifier = ModifierManager.paddingMostTopModifier
@@ -34,7 +39,8 @@ internal fun LearnLevelScreen(
             modifier = Modifier,
             searchText = "",
             onClick = onClickLearn,
-            type = LevelListType.Learn
+            type = LevelListType.Learn,
+            cardsCountByLevelId = cardsCountByLevelId,
         )
         levelListManager.List()
     }
