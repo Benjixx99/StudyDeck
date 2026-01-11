@@ -25,10 +25,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import bx.app.data.enums.IntervalType
 import bx.app.presentation.viewmodel.LevelViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
+import bx.app.ui.composable.ConfirmationDialog
 import bx.app.ui.composable.LargeText
 import bx.app.ui.composable.RadioButtonGroupDialog
 import bx.app.ui.composable.SingleLineTextField
@@ -40,13 +42,31 @@ import bx.app.ui.composable.SingleLineTextField
 @Composable
 internal fun LevelScreen(
     levelViewModel: LevelViewModel,
+    navHostController: NavHostController,
     topBarViewModel: TopBarViewModel,
     isInsert: Boolean,
+    deleteLevel: (id: Long) -> Unit,
 ) {
     topBarViewModel.setTitle("Level")
 
+    val intervalExists by levelViewModel.intervalExists.collectAsState()
     val level by levelViewModel.level.collectAsState()
+    var showExitDialog by remember { mutableStateOf(false) }
     val options = listOf<String>("Week", "Month", "Year")
+
+    BackHandler {
+        if (intervalExists) showExitDialog = true else navHostController.popBackStack()
+    }
+    ConfirmationDialog(
+        isVisible = showExitDialog,
+        message = "Interval already exists! \nDiscard changes?",
+        onConfirm = {
+            deleteLevel(level.id)
+            showExitDialog = false
+            navHostController.popBackStack()
+        },
+        onDismiss = { showExitDialog = false }
+    )
 
     Column(
         modifier = ModifierManager.paddingMostTopModifier
@@ -82,7 +102,10 @@ internal fun LevelScreen(
                     val validInput = isInputValid(it, level.intervalType)
                     isError = (!validInput)
 
-                    if (validInput) levelViewModel.changeIntervalNumber(it.toInt())
+                    if (validInput) {
+                        levelViewModel.changeIntervalNumber(it.toInt())
+                        levelViewModel.existsByInterval(it.toInt(), level.intervalType)
+                    }
                     intervalNumber = it
                 },
             )
@@ -113,7 +136,9 @@ internal fun LevelScreen(
                 onDismissRequest = { openDialog = false },
                 onSelectOption = {
                     optionID, optionText ->
-                    levelViewModel.changeIntervalType(IntervalType.valueOf(optionText.uppercase()))
+                    val intervalType = IntervalType.valueOf(optionText.uppercase())
+                    levelViewModel.changeIntervalType(intervalType)
+                    levelViewModel.existsByInterval(level.intervalNumber, intervalType)
                     intervalNumber = "1"
                     isError = (!isInputValid(intervalNumber, level.intervalType))
                     openDialog = false

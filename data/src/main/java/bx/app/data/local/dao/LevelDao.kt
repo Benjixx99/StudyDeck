@@ -2,6 +2,7 @@ package bx.app.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import bx.app.data.enums.IntervalType
 import bx.app.data.local.entity.LevelEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -27,6 +28,13 @@ internal interface LevelDao : BaseDao<LevelEntity> {
 
     @Query("DELETE FROM level WHERE id = :id")
     suspend fun deleteById(id: Long)
+
+    @Query("""
+        SELECT EXISTS(
+            SELECT 1 FROM level WHERE interval_number = :intervalNumber AND interval_type = :intervalType
+        )
+    """)
+    suspend fun existsByInterval(intervalNumber: Int, intervalType: IntervalType): Boolean
 
     @Query("SELECT count(*) FROM level WHERE id = :id")
     fun countById(id: Long): Int

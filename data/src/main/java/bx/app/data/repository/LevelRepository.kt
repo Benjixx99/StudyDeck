@@ -1,5 +1,6 @@
 package bx.app.data.repository
 
+import bx.app.data.enums.IntervalType
 import bx.app.data.local.AppDatabase
 import bx.app.data.local.entity.LevelEntity
 import bx.app.data.model.LevelModel
@@ -21,6 +22,9 @@ class LevelRepository(database: AppDatabase) {
     suspend fun getById(id: Long) = baseRepo.getById(id) as LevelModel
     suspend fun deleteById(id: Long) = levelDao.deleteById(id)
     suspend fun deleteByDeckId(id: Long) = levelDao.deleteByDeckId(id)
+
+    suspend fun existsByInterval(intervalNumber: Int, intervalType: IntervalType) =
+        levelDao.existsByInterval(intervalNumber, intervalType)
 
     suspend fun insert(level: LevelModel) = baseRepo.insert(level.toEntity())
     suspend fun upsert(level: LevelModel): Long {

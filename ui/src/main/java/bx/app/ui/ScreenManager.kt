@@ -176,13 +176,22 @@ class ScreenManager(
 
     @Composable
     fun Level(id: Long) {
+        var levelId by remember { mutableLongStateOf(0L) }
+
         if (id >= IdValidator.MIN_VALID_ID) {
             levelViewModel.getLevelById(id)
         }
         else if (id == IdValidator.INSERT) {
             levelViewModel.resetLevel()
         }
-        LevelScreen(levelViewModel, topBarViewModel, (id == IdValidator.INSERT))
+        LevelScreen(
+            levelViewModel = levelViewModel,
+            navHostController = navHostController,
+            topBarViewModel = topBarViewModel,
+            isInsert = (id == IdValidator.INSERT),
+            deleteLevel = { levelId = it }
+        )
+        if (levelId >= IdValidator.MIN_VALID_ID) levelViewModel.deleteLevelById(levelId)
     }
 
     @Composable
