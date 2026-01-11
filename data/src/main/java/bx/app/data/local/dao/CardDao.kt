@@ -13,6 +13,14 @@ internal interface CardDao : BaseDao<CardEntity> {
     @Query("SELECT * FROM card WHERE deck_id = :id")
     fun observeById(id: Long): Flow<List<CardEntity>>
 
+    @Query("""
+        SELECT c.* 
+        FROM card AS c
+        JOIN card_in_level AS cil ON cil.card_id = c.id
+        WHERE cil.level_id = :id
+    """)
+    fun observeByLevelId(id: Long): Flow<List<CardEntity>>
+
     @Query("SELECT * FROM card WHERE id = :id")
     override suspend fun getById(id: Long): CardEntity
 

@@ -13,19 +13,21 @@ import kotlinx.coroutines.launch
 
 class CardViewModel(private val repo: CardRepository) : ViewModel() {
     private val _deckId = MutableStateFlow(0L)
+    private val _levelId = MutableStateFlow(0L)
     private val _card = MutableStateFlow<CardModel>(getInitialCard())
 
     val card: StateFlow<CardModel> = _card
     val deckId: StateFlow<Long> = _deckId
     val cards: StateFlow<List<CardModel>> =
         repo.observeById(_deckId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val cardsInLevel: StateFlow<List<CardModel>> =
+        repo.observeByLevelId(_levelId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     fun getCardById(id: Long) = viewModelScope.launch { _card.value = repo.getById(id) }
     fun insertCard(card: CardModel) = viewModelScope.launch { repo.insert(card) }
-    fun updateCard(card: CardModel) = viewModelScope.launch { repo.update(card) }
-    fun deleteCard(card: CardModel) = viewModelScope.launch { repo.delete(card) }
 
     fun setDeckId(id: Long) { _deckId.value = id }
+    fun setLevelId(id: Long) { _levelId.value = id }
     fun resetCard() { _card.value = getInitialCard() }
 
     private fun getInitialCard(): CardModel {

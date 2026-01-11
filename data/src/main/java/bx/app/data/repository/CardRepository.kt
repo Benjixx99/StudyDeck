@@ -9,13 +9,20 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlin.collections.map
 
-class CardRepository(private val database: AppDatabase) {
-    private val baseRepo = BaseRepository<CardEntity>(database.cardDao())
+class CardRepository(database: AppDatabase) {
+    private val cardDao = database.cardDao()
+    private val baseRepo = BaseRepository<CardEntity>(cardDao)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun observeById(idFlow: Flow<Long>): Flow<List<CardModel>> =
         idFlow.flatMapLatest { id ->
-            database.cardDao().observeById(id).map { list -> list.map { it.toModel() } }
+            cardDao.observeById(id).map { list -> list.map { it.toModel() } }
+        }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun observeByLevelId(idFlow: Flow<Long>): Flow<List<CardModel>> =
+        idFlow.flatMapLatest { id ->
+            cardDao.observeByLevelId(id).map { list -> list.map { it.toModel() } }
         }
 
     suspend fun getById(id: Long) = baseRepo.getById(id) as CardModel
