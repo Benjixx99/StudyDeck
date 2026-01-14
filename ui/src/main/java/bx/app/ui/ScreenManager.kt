@@ -2,6 +2,7 @@ package bx.app.ui
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
@@ -28,7 +29,7 @@ import bx.app.ui.screen.DeckLevelsScreen
 import bx.app.ui.screen.DeckSettingsScreen
 import bx.app.ui.screen.DecksScreen
 import bx.app.ui.screen.LearnLevelScreen
-import bx.app.ui.screen.LearnPhaseScreen
+import bx.app.ui.screen.RandomLearningPhaseScreen
 import bx.app.ui.screen.LevelScreen
 import bx.app.data.enums.CardSide
 import bx.app.data.repository.CardInLevelRepository
@@ -199,8 +200,21 @@ class ScreenManager(
     }
 
     @Composable
-    fun LearnPhase() {
-        LearnPhaseScreen(topBarViewModel)
+    fun RandomLearningPhase(id: Long) {
+        val learnBothSides = deckViewModel.deck.collectAsState().value.learnBothSides
+        val shuffledCards = cardViewModel.cards.collectAsState().value.shuffled().toMutableList()
+
+        if (shuffledCards.isNotEmpty()) {
+            cardViewModel.getCardById(shuffledCards.first().id)
+
+            RandomLearningPhaseScreen(
+                learnBothSides = learnBothSides,
+                cardWithSidesViewModel = cardWithSidesViewModel,
+                navHostController = navHostController,
+                topBarViewModel = topBarViewModel,
+                shuffledCards = shuffledCards
+            )
+        }
     }
 
     @Composable

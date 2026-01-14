@@ -3,6 +3,7 @@ package bx.app.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import bx.app.data.enums.CardSide
 import bx.app.data.enums.CardSideType
+import bx.app.data.model.CardModel
 import bx.app.data.repository.CardWithSidesRepository
 import bx.app.presentation.data.IdValidator
 import kotlinx.coroutines.launch
@@ -48,6 +49,19 @@ class CardWithSidesViewModel(
                 CardSideType.TEXT -> textSideViewModel.getTextSideById(id)
                 CardSideType.AUDIO -> audioSideViewModel.getAudioSideById(id)
             }
+        }
+    }
+
+    fun getCardSideValues(card: CardModel) {
+        if (card.frontSideType == CardSideType.TEXT) { textSideViewModel.getTextById(card.frontSideId) }
+        if (card.backSideType == CardSideType.TEXT) { textSideViewModel.getTextById(card.backSideId) }
+        if (card.frontSideType == CardSideType.AUDIO) {
+            audioSideViewModel.getFileNameById(card.frontSideId)
+            audioSideViewModel.getPathById(card.frontSideId)
+        }
+        if (card.backSideType == CardSideType.AUDIO) {
+            audioSideViewModel.getFileNameById(card.backSideId)
+            audioSideViewModel.getPathById(card.backSideId)
         }
     }
 

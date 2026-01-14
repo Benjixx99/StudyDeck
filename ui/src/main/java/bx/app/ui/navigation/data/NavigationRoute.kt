@@ -15,7 +15,8 @@ sealed class NavigationRoute() {
     @Serializable data class CardBack(override var id: String? = null) : WithId()
     @Serializable data class Level(override var id: String? = null) : WithId()
     @Serializable data class LearnLevel(override var id: String? = null) : WithId()
-    @Serializable data class LearnPhase(override var id: String? = null) : WithId()
+    @Serializable data class RandomLearningPhase(override var id: String? = null) : WithId()
+    @Serializable data class LevelLearningPhase(override var id: String? = null) : WithId()
 
     fun sameRoute(other: NavigationRoute) = this::class.simpleName == other::class.simpleName
 
@@ -31,7 +32,8 @@ sealed class NavigationRoute() {
             else if (current.contains(DeckLevels::class.simpleName.toString())) DeckLevels()
             else if (current.contains(DeckSettings::class.simpleName.toString())) DeckSettings()
             else if (current.contains(LearnLevel::class.simpleName.toString())) LearnLevel()
-            else if (current.contains(LearnPhase::class.simpleName.toString())) LearnPhase()
+            else if (current.contains(RandomLearningPhase::class.simpleName.toString())) RandomLearningPhase()
+            else if (current.contains(LevelLearningPhase::class.simpleName.toString())) LevelLearningPhase()
             else if (current.contains(Level::class.simpleName.toString())) Level()
             else Decks
         }

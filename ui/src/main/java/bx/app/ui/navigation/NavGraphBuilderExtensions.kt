@@ -36,13 +36,13 @@ fun NavGraphBuilder.navHostDestinations(
     composableDecks(navHostController, screenManager, hideNavigationBarViewModel)
     composableDeckSettings(screenManager)
     composableDeckCards(navHostController, screenManager)
-    composableDeckLearn(navHostController, screenManager)
     composableDeckLevels(navHostController, screenManager)
+    composableDeckLearn(navHostController, screenManager)
     composableCardFront(screenManager)
     composableCardBack(screenManager)
     composableLevel(screenManager)
-    composable<NavigationRoute.LearnPhase> { screenManager.LearnPhase() }
     composableLearnLevel(navHostController, screenManager)
+    composableRandomLearningPhase(screenManager)
 }
 
 internal fun NavGraphBuilder.composableDecks(
@@ -131,7 +131,7 @@ internal fun NavGraphBuilder.composableDeckLearn(navHostController: NavHostContr
                 id ->
                 if (id == LearnData.RANDOM_ID) {
                     navHostController.navigateWithSettingBackStack(
-                        route = NavigationRoute.LearnPhase(id = id.toString()),
+                        route = NavigationRoute.RandomLearningPhase(id = id.toString()),
                         backStackRoute = backStackEntry.toRoute()
                     )
                 }
@@ -156,6 +156,15 @@ internal fun NavGraphBuilder.composableLearnLevel(navHostController: NavHostCont
                     backStackRoute = backStackEntry.toRoute()
                 )
             }
+        )
+    }
+}
+
+internal fun NavGraphBuilder.composableRandomLearningPhase(screenManager: ScreenManager) {
+    composable<NavigationRoute.RandomLearningPhase> {
+        backStackEntry ->
+        screenManager.RandomLearningPhase(
+            id = backStackEntry.arguments?.getString("id").toString().toLong()
         )
     }
 }
