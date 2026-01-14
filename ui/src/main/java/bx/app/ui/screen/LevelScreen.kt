@@ -2,18 +2,11 @@ package bx.app.ui.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,9 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -32,7 +23,7 @@ import bx.app.presentation.viewmodel.LevelViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
 import bx.app.ui.composable.ConfirmationDialog
-import bx.app.ui.composable.LargeText
+import bx.app.ui.composable.HeaderWithTextFieldAndButtonRow
 import bx.app.ui.composable.RadioButtonGroupDialog
 import bx.app.ui.composable.SingleLineTextField
 
@@ -74,86 +65,67 @@ internal fun LevelScreen(
             .fillMaxWidth()
             .padding(horizontal = 10.dp)
     ) {
+        var openDialog by remember { mutableStateOf(false) }
+        var intervalNumber by remember { mutableStateOf(level.intervalNumber.toString()) }
+        LaunchedEffect(level.intervalNumber) { intervalNumber = level.intervalNumber.toString() }
+        var isError by remember { mutableStateOf(intervalNumber.isEmpty()) }
+
         SingleLineTextField(
             modifier = ModifierManager.paddingTopModifier,
             valueText = if (level.name.isNotEmpty()) level.name else "",
             labelText = "Name",
-            onValueChange = { levelViewModel.changeName(it) }
+            onValueChange = {
+                levelViewModel.changeName(it)
+                if (isInsert) {
+                    levelViewModel.existsByInterval(level.intervalNumber, level.intervalType)
+                }
+            }
         )
 
-        Row(
-            modifier = ModifierManager.paddingTopModifier,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            var openDialog by remember { mutableStateOf(false) }
-            var intervalNumber by remember { mutableStateOf(level.intervalNumber.toString()) }
-            LaunchedEffect(level.intervalNumber) { intervalNumber = level.intervalNumber.toString() }
-            var isError by remember { mutableStateOf(intervalNumber.isEmpty()) }
+        Spacer(modifier = Modifier.padding(vertical = 10.dp))
 
-            SingleLineTextField(
-                modifier = Modifier.width(100.dp),
-                valueText = intervalNumber,
-                labelText = "Number",
-                readOnly = !isInsert,
-                isError = isError,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = {
-                    if (!it.all { it.isDigit() }) return@SingleLineTextField
+        HeaderWithTextFieldAndButtonRow(
+            headerText = "Space between learn units",
+            textFieldValue = intervalNumber,
+            textFieldReadOnly = !isInsert,
+            textFieldIsError = isError,
+            textFieldKeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            onValueChange = {
+                if (!it.all { it.isDigit() }) return@HeaderWithTextFieldAndButtonRow
 
-                    val validInput = isInputValid(it, level.intervalType)
-                    isError = (!validInput)
+                val validInput = isInputValid(it)
+                isError = (!validInput)
 
-                    if (validInput) {
-                        levelViewModel.changeIntervalNumber(it.toInt())
-                        levelViewModel.existsByInterval(it.toInt(), level.intervalType)
-                    }
-                    intervalNumber = it
-                },
-            )
-
-            LargeText(" times a", modifier = Modifier.padding(horizontal = 10.dp))
-
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(5.dp))
-                    .background(MaterialTheme.colorScheme.tertiary)
-                    .size(100.dp, 50.dp)
-            ) {
-                LargeText(
-                    text = level.intervalType.asString(),
-                    color = MaterialTheme.colorScheme.onTertiary,
-                    modifier = Modifier
-                        .combinedClickable(onClick = { openDialog = !openDialog })
-                        .padding(horizontal = 10.dp, vertical = 10.dp)
-                        .align(Alignment.Center)
-                )
-            }
-
-            if (!openDialog || !isInsert) return
-            RadioButtonGroupDialog(
-                headerText = "Select interval type",
-                selectedOption = level.intervalType.ordinal,
-                optionList = options,
-                onDismissRequest = { openDialog = false },
-                onSelectOption = {
-                    optionID, optionText ->
-                    val intervalType = IntervalType.valueOf(optionText.uppercase())
-                    levelViewModel.changeIntervalType(intervalType)
-                    levelViewModel.existsByInterval(level.intervalNumber, intervalType)
-                    intervalNumber = "1"
-                    isError = (!isInputValid(intervalNumber, level.intervalType))
-                    openDialog = false
+                if (validInput) {
+                    levelViewModel.changeIntervalNumber(it.toInt())
+                    levelViewModel.existsByInterval(it.toInt(), level.intervalType)
                 }
-            )
-        }
+                intervalNumber = it
+            },
+            buttonText = level.intervalType.asString(),
+            onButtonClick = { openDialog = !openDialog }
+        )
+
+        if (!openDialog || !isInsert) return
+        RadioButtonGroupDialog(
+            headerText = "Select interval type",
+            selectedOption = level.intervalType.ordinal,
+            optionList = options,
+            onDismissRequest = { openDialog = false },
+            onSelectOption = {
+                optionID, optionText ->
+                val intervalType = IntervalType.valueOf(optionText.uppercase())
+                levelViewModel.changeIntervalType(intervalType)
+                levelViewModel.existsByInterval(level.intervalNumber, intervalType)
+                intervalNumber = "1"
+                isError = (!isInputValid(intervalNumber))
+                openDialog = false
+            }
+        )
     }
 }
 
-private fun isInputValid(input: String, intervalType: IntervalType): Boolean {
+private fun isInputValid(input: String): Boolean {
     val number = if (input.isNotEmpty()) input.toInt() else 0
-    return when (intervalType) {
-        IntervalType.WEEK -> (number >= 1 && number <= 7)
-        IntervalType.MONTH -> (number >= 1 && number <= 3)
-        IntervalType.YEAR -> (number >= 1 && number <= 11)
-    }
+    return (number >= 1 && number <= 99)
 }
