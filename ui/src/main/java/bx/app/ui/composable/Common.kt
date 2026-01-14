@@ -2,6 +2,7 @@ package bx.app.ui.composable
 
 import android.annotation.SuppressLint
 import android.media.MediaPlayer
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,6 +37,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,45 +61,54 @@ import bx.app.ui.data.CardTypeText
 import kotlin.math.roundToInt
 import bx.app.ui.R
 
+
+/**
+ * This composable returns the default colors for [BaseTextField]
+ */
+@Composable
+private fun baseTextFieldDefaultColors(): TextFieldColors =
+    TextFieldDefaults.colors(
+        focusedIndicatorColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unfocusedIndicatorColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unfocusedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unfocusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    )
+
 @Composable
 private fun BaseTextField(
     modifier: Modifier = Modifier,
-    valueText: String = "",
-    labelText: String = "",
-    placeholderText: String = "",
+    value: String = "",
+    label: @Composable (() -> Unit)? = null,
+    placeholder: String = "",
     readOnly: Boolean = false,
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     isSingleLine: Boolean = true,
     maxLines: Int = 1,
     onValueChange: (String) -> Unit = {},
+    colors: TextFieldColors = baseTextFieldDefaultColors(),
 ) {
     TextField(
-        value = valueText,
+        value = value,
         onValueChange = { if (it.length < 100) onValueChange(it) },
         modifier = modifier.fillMaxWidth(),
         readOnly = readOnly,
-        label = { Text(labelText) },
-        placeholder = { Text(placeholderText) },
+        label = label,
+        placeholder = { Text(placeholder) },
         isError = isError,
         keyboardOptions = keyboardOptions,
         singleLine = isSingleLine,
         maxLines = maxLines,
-        colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.onSecondaryContainer,
-            focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            unfocusedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
-            focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            unfocusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
-            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-        ),
+        colors = colors,
     )
 }
 
 /**
- * This composable displays a TextField with multiple lines
+ * This composable displays a multi line [TextField]
  */
 @Composable
 internal fun MultiLineTextField(
@@ -109,23 +121,25 @@ internal fun MultiLineTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     maxLines: Int = 4,
     onValueChange: (String) -> Unit = {},
+    colors: TextFieldColors = baseTextFieldDefaultColors(),
 ) {
     BaseTextField(
         modifier = modifier.height(160.dp),
-        valueText = valueText,
-        labelText = labelText,
-        placeholderText = placeholderText,
+        value = valueText,
+        label = { Text(labelText) },
+        placeholder = placeholderText,
         readOnly = readOnly,
         isError = isError,
         keyboardOptions = keyboardOptions,
         isSingleLine = false,
         maxLines = maxLines,
         onValueChange = onValueChange,
+        colors = colors,
     )
 }
 
 /**
- * This composable displays a TextField with one line
+ * This composable displays a single line [TextField]
  */
 @Composable
 internal fun SingleLineTextField(
@@ -137,16 +151,57 @@ internal fun SingleLineTextField(
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onValueChange: (String) -> Unit = {},
+    colors: TextFieldColors = baseTextFieldDefaultColors(),
 ) {
     BaseTextField(
         modifier = modifier.height(60.dp),
-        valueText = valueText,
-        labelText = labelText,
-        placeholderText = placeholderText,
+        value = valueText,
+        label = { Text(labelText) },
+        placeholder = placeholderText,
         readOnly = readOnly,
         isError = isError,
         keyboardOptions = keyboardOptions,
         onValueChange = onValueChange,
+        colors = colors,
+    )
+}
+
+/**
+ * This composable displays a single line [TextField] with a border
+ */
+@Composable
+internal fun SingleLineTextFieldWithBorder(
+    modifier: Modifier = Modifier,
+    value: String = "",
+    placeholder: String = "",
+    readOnly: Boolean = false,
+    isError: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    onValueChange: (String) -> Unit = {}
+) {
+    BaseTextField(
+        value = value,
+        onValueChange = { if (it.length < 100) onValueChange(it) },
+        modifier = modifier
+            .fillMaxHeight()
+            .border(
+                width = 1.dp,
+                color = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+                shape = RoundedCornerShape(6.dp)
+            )
+            .padding(horizontal = 8.dp),
+        readOnly = readOnly,
+        placeholder = placeholder,
+        isError = isError,
+        keyboardOptions = keyboardOptions,
+        colors = TextFieldDefaults.colors(
+            errorIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            errorContainerColor = Color.Transparent,
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
+        ),
     )
 }
 
