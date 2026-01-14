@@ -44,7 +44,7 @@ class LevelViewModel(private val repo: LevelRepository) : DebouncedAutoSaveViewM
     fun getInitialLevel(): LevelModel {
         return LevelModel(
             name = "",
-            intervalType = IntervalType.WEEK,
+            intervalType = IntervalType.DAY,
             intervalNumber = 1,
             deckId = 0
         )

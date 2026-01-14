@@ -145,14 +145,14 @@ object DatabaseMockData {
     val levels = listOf<LevelModel>(
         LevelModel(
             name = "1. Level: every day",
-            intervalNumber = 7,
-            intervalType = IntervalType.WEEK,
+            intervalNumber = 1,
+            intervalType = IntervalType.DAY,
             deckId = 1
         ),
         LevelModel(
-            name = "2. Level: four times a week",
+            name = "2. Level: every fourth day",
             intervalNumber = 4,
-            intervalType = IntervalType.WEEK,
+            intervalType = IntervalType.DAY,
             deckId = 1
         ),
         LevelModel(
@@ -164,7 +164,7 @@ object DatabaseMockData {
         LevelModel(
             name = "4. Level: every two weeks",
             intervalNumber = 2,
-            intervalType = IntervalType.MONTH,
+            intervalType = IntervalType.WEEK,
             deckId = 1
         ),
         LevelModel(

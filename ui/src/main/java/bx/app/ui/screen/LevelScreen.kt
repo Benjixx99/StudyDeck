@@ -53,7 +53,7 @@ internal fun LevelScreen(
     val intervalExists by levelViewModel.intervalExists.collectAsState()
     val level by levelViewModel.level.collectAsState()
     var showExitDialog by remember { mutableStateOf(false) }
-    val options = listOf<String>("Week", "Month", "Year")
+    val options = listOf<String>("Day", "Week", "Month", "Year")
 
     BackHandler {
         if (intervalExists) showExitDialog = true else navHostController.popBackStack()
