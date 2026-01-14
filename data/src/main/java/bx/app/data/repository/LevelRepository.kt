@@ -23,8 +23,12 @@ class LevelRepository(database: AppDatabase) {
     suspend fun deleteById(id: Long) = levelDao.deleteById(id)
     suspend fun deleteByDeckId(id: Long) = levelDao.deleteByDeckId(id)
 
-    suspend fun existsByInterval(intervalNumber: Int, intervalType: IntervalType) =
-        levelDao.existsByInterval(intervalNumber, intervalType)
+    suspend fun existsIntervalByDeckId(
+        id: Long,
+        excludeId: Long,
+        intervalNumber: Int,
+        intervalType: IntervalType
+    ) = levelDao.existsIntervalByDeckId(id, excludeId, intervalNumber, intervalType)
 
     suspend fun insert(level: LevelModel) = baseRepo.insert(level.toEntity())
     suspend fun upsert(level: LevelModel): Long {

@@ -26,7 +26,14 @@ class LevelViewModel(private val repo: LevelRepository) : DebouncedAutoSaveViewM
     fun deleteLevelsByDeckId(id: Long) = viewModelScope.launch { repo.deleteByDeckId(id) }
 
     fun existsByInterval(intervalNumber: Int, intervalType: IntervalType) =
-        viewModelScope.launch { _intervalExists.value = repo.existsByInterval(intervalNumber, intervalType) }
+        viewModelScope.launch {
+            _intervalExists.value = repo.existsIntervalByDeckId(
+                id = _deckId.value,
+                excludeId = _level.value.id,
+                intervalNumber = intervalNumber,
+                intervalType = intervalType
+            )
+        }
 
     fun setDeckId(id: Long) { _deckId.value = id }
     fun resetLevel() { _level.value = getInitialLevel() }

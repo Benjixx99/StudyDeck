@@ -31,10 +31,20 @@ internal interface LevelDao : BaseDao<LevelEntity> {
 
     @Query("""
         SELECT EXISTS(
-            SELECT 1 FROM level WHERE interval_number = :intervalNumber AND interval_type = :intervalType
+            SELECT 1 
+            FROM level 
+            WHERE interval_number = :intervalNumber 
+                AND interval_type = :intervalType 
+                AND deck_id = :id
+                AND id != :excludeId
         )
     """)
-    suspend fun existsByInterval(intervalNumber: Int, intervalType: IntervalType): Boolean
+    suspend fun existsIntervalByDeckId(
+        id: Long,
+        excludeId: Long,
+        intervalNumber: Int,
+        intervalType: IntervalType
+    ): Boolean
 
     @Query("SELECT count(*) FROM level WHERE id = :id")
     fun countById(id: Long): Int
