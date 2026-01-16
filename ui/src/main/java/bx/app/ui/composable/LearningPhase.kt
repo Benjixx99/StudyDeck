@@ -31,7 +31,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import bx.app.data.enums.CardSideType
 import bx.app.ui.ModifierManager
 import bx.app.ui.data.LearningPhaseParams
 import kotlin.random.Random
@@ -87,8 +86,8 @@ internal fun LearningPhase(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                if (params.card.frontSideType == CardSideType.TEXT && isFront
-                    || params.card.backSideType == CardSideType.TEXT && !isFront) {
+                if (params.card.frontSideType.isText() && isFront
+                    || params.card.backSideType.isText() && !isFront) {
                     LargeText(
                         text = if (isFront) params.frontText else params.backText,
                         color = MaterialTheme.colorScheme.onSurface

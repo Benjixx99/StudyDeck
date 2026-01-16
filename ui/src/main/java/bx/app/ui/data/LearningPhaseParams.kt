@@ -1,6 +1,5 @@
 package bx.app.ui.data
 
-import bx.app.data.enums.CardSideType
 import bx.app.data.model.CardModel
 
 internal data class LearningPhaseParams(
@@ -22,17 +21,17 @@ internal data class LearningPhaseParams(
             return LearningPhaseParams(
                 card = card,
                 frontText =
-                    if (card.frontSideType == CardSideType.TEXT) textById[card.frontSideId].orEmpty() else "",
+                    if (card.frontSideType.isText()) textById[card.frontSideId].orEmpty() else "",
                 frontFileName =
-                    if (card.frontSideType == CardSideType.AUDIO) fileNameById[card.frontSideId].orEmpty() else "",
+                    if (card.frontSideType.isAudio()) fileNameById[card.frontSideId].orEmpty() else "",
                 frontPath =
-                    if (card.frontSideType == CardSideType.AUDIO) pathById[card.frontSideId].orEmpty() else "",
+                    if (card.frontSideType.isAudio()) pathById[card.frontSideId].orEmpty() else "",
                 backText =
-                    if (card.backSideType == CardSideType.TEXT) textById[card.backSideId].orEmpty() else "",
+                    if (card.backSideType.isText()) textById[card.backSideId].orEmpty() else "",
                 backFileName =
-                    if (card.backSideType == CardSideType.AUDIO) fileNameById[card.backSideId].orEmpty() else "",
+                    if (card.backSideType.isAudio()) fileNameById[card.backSideId].orEmpty() else "",
                 backPath =
-                    if (card.backSideType == CardSideType.AUDIO) pathById[card.backSideId].orEmpty() else ""
+                    if (card.backSideType.isAudio()) pathById[card.backSideId].orEmpty() else ""
             )
         }
     }

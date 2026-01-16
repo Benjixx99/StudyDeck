@@ -473,8 +473,8 @@ internal fun SegmentedControlButton(
         shape = RectangleShape,
         colors = ButtonColors(
             contentColor = MaterialTheme.colorScheme.primary,
-            containerColor = if ((selectedCardSideType == CardSideType.TEXT && text == CardTypeText.TEXT)
-                || (selectedCardSideType == CardSideType.AUDIO && text == CardTypeText.AUDIO)) MaterialTheme.colorScheme.onPrimary
+            containerColor = if ((selectedCardSideType.isText() && text == CardTypeText.TEXT)
+                || (selectedCardSideType.isAudio() && text == CardTypeText.AUDIO)) MaterialTheme.colorScheme.onPrimary
             else MaterialTheme.colorScheme.onSecondary,
             disabledContainerColor = Color.Transparent,
             disabledContentColor = Color.Transparent

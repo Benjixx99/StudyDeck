@@ -65,8 +65,8 @@ internal fun CardScreen(
     topBarViewModel.setTitle("Card")
 
     val card by cardWithSidesViewModel.cardViewModel.card.collectAsState()
-    val activeId = if (cardSide == CardSide.FRONT) card.frontSideId else card.backSideId
-    val activeType = if (cardSide == CardSide.FRONT) card.frontSideType else card.backSideType
+    val activeId = if (cardSide.isFront()) card.frontSideId else card.backSideId
+    val activeType = if (cardSide.isFront()) card.frontSideType else card.backSideType
     var showExitDialog by remember { mutableStateOf(false) }
     var cardSideType by remember { mutableStateOf<CardSideType>(activeType) }
     LaunchedEffect(activeType) { cardSideType = activeType }

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bx.app.core.hasValidId
 import bx.app.data.enums.CardSide
-import bx.app.data.enums.CardSideType
 import bx.app.data.model.CardModel
 import bx.app.data.model.TextSideModel
 import bx.app.data.repository.TextSideRepository
@@ -25,10 +24,10 @@ class TextSideViewModel(private val repo: TextSideRepository) : ViewModel() {
 
     fun getTextSideByCard(card: CardModel, cardSide: CardSide) = viewModelScope.launch {
         val id =
-            if (cardSide == CardSide.FRONT)
-                card.frontSideId.takeIf { card.frontSideType == CardSideType.TEXT }
+            if (cardSide.isFront())
+                card.frontSideId.takeIf { card.frontSideType.isText() }
             else
-                card.backSideId.takeIf { card.backSideType == CardSideType.TEXT }
+                card.backSideId.takeIf { card.backSideType.isText() }
 
         if (id != null && id.hasValidId()) getTextSideById(id)
     }
@@ -41,8 +40,6 @@ class TextSideViewModel(private val repo: TextSideRepository) : ViewModel() {
     }
 
     fun insertTextSide(textSide: TextSideModel) = viewModelScope.launch { repo.insert(textSide) }
-    fun updateTextSide(textSide: TextSideModel) = viewModelScope.launch { repo.update(textSide) }
-    fun deleteTextSide(textSide: TextSideModel) = viewModelScope.launch { repo.delete(textSide) }
 
     fun resetTextSide() { _textSide.value = getInitialTextSide() }
     fun resetTextSide(textSide: TextSideModel) {

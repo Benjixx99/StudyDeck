@@ -65,7 +65,7 @@ internal class CardListManager(
 
     private fun getFrontValue(item: CardModel): String {
         return (
-            if (item.frontSideType == CardSideType.TEXT)
+            if (item.frontSideType.isText())
                 textById[item.frontSideId]
             else
                 fileNameById[item.frontSideId]
@@ -74,7 +74,7 @@ internal class CardListManager(
 
     private fun getBackValue(item: CardModel): String {
         return (
-            if (item.backSideType == CardSideType.TEXT)
+            if (item.backSideType.isText())
                 textById[item.backSideId]
             else
                 fileNameById[item.backSideId]

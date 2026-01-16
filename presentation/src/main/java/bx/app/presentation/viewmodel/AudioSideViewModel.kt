@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bx.app.core.hasValidId
 import bx.app.data.enums.CardSide
-import bx.app.data.enums.CardSideType
 import bx.app.data.model.AudioSideModel
 import bx.app.data.model.CardModel
 import bx.app.data.repository.AudioSideRepository
@@ -28,10 +27,10 @@ class AudioSideViewModel(private val repo: AudioSideRepository) : ViewModel() {
 
     fun getAudioSideByCard(card: CardModel, cardSide: CardSide) {
         val id =
-            if (cardSide == CardSide.FRONT)
-                card.frontSideId.takeIf { card.frontSideType == CardSideType.AUDIO }
+            if (cardSide.isFront())
+                card.frontSideId.takeIf { card.frontSideType.isAudio() }
             else
-                card.backSideId.takeIf { card.backSideType == CardSideType.AUDIO }
+                card.backSideId.takeIf { card.backSideType.isAudio() }
 
         if (id != null && id.hasValidId()) getAudioSideById(id)
     }
@@ -51,8 +50,6 @@ class AudioSideViewModel(private val repo: AudioSideRepository) : ViewModel() {
     }
 
     fun insertAudioSide(audioSide: AudioSideModel) = viewModelScope.launch { repo.insert(audioSide) }
-    fun updateAudioSide(audioSide: AudioSideModel) = viewModelScope.launch { repo.update(audioSide) }
-    fun deleteAudioSide(audioSide: AudioSideModel) = viewModelScope.launch { repo.delete(audioSide) }
 
     fun resetAudioSide() { _audioSide.value = getInitialAudioSide() }
     fun resetAudioSide(audioSide: AudioSideModel) {

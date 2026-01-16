@@ -53,13 +53,13 @@ class CardWithSidesViewModel(
     }
 
     fun getCardSideValues(card: CardModel) {
-        if (card.frontSideType == CardSideType.TEXT) { textSideViewModel.getTextById(card.frontSideId) }
-        if (card.backSideType == CardSideType.TEXT) { textSideViewModel.getTextById(card.backSideId) }
-        if (card.frontSideType == CardSideType.AUDIO) {
+        if (card.frontSideType.isText()) { textSideViewModel.getTextById(card.frontSideId) }
+        if (card.backSideType.isText()) { textSideViewModel.getTextById(card.backSideId) }
+        if (card.frontSideType.isAudio()) {
             audioSideViewModel.getFileNameById(card.frontSideId)
             audioSideViewModel.getPathById(card.frontSideId)
         }
-        if (card.backSideType == CardSideType.AUDIO) {
+        if (card.backSideType.isAudio()) {
             audioSideViewModel.getFileNameById(card.backSideId)
             audioSideViewModel.getPathById(card.backSideId)
         }

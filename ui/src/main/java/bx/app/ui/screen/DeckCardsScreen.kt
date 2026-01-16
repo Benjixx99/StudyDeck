@@ -10,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
-import bx.app.data.enums.CardSideType
 import bx.app.presentation.viewmodel.AudioSideViewModel
 import bx.app.presentation.viewmodel.CardViewModel
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
@@ -44,12 +43,7 @@ internal fun DeckCardsScreen(
     val fileNameById by audioSideViewModel.fileNameById.collectAsState()
     val selectedIds = remember { mutableStateSetOf<Long>() }
 
-    cards.forEach {
-        if (it.frontSideType == CardSideType.TEXT) { textSideViewModel.getTextById(it.frontSideId) }
-        if (it.frontSideType == CardSideType.AUDIO) { audioSideViewModel.getFileNameById(it.frontSideId) }
-        if (it.backSideType == CardSideType.TEXT) { textSideViewModel.getTextById(it.backSideId) }
-        if (it.backSideType == CardSideType.AUDIO) { audioSideViewModel.getFileNameById(it.backSideId) }
-    }
+    cards.forEach { cardWithSidesViewModel.getCardSideValues(it) }
 
     Column(
         modifier = ModifierManager.paddingMostTopModifier
