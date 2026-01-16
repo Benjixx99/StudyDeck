@@ -2,12 +2,12 @@ package bx.app.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import bx.app.core.hasValidId
 import bx.app.data.enums.CardSide
 import bx.app.data.enums.CardSideType
 import bx.app.data.model.CardModel
 import bx.app.data.model.TextSideModel
 import bx.app.data.repository.TextSideRepository
-import bx.app.presentation.data.IdValidator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -30,7 +30,7 @@ class TextSideViewModel(private val repo: TextSideRepository) : ViewModel() {
             else
                 card.backSideId.takeIf { card.backSideType == CardSideType.TEXT }
 
-        if (id != null && id >= IdValidator.MIN_VALID_ID) getTextSideById(id)
+        if (id != null && id.hasValidId()) getTextSideById(id)
     }
 
     fun getTextById(id: Long) = viewModelScope.launch {

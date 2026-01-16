@@ -1,5 +1,6 @@
 package bx.app.data.repository
 
+import bx.app.core.hasInvalidId
 import bx.app.data.enums.IntervalType
 import bx.app.data.local.AppDatabase
 import bx.app.data.local.entity.LevelEntity
@@ -32,7 +33,7 @@ class LevelRepository(database: AppDatabase) {
 
     suspend fun insert(level: LevelModel) = baseRepo.insert(level.toEntity())
     suspend fun upsert(level: LevelModel): Long {
-        if (level.id <= 0) {
+        if (level.id.hasInvalidId()) {
             return baseRepo.insert(level.toEntity())
         }
         else {

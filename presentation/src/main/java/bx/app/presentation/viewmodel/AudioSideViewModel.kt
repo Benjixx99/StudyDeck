@@ -2,12 +2,12 @@ package bx.app.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import bx.app.core.hasValidId
 import bx.app.data.enums.CardSide
 import bx.app.data.enums.CardSideType
 import bx.app.data.model.AudioSideModel
 import bx.app.data.model.CardModel
 import bx.app.data.repository.AudioSideRepository
-import bx.app.presentation.data.IdValidator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -33,7 +33,7 @@ class AudioSideViewModel(private val repo: AudioSideRepository) : ViewModel() {
             else
                 card.backSideId.takeIf { card.backSideType == CardSideType.AUDIO }
 
-        if (id != null && id >= IdValidator.MIN_VALID_ID) getAudioSideById(id)
+        if (id != null && id.hasValidId()) getAudioSideById(id)
     }
 
     fun getFileNameById(id: Long) = viewModelScope.launch {

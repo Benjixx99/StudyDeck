@@ -1,11 +1,11 @@
 package bx.app.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import bx.app.core.hasInvalidId
 import bx.app.data.enums.CardSide
 import bx.app.data.enums.CardSideType
 import bx.app.data.model.CardModel
 import bx.app.data.repository.CardWithSidesRepository
-import bx.app.presentation.data.IdValidator
 import kotlinx.coroutines.launch
 
 class CardWithSidesViewModel(
@@ -20,16 +20,16 @@ class CardWithSidesViewModel(
 
     fun changeText(value: String, cardSide: CardSide) {
         when {
-            card.value.id < IdValidator.MIN_VALID_ID -> insertCardWithTextSide(value, cardSide)
-            textSide.value.id < IdValidator.MIN_VALID_ID -> insertTextSideAndUpdateCard(value, cardSide)
+            card.value.id.hasInvalidId() -> insertCardWithTextSide(value, cardSide)
+            textSide.value.id.hasInvalidId() -> insertTextSideAndUpdateCard(value, cardSide)
             else -> updateCardWithTextSide(value, cardSide)
         }
     }
 
     fun changeAudioData(path: String, fileName: String, cardSide: CardSide) {
         when {
-            card.value.id < IdValidator.MIN_VALID_ID -> insertCardWithAudioSide(path, fileName, cardSide)
-            audioSide.value.id < IdValidator.MIN_VALID_ID -> insertAudioSideAndUpdateCard(path, fileName, cardSide)
+            card.value.id.hasInvalidId() -> insertCardWithAudioSide(path, fileName, cardSide)
+            audioSide.value.id.hasInvalidId() -> insertAudioSideAndUpdateCard(path, fileName, cardSide)
             else -> updateCardWithAudioSide(path, fileName, cardSide)
         }
     }

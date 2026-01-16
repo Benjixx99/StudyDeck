@@ -35,10 +35,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
+import bx.app.core.hasInvalidId
+import bx.app.core.hasValidId
 import bx.app.core.maxLength
 import bx.app.data.enums.CardSide
 import bx.app.data.enums.CardSideType
-import bx.app.presentation.data.IdValidator
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
@@ -71,13 +72,13 @@ internal fun CardScreen(
     LaunchedEffect(activeType) { cardSideType = activeType }
 
     BackHandler {
-        showExitDialog = (card.frontSideId < IdValidator.MIN_VALID_ID) xor (card.backSideId < IdValidator.MIN_VALID_ID)
+        showExitDialog = (card.frontSideId.hasInvalidId() xor (card.backSideId.hasInvalidId()))
         if (!showExitDialog) navHostController.popBackStack()
     }
 
     ConfirmationDialog(
         isVisible = showExitDialog,
-        message = (if (card.frontSideId < IdValidator.MIN_VALID_ID) "Front" else "Back")
+        message = (if (card.frontSideId.hasInvalidId()) "Front" else "Back")
                 + " side of the card has no value! \nDiscard changes?",
         onConfirm = {
             deleteCard(card.id)
@@ -87,8 +88,8 @@ internal fun CardScreen(
         onDismiss = { showExitDialog = false }
     )
 
-    if (card.id >= IdValidator.MIN_VALID_ID) {
-        if (activeId < IdValidator.MIN_VALID_ID) {
+    if (card.id.hasValidId()) {
+        if (activeId.hasInvalidId()) {
             cardWithSidesViewModel.textSideViewModel.resetTextSide()
             cardWithSidesViewModel.audioSideViewModel.resetAudioSide()
         }

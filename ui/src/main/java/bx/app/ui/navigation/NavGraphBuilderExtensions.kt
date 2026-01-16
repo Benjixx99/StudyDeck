@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import bx.app.core.IdPolicy
 import bx.app.data.enums.CardSide
-import bx.app.presentation.data.IdValidator
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.data.LearnData
@@ -55,7 +55,7 @@ internal fun NavGraphBuilder.composableDecks(
             onClickCreateNewDeck = {
                 hideNavigationBarViewModel.setHide(true)
                 navHostController.navigateWithSettingBackStack(
-                    route = NavigationRoute.DeckSettings(id = IdValidator.INSERT.toString()),
+                    route = NavigationRoute.DeckSettings(id = IdPolicy.getInsertId().toString()),
                     backStackRoute = NavigationRoute.Decks
                 )
             },
@@ -85,7 +85,7 @@ internal fun NavGraphBuilder.composableDeckCards(navHostController: NavHostContr
             id = backStackEntry.arguments?.getString("id").toString().toLong(),
             onClickCreateNewCard = {
                 navHostController.navigateWithSettingBackStack(
-                    route = NavigationRoute.CardFront(id = IdValidator.INSERT.toString()),
+                    route = NavigationRoute.CardFront(id = IdPolicy.getInsertId().toString()),
                     backStackRoute = backStackEntry.toRoute()
                 )
             },
@@ -107,7 +107,7 @@ internal fun NavGraphBuilder.composableDeckLevels(navHostController: NavHostCont
             id = backStackEntry.arguments?.getString("id").toString().toLong(),
             onClickCreateNewLevel = {
                 navHostController.navigateWithSettingBackStack(
-                    route = NavigationRoute.Level(id = IdValidator.INSERT.toString()),
+                    route = NavigationRoute.Level(id = IdPolicy.getInsertId().toString()),
                     backStackRoute = backStackEntry.toRoute()
                 )
             },

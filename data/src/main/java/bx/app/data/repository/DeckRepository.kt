@@ -1,5 +1,6 @@
 package bx.app.data.repository
 
+import bx.app.core.hasInvalidId
 import bx.app.data.local.AppDatabase
 import bx.app.data.local.entity.DeckEntity
 import bx.app.data.model.DeckModel
@@ -16,7 +17,7 @@ class DeckRepository(private val database: AppDatabase) {
     suspend fun deleteById(id: Long) = deckDao.deleteById(id)
 
     suspend fun upsert(deck: DeckModel): Long {
-        if (deck.id <= 0) {
+        if (deck.id.hasInvalidId()) {
             return deckDao.insertWithDefaultLevel(database, deck.toEntity())
         }
         else {

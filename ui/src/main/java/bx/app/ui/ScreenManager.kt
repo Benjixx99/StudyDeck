@@ -8,6 +8,8 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
+import bx.app.core.hasValidId
+import bx.app.core.isInsert
 import bx.app.data.local.AppDatabase
 import bx.app.data.local.DatabaseBuilder
 import bx.app.data.local.mock.DatabaseMockData
@@ -34,7 +36,6 @@ import bx.app.ui.screen.LevelScreen
 import bx.app.data.enums.CardSide
 import bx.app.data.repository.CardInLevelRepository
 import bx.app.data.repository.CardWithSidesRepository
-import bx.app.presentation.data.IdValidator
 import bx.app.presentation.viewmodel.CardInLevelViewModel
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
@@ -61,7 +62,7 @@ class ScreenManager(
     )
     private var deckId = 0L
         set(id) {
-            if (id >= IdValidator.MIN_VALID_ID) {
+            if (id.hasValidId()) {
                 field = id
                 cardViewModel.setDeckId(id)
                 levelViewModel.setDeckId(id)
@@ -118,7 +119,7 @@ class ScreenManager(
 
     @Composable
     fun DeckSettings(id: Long) {
-        if (id == IdValidator.INSERT) deckViewModel.resetDeck()
+        if (id.isInsert()) deckViewModel.resetDeck()
         DeckSettingsScreen(
             context = context,
             deckViewModel = deckViewModel,
@@ -158,10 +159,10 @@ class ScreenManager(
     fun Card(id: Long, cardSide: CardSide) {
         var cardId by remember { mutableLongStateOf(0L) }
 
-        if (id >= IdValidator.MIN_VALID_ID) {
+        if (id.hasValidId()) {
             cardViewModel.getCardById(id)
         }
-        else if (id == IdValidator.INSERT) {
+        else if (id.isInsert()) {
             cardViewModel.resetCard()
             textSideViewModel.resetTextSide()
             audioSideViewModel.resetAudioSide()
@@ -174,7 +175,9 @@ class ScreenManager(
             cardSide = cardSide,
             deleteCard = { cardId = it }
         )
-        if (cardId >= IdValidator.MIN_VALID_ID) cardWithSidesViewModel.deleteCardById(cardId)
+        if (cardId.hasValidId()) {
+            cardWithSidesViewModel.deleteCardById(cardId)
+        }
 
         NavigationBarItems.SetCardId(cardViewModel)
     }
@@ -183,20 +186,22 @@ class ScreenManager(
     fun Level(id: Long) {
         var levelId by remember { mutableLongStateOf(0L) }
 
-        if (id >= IdValidator.MIN_VALID_ID) {
+        if (id.hasValidId()) {
             levelViewModel.getLevelById(id)
         }
-        else if (id == IdValidator.INSERT) {
+        else if (id.isInsert()) {
             levelViewModel.resetLevel()
         }
         LevelScreen(
             levelViewModel = levelViewModel,
             navHostController = navHostController,
             topBarViewModel = topBarViewModel,
-            isInsert = (id == IdValidator.INSERT),
+            isInsert = (id.isInsert()),
             deleteLevel = { levelId = it }
         )
-        if (levelId >= IdValidator.MIN_VALID_ID) levelViewModel.deleteLevelById(levelId)
+        if (levelId.hasValidId()) {
+            levelViewModel.deleteLevelById(levelId)
+        }
     }
 
     @Composable
