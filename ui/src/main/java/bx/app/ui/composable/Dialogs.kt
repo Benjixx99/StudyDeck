@@ -28,6 +28,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import bx.app.ui.data.ConfirmationDialog
+import bx.app.ui.data.DialogModel
 
 /**
  * A dialog with a radio button group from that a user can select an option
@@ -119,31 +121,27 @@ internal fun ColorPickerDialog(
 }
 
 /**
- * A dialog to let the user confirm something
+ * Renders a dialog described by a [DialogModel].
+ * Supports multiple dialog types (Information, Confirmation).
  */
 @Composable
-fun ConfirmationDialog(
-    isVisible: Boolean,
-    message: String,
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
-    confirmText: String = "Yes",
-    dismissText: String = "No"
-) {
-    if (!isVisible) return
+fun DialogHost(dialogModel: DialogModel) {
+    if (!dialogModel.isVisible) return
 
     AlertDialog(
-        onDismissRequest = onDismiss,
+        onDismissRequest = if (dialogModel is ConfirmationDialog) dialogModel.onDismiss else dialogModel.onConfirm,
         title = null,
-        text = { LargeText(message) },
+        text = { LargeText(dialogModel.message) },
         confirmButton = {
-            TextButton(onClick = { onConfirm() }) {
-                MediumText(confirmText)
+            TextButton(onClick = { dialogModel.onConfirm() }) {
+                MediumText(dialogModel.confirmText)
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                MediumText(dismissText)
+            if (dialogModel is ConfirmationDialog) {
+                TextButton(onClick = dialogModel.onDismiss) {
+                    MediumText(dialogModel.dismissText)
+                }
             }
         }
     )

@@ -12,9 +12,10 @@ import androidx.navigation.NavHostController
 import bx.app.data.model.CardModel
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
-import bx.app.ui.composable.ConfirmationDialog
+import bx.app.ui.composable.DialogHost
 import bx.app.ui.composable.LearningPhase
-import bx.app.ui.data.LearningPhaseDialogState
+import bx.app.ui.data.LearningMode
+import bx.app.ui.LearningPhaseFactory
 import bx.app.ui.data.LearningPhaseParams
 import bx.app.ui.data.LearningState
 
@@ -42,21 +43,17 @@ internal fun RandomLearningPhaseScreen(
 
     shuffledCards.forEach { cardWithSidesViewModel.getCardSideValues(it) }
 
-    val dialogState = LearningPhaseDialogState().init(
-        endDialog = learningState,
-        knownCounter = knownCounter,
-        notKnownCounter = notKnownCounter,
-        navHostController = navHostController,
-        onAnotherRound = { anotherRound = true },
-        onClose = { learningState = LearningState.IN_PROGRESS }
-    )
-
     BackHandler { learningState = LearningState.CANCELLED }
-    ConfirmationDialog(
-        isVisible = dialogState.isVisible,
-        message = dialogState.message,
-        onConfirm = dialogState.onConfirm,
-        onDismiss = dialogState.onDismiss
+    DialogHost(
+        LearningPhaseFactory.createDialogModel(
+            learningMode = LearningMode.RANDOM,
+            learningState = learningState,
+            knownCounter = knownCounter,
+            notKnownCounter = notKnownCounter,
+            navHostController = navHostController,
+            onAnotherRound = { anotherRound = true },
+            onClose = { learningState = LearningState.IN_PROGRESS }
+        )
     )
 
     if (anotherRound) {

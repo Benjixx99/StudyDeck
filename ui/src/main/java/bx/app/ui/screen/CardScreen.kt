@@ -45,9 +45,10 @@ import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
 import bx.app.ui.composable.AudioPlayer
 import bx.app.ui.composable.CardTypeSegmentedControl
-import bx.app.ui.composable.ConfirmationDialog
+import bx.app.ui.composable.DialogHost
 import bx.app.ui.composable.LargeText
 import bx.app.ui.composable.MultiLineTextField
+import bx.app.ui.data.ConfirmationDialog
 import bx.app.ui.getFileNameFromUri
 
 /**
@@ -76,16 +77,18 @@ internal fun CardScreen(
         if (!showExitDialog) navHostController.popBackStack()
     }
 
-    ConfirmationDialog(
-        isVisible = showExitDialog,
-        message = (if (card.frontSideId.hasInvalidId()) "Front" else "Back")
-                + " side of the card has no value! \nDiscard changes?",
-        onConfirm = {
-            deleteCard(card.id)
-            showExitDialog = false
-            navHostController.popBackStack()
-        },
-        onDismiss = { showExitDialog = false }
+    DialogHost(
+        ConfirmationDialog(
+            isVisible = showExitDialog,
+            message = (if (card.frontSideId.hasInvalidId()) "Front" else "Back")
+                    + " side of the card has no value! \nDiscard changes?",
+            onConfirm = {
+                deleteCard(card.id)
+                showExitDialog = false
+                navHostController.popBackStack()
+            },
+            onDismiss = { showExitDialog = false }
+        )
     )
 
     if (card.id.hasValidId()) {

@@ -60,6 +60,7 @@ import bx.app.data.enums.CardSideType
 import bx.app.ui.data.CardTypeText
 import kotlin.math.roundToInt
 import bx.app.ui.R
+import bx.app.ui.data.ConfirmationDialog
 
 
 /**
@@ -417,16 +418,18 @@ internal fun DeleteSelectionBar(
 ) {
     var delete by remember { mutableStateOf(false) }
     SelectionBottomBar(onDelete = { delete = true })
-    ConfirmationDialog(
-        isVisible = delete,
-        message = "Delete selected " + if (selectedIds.size == 1) "item?" else "items?",
-        onConfirm = {
-            selectedIds.forEach { deleteAction(it) }
-            selectedIds.clear()
-        },
-        onDismiss = { delete = false },
-        confirmText = "Delete",
-        dismissText = "Cancel"
+    DialogHost(
+        ConfirmationDialog(
+            isVisible = delete,
+            message = "Delete selected " + if (selectedIds.size == 1) "item?" else "items?",
+            onConfirm = {
+                selectedIds.forEach { deleteAction(it) }
+                selectedIds.clear()
+            },
+            onDismiss = { delete = false },
+            confirmText = "Delete",
+            dismissText = "Cancel"
+        )
     )
 }
 

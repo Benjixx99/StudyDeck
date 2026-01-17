@@ -22,10 +22,11 @@ import bx.app.data.enums.IntervalType
 import bx.app.presentation.viewmodel.LevelViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
-import bx.app.ui.composable.ConfirmationDialog
+import bx.app.ui.composable.DialogHost
 import bx.app.ui.composable.HeaderWithTextFieldAndButtonRow
 import bx.app.ui.composable.RadioButtonGroupDialog
 import bx.app.ui.composable.SingleLineTextField
+import bx.app.ui.data.ConfirmationDialog
 
 /**
  * This screen displays the content of a specific level
@@ -49,15 +50,17 @@ internal fun LevelScreen(
     BackHandler {
         if (intervalExists) showExitDialog = true else navHostController.popBackStack()
     }
-    ConfirmationDialog(
-        isVisible = showExitDialog,
-        message = "Interval already exists! \nDiscard changes?",
-        onConfirm = {
-            deleteLevel(level.id)
-            showExitDialog = false
-            navHostController.popBackStack()
-        },
-        onDismiss = { showExitDialog = false }
+    DialogHost(
+        ConfirmationDialog(
+            isVisible = showExitDialog,
+            message = "Interval already exists! \nDiscard changes?",
+            onConfirm = {
+                deleteLevel(level.id)
+                showExitDialog = false
+                navHostController.popBackStack()
+            },
+            onDismiss = { showExitDialog = false }
+        )
     )
 
     Column(
