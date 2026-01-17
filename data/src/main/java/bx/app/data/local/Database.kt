@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import bx.app.data.converter.IntervalTypeConverter
+import bx.app.data.converter.LocalDateTimeConverter
 import bx.app.data.local.dao.AudioSideDao
 import bx.app.data.local.dao.CardDao
 import bx.app.data.local.dao.CardInLevelDao
@@ -31,7 +32,10 @@ import bx.app.data.local.entity.TextSideEntity
         CardInLevelEntity::class,
     ],
 )
-@TypeConverters(IntervalTypeConverter::class)
+@TypeConverters(
+    IntervalTypeConverter::class,
+    LocalDateTimeConverter::class,
+)
 abstract class AppDatabase : RoomDatabase() {
     internal abstract fun deckDao(): DeckDao
     internal abstract fun cardDao(): CardDao
