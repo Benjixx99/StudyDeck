@@ -52,7 +52,7 @@ internal fun RandomLearningPhaseScreen(
             notKnownCounter = notKnownCounter,
             navHostController = navHostController,
             onAnotherRound = { anotherRound = true },
-            onClose = { learningState = LearningState.IN_PROGRESS }
+            onClose = { learningState.inProgress() }
         )
     )
 
@@ -72,7 +72,6 @@ internal fun RandomLearningPhaseScreen(
             pathById = pathById,
             card = card
         ),
-        learnBothSides = learnBothSides,
         onNotKnown = {
             proceedToNextCard(
                 shuffledCards = shuffledCards,
@@ -89,7 +88,9 @@ internal fun RandomLearningPhaseScreen(
                 loadNext = { cardWithSidesViewModel.cardViewModel.getCardById(it) }
             )
         },
-        isActive = (learningState == LearningState.IN_PROGRESS)
+        isActive = (learningState.inProgress()),
+        learnBothSides = learnBothSides,
+        learningMode = LearningMode.RANDOM
     )
 }
 

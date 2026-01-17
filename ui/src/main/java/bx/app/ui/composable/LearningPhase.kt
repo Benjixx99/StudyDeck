@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import bx.app.ui.ModifierManager
+import bx.app.ui.data.LearningMode
 import bx.app.ui.data.LearningPhaseParams
 import kotlin.random.Random
 
@@ -41,9 +42,16 @@ internal fun LearningPhase(
     learnBothSides: Boolean,
     onKnown: () -> Unit,
     onNotKnown: () -> Unit,
-    isActive: Boolean
+    isActive: Boolean,
+    learningMode: LearningMode,
 ) {
-    var isFront by remember { mutableStateOf(!learnBothSides) }
+    var isFront by remember(params.card.id, params.lastTimeLearnedFront) { mutableStateOf(
+        when {
+            learningMode.isRandom() && learnBothSides -> Random.nextBoolean()
+            learningMode.isLevelBased() && learnBothSides -> !params.lastTimeLearnedFront
+            else -> true
+        }
+    )}
     val fileName = if (isFront) params.frontFileName else params.backFileName
     val path = if (isFront) params.frontPath else params.backPath
     val audioUri = path.takeIf { it.isNotEmpty() }?.toUri()
@@ -127,7 +135,6 @@ internal fun LearningPhase(
                 onClick = {
                     onNotKnown()
                     mediaPlayer?.stopPlayback()
-                    if (learnBothSides) isFront = Random.nextBoolean()
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
                 modifier = Modifier.size(80.dp)
@@ -143,7 +150,6 @@ internal fun LearningPhase(
                 onClick = {
                     onKnown()
                     mediaPlayer?.stopPlayback()
-                    if (learnBothSides) isFront = Random.nextBoolean()
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 modifier = Modifier.size(80.dp)
