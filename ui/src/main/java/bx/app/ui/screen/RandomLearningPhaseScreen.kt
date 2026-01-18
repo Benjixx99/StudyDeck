@@ -52,7 +52,7 @@ internal fun RandomLearningPhaseScreen(
             notKnownCounter = notKnownCounter,
             navHostController = navHostController,
             onAnotherRound = { anotherRound = true },
-            onClose = { learningState.inProgress() }
+            onClose = { learningState = LearningState.IN_PROGRESS }
         )
     )
 
