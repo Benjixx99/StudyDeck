@@ -10,6 +10,7 @@ import bx.app.data.model.CardModel
 import bx.app.data.model.DeckModel
 import bx.app.data.model.LevelModel
 import bx.app.data.model.TextSideModel
+import java.time.LocalDateTime
 
 object DatabaseMockData {
     val decks = listOf<DeckModel>(
@@ -182,14 +183,20 @@ object DatabaseMockData {
         CardInLevelModel(
             cardId = 2,
             levelId = 1,
+            lastTimeLearnedFront = false,
+            lastTimeLearnedDate = LocalDateTime.now().minusDays(4)
         ),
         CardInLevelModel(
             cardId = 3,
             levelId = 1,
+            lastTimeLearnedFront = false,
+            lastTimeLearnedDate = LocalDateTime.now().minusHours(12)
         ),
         CardInLevelModel(
             cardId = 5,
             levelId = 2,
+            lastTimeLearnedFront = false,
+            lastTimeLearnedDate = LocalDateTime.now().minusDays(5)
         ),
     )
 }
