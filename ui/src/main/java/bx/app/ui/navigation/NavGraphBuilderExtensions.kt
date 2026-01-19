@@ -6,10 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import bx.app.core.IdPolicy
+import bx.app.core.hasRandomId
 import bx.app.data.enums.CardSide
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
-import bx.app.ui.data.LearnData
 import bx.app.ui.ScreenManager
 import bx.app.ui.navigation.data.NavigationRoute
 
@@ -43,6 +43,7 @@ fun NavGraphBuilder.navHostDestinations(
     composableLevel(screenManager)
     composableLearnLevel(navHostController, screenManager)
     composableRandomLearningPhase(screenManager)
+    composableLevelLearningPhase(screenManager)
 }
 
 internal fun NavGraphBuilder.composableDecks(
@@ -129,20 +130,26 @@ internal fun NavGraphBuilder.composableDeckLearn(navHostController: NavHostContr
             id = backStackEntry.arguments?.getString("id").toString().toLong(),
             onClickLearn = {
                 id ->
-                if (id == LearnData.RANDOM_ID) {
+                if (id.hasRandomId()) {
                     navHostController.navigateWithSettingBackStack(
-                        route = NavigationRoute.RandomLearningPhase(id = id.toString()),
+                        route = NavigationRoute.RandomLearningPhase(),
                         backStackRoute = backStackEntry.toRoute()
                     )
                 }
                 else {
                     navHostController.navigateWithSettingBackStack(
-                        route = NavigationRoute.LearnLevel(id = id.toString()),
+                        route = NavigationRoute.LearnLevel(),
                         backStackRoute = backStackEntry.toRoute()
                     )
                 }
             }
         )
+    }
+}
+
+internal fun NavGraphBuilder.composableRandomLearningPhase(screenManager: ScreenManager) {
+    composable<NavigationRoute.RandomLearningPhase> {
+        screenManager.RandomLearningPhase()
     }
 }
 
@@ -151,8 +158,9 @@ internal fun NavGraphBuilder.composableLearnLevel(navHostController: NavHostCont
         backStackEntry ->
         screenManager.LearnLevel(
             onClickLearn = {
+                id ->
                 navHostController.navigateWithSettingBackStack(
-                    route = NavigationRoute.LearnPhase(),
+                    route = NavigationRoute.LevelLearningPhase(id = id.toString()),
                     backStackRoute = backStackEntry.toRoute()
                 )
             }
@@ -160,10 +168,10 @@ internal fun NavGraphBuilder.composableLearnLevel(navHostController: NavHostCont
     }
 }
 
-internal fun NavGraphBuilder.composableRandomLearningPhase(screenManager: ScreenManager) {
-    composable<NavigationRoute.RandomLearningPhase> {
+internal fun NavGraphBuilder.composableLevelLearningPhase(screenManager: ScreenManager) {
+    composable<NavigationRoute.LevelLearningPhase> {
         backStackEntry ->
-        screenManager.RandomLearningPhase(
+        screenManager.LevelLearningPhase(
             id = backStackEntry.arguments?.getString("id").toString().toLong()
         )
     }

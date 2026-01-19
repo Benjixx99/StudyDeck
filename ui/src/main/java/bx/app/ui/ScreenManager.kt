@@ -9,7 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import bx.app.core.hasValidId
-import bx.app.core.isInsert
+import bx.app.core.hasInsertId
 import bx.app.data.local.AppDatabase
 import bx.app.data.local.DatabaseBuilder
 import bx.app.data.local.mock.DatabaseMockData
@@ -39,7 +39,10 @@ import bx.app.data.repository.CardWithSidesRepository
 import bx.app.presentation.viewmodel.CardInLevelViewModel
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
+import bx.app.ui.composable.DialogHost
+import bx.app.ui.data.InformationDialog
 import bx.app.ui.navigation.data.NavigationBarItems
+import bx.app.ui.screen.LevelLearningPhaseScreen
 
 /**
  * Manage all the screens for the app
@@ -119,7 +122,7 @@ class ScreenManager(
 
     @Composable
     fun DeckSettings(id: Long) {
-        if (id.isInsert()) deckViewModel.resetDeck()
+        if (id.hasInsertId()) deckViewModel.resetDeck()
         DeckSettingsScreen(
             context = context,
             deckViewModel = deckViewModel,
@@ -162,7 +165,7 @@ class ScreenManager(
         if (id.hasValidId()) {
             cardViewModel.getCardById(id)
         }
-        else if (id.isInsert()) {
+        else if (id.hasInsertId()) {
             cardViewModel.resetCard()
             textSideViewModel.resetTextSide()
             audioSideViewModel.resetAudioSide()
@@ -189,14 +192,14 @@ class ScreenManager(
         if (id.hasValidId()) {
             levelViewModel.getLevelById(id)
         }
-        else if (id.isInsert()) {
+        else if (id.hasInsertId()) {
             levelViewModel.resetLevel()
         }
         LevelScreen(
             levelViewModel = levelViewModel,
             navHostController = navHostController,
             topBarViewModel = topBarViewModel,
-            isInsert = (id.isInsert()),
+            isInsert = (id.hasInsertId()),
             deleteLevel = { levelId = it }
         )
         if (levelId.hasValidId()) {
@@ -205,7 +208,7 @@ class ScreenManager(
     }
 
     @Composable
-    fun RandomLearningPhase(id: Long) {
+    fun RandomLearningPhase() {
         val learnBothSides = deckViewModel.deck.collectAsState().value.learnBothSides
         val shuffledCards = cardViewModel.cards.collectAsState().value.shuffled().toMutableList()
 
@@ -234,4 +237,36 @@ class ScreenManager(
             onClickLearn = onClickLearn
         )
     }
+
+    @Composable
+    fun LevelLearningPhase(id: Long) {
+        cardViewModel.setLevelId(id)
+
+        val cardsInLevel by cardViewModel.cardsInLevel.collectAsState()
+        val deck by deckViewModel.deck.collectAsState()
+        val onFailing = deck.onFailing
+        val learnBothSides = deck.learnBothSides
+        val shuffledCards = cardsInLevel.shuffled().toMutableList()
+
+        if (shuffledCards.isNotEmpty()) {
+            cardViewModel.getCardById(shuffledCards.first().id)
+            cardInLevelViewModel.getLastTimeLearnedFrontByCardId(shuffledCards.first().id)
+        }
+        else {
+            cardViewModel.resetCard()
+        }
+
+        LevelLearningPhaseScreen(
+            levelId = id,
+            onFailing = onFailing,
+            learnBothSides = learnBothSides,
+            cardWithSidesViewModel = cardWithSidesViewModel,
+            cardInLevelViewModel = cardInLevelViewModel,
+            navHostController = navHostController,
+            topBarViewModel = topBarViewModel,
+            shuffledCards = shuffledCards
+        )
+    }
+
+
 }
