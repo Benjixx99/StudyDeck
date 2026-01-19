@@ -9,14 +9,14 @@ data class CardInLevelModel(
     /**
      * Is only important if the column [bx.app.data.local.entity.DeckEntity.learnBothSides] is true
      */
-    val frontSideKnown: Boolean? = null,
+    val lastTimeLearnedFront: Boolean = false,
     val lastTimeLearnedDate: LocalDateTime? = null,
 ) : BaseModel() {
     override fun toEntity(): CardInLevelEntity {
         return CardInLevelEntity(
             cardId = this.cardId,
             levelId = this.levelId,
-            frontSideKnown = this.frontSideKnown,
+            lastTimeLearnedFront = this.lastTimeLearnedFront,
             lastTimeLearnedDate = this.lastTimeLearnedDate
         )
     }
