@@ -20,6 +20,21 @@ internal interface LevelDao : BaseDao<LevelEntity> {
     @Query("SELECT id FROM level WHERE deck_id = :id ORDER BY (interval_number * interval_type) LIMIT 1")
     suspend fun getFirstByDeckId(id: Long): Long
 
+    @Query("""
+        SELECT id FROM level
+        WHERE (interval_number * interval_type) > :intervalInDays AND deck_id = :id
+        LIMIT 1
+    """)
+    suspend fun getNextLevelId(intervalInDays: Int, id: Long): Long?
+
+    @Query("""
+        SELECT id FROM level
+        WHERE (interval_number * interval_type) < :intervalInDays AND deck_id = :id
+        ORDER BY (interval_number * interval_type) DESC
+        LIMIT 1
+    """)
+    suspend fun getPriorLevelId(intervalInDays: Int, id: Long): Long?
+
     @Query("DELETE FROM level")
     override suspend fun deleteAll()
 
