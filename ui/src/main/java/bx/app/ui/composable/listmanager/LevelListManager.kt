@@ -25,7 +25,8 @@ internal class LevelListManager(
     onSelect: (id: Long) -> Unit = {},
     selectedIds: Set<Long> = emptySet<Long>(),
     val type: LevelListType,
-    val cardsCountByLevelId: Map<Long, Int?> = emptyMap<Long, Int?>()
+    val cardsCountByLevelId: Map<Long, Int?> = emptyMap<Long, Int?>(),
+    val learnableCardsCountByLevelId: Map<Long, Int?> = emptyMap<Long, Int?>()
 ) : BaseListManager(items, context, modifier, searchText, onClick, onSelect, selectedIds) {
 
     enum class LevelListType { Edit, Learn }
@@ -41,7 +42,8 @@ internal class LevelListManager(
 
                 if (type == LevelListType.Learn) {
                     LargeText(
-                        text = cardsCountByLevelId[item.id].toString(),
+                        text = learnableCardsCountByLevelId[item.id].toString() + "/"
+                                + cardsCountByLevelId[item.id].toString(),
                         modifier = Modifier.padding(end = 10.dp)
                     )
                 }
