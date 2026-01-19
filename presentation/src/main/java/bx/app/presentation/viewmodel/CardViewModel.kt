@@ -16,8 +16,8 @@ class CardViewModel(private val repo: CardRepository) : ViewModel() {
     private val _levelId = MutableStateFlow(0L)
     private val _card = MutableStateFlow<CardModel>(getInitialCard())
 
-    val card: StateFlow<CardModel> = _card
     val deckId: StateFlow<Long> = _deckId
+    val card: StateFlow<CardModel> = _card
     val cards: StateFlow<List<CardModel>> =
         repo.observeById(_deckId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
     val cardsInLevel: StateFlow<List<CardModel>> =
