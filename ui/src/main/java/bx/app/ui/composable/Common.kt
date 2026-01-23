@@ -270,7 +270,10 @@ internal fun LargeText(
  * The MainDropdownMenu lets users import and export data
  */
 @Composable
-internal fun MainDropdownMenu() {
+internal fun MainDropdownMenu(
+    onImportClick: () -> Unit,
+    onExportClick: () -> Unit,
+) {
     var expanded by remember { mutableStateOf(false) }
     Box {
         IconButton(onClick = { expanded = !expanded }) {
@@ -280,7 +283,10 @@ internal fun MainDropdownMenu() {
             )
         }
         IconButton(onClick = { expanded = !expanded }) {
-            Icon(Icons.Default.MoreVert, contentDescription = "More options")
+            Icon(
+                imageVector = Icons.Default.MoreVert,
+                contentDescription = "More options"
+            )
         }
         DropdownMenu(
             expanded = expanded,
@@ -288,11 +294,17 @@ internal fun MainDropdownMenu() {
         ) {
             DropdownMenuItem(
                 text = { Text("Import") },
-                onClick = { }
+                onClick = {
+                    expanded = false
+                    onImportClick()
+                }
             )
             DropdownMenuItem(
                 text = { Text("Export") },
-                onClick = { }
+                onClick = {
+                    expanded = false
+                    onExportClick
+                }
             )
         }
     }
