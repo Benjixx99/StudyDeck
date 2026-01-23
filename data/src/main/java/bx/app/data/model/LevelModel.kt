@@ -2,7 +2,9 @@ package bx.app.data.model
 
 import bx.app.data.enums.IntervalType
 import bx.app.data.local.entity.LevelEntity
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class LevelModel(
     override val id: Long = 0,
     val name: String,

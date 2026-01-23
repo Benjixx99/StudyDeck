@@ -2,7 +2,9 @@ package bx.app.data.model
 
 import bx.app.data.enums.CardFailing
 import bx.app.data.local.entity.DeckEntity
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class DeckModel(
     override val id: Long = 0,
     val name: String,

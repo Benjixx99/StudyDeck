@@ -2,7 +2,9 @@ package bx.app.data.model
 
 import bx.app.data.enums.CardSideType
 import bx.app.data.local.entity.CardEntity
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CardModel(
     override val id: Long = 0,
     val frontSideType: CardSideType,

@@ -2,7 +2,9 @@ package bx.app.data.model
 
 import bx.app.data.enums.CardSide
 import bx.app.data.local.entity.AudioSideEntity
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class AudioSideModel(
     override val id: Long = 0,
     val path: String,

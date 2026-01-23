@@ -1,8 +1,11 @@
 package bx.app.data.model
 
 import bx.app.data.local.entity.CardInLevelEntity
+import bx.app.data.serializer.LocalDateTimeIsoSerializer
+import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
+@Serializable
 data class CardInLevelModel(
     val cardId: Long,
     val levelId: Long,
@@ -10,6 +13,7 @@ data class CardInLevelModel(
      * Is only important if the column [bx.app.data.local.entity.DeckEntity.learnBothSides] is true
      */
     val lastTimeLearnedFront: Boolean = false,
+    @Serializable(with = LocalDateTimeIsoSerializer::class)
     val lastTimeLearnedDate: LocalDateTime? = null,
 ) : BaseModel() {
     override fun toEntity(): CardInLevelEntity {
