@@ -117,14 +117,4 @@ internal interface CardWithSidesDao : CardDao {
         database.audioSideDao().update(audioSide)
         update(cardSide.setAudioSide(card, audioSide.id))
     }
-
-    fun CardSide.setTextSide(card: CardEntity, id: Long): CardEntity = when (this) {
-        CardSide.FRONT -> card.copy(frontSideType = CardSideType.TEXT, frontSideId = id)
-        CardSide.BACK -> card.copy(backSideType = CardSideType.TEXT, backSideId = id)
-    }
-
-    fun CardSide.setAudioSide(card: CardEntity, id: Long): CardEntity = when (this) {
-        CardSide.FRONT -> card.copy(frontSideType = CardSideType.AUDIO, frontSideId = id)
-        CardSide.BACK -> card.copy(backSideType = CardSideType.AUDIO, backSideId = id)
-    }
 }
