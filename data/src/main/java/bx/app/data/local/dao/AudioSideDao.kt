@@ -11,6 +11,9 @@ internal interface AudioSideDao : BaseDao<AudioSideEntity> {
     @Query("SELECT * FROM audio_side")
     override fun observeAll(): Flow<List<AudioSideEntity>>
 
+    @Query("SELECT * FROM audio_side")
+    override suspend fun getAll(): List<AudioSideEntity>
+
     @Query("SELECT * FROM audio_side WHERE id = :id")
     override suspend fun getById(id: Long): AudioSideEntity
 

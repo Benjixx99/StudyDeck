@@ -11,6 +11,9 @@ internal interface TextSideDao : BaseDao<TextSideEntity> {
     @Query("SELECT * FROM text_side")
     override fun observeAll(): Flow<List<TextSideEntity>>
 
+    @Query("SELECT * FROM text_side")
+    override suspend fun getAll(): List<TextSideEntity>
+
     @Query("SELECT * FROM text_side WHERE id = :id")
     override suspend fun getById(id: Long): TextSideEntity
 

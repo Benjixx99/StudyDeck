@@ -11,6 +11,9 @@ internal interface LevelDao : BaseDao<LevelEntity> {
     @Query("SELECT * FROM level")
     override fun observeAll(): Flow<List<LevelEntity>>
 
+    @Query("SELECT * FROM level")
+    override suspend fun getAll(): List<LevelEntity>
+
     @Query("SELECT * FROM level WHERE deck_id = :id ORDER BY (interval_number * interval_type)")
     fun observeByDeckId(id: Long): Flow<List<LevelEntity>>
 
