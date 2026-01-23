@@ -20,7 +20,9 @@ object BottomBarComponent {
 
         // TODO: Probably I need a function like DisplayBottomNavigationBar()
         if (currentRoute is NavigationRoute.Decks || currentRoute is NavigationRoute.Level
-            || currentRoute is NavigationRoute.RandomLearningPhase || currentRoute is NavigationRoute.LearnLevel) return
+            || currentRoute is NavigationRoute.RandomLearningPhase
+            || currentRoute is NavigationRoute.LevelLearningPhase
+            || currentRoute is NavigationRoute.LearnLevel) return
 
         val items = NavigationBarItems.getNavigationItemList(currentRoute)
 
