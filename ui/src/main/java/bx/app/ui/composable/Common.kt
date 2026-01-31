@@ -303,7 +303,7 @@ internal fun MainDropdownMenu(
                 text = { Text("Export") },
                 onClick = {
                     expanded = false
-                    onExportClick
+                    onExportClick()
                 }
             )
         }
