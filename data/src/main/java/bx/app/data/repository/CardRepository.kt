@@ -25,6 +25,8 @@ class CardRepository(database: AppDatabase) {
             cardDao.observeByLevelId(id).map { list -> list.map { it.toModel() } }
         }
 
+    fun countCardsByDeckId(id: Long) = cardDao.countCardsByDeckId(id)
+
     suspend fun getById(id: Long) = baseRepo.getById(id) as CardModel
     suspend fun insert(card: CardModel) = baseRepo.insert(card.toEntity())
     suspend fun update(card: CardModel) = baseRepo.update(card.toEntity())

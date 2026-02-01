@@ -25,6 +25,7 @@ internal class DeckListManager(
     onClick: (id: Long) -> Unit,
     onSelect: (id: Long) -> Unit,
     selectedIds: Set<Long>,
+    val cardsCountByDeckId: Map<Long, Int?>
 ) : BaseListManager(items, context, modifier, searchText, onClick, onSelect, selectedIds) {
 
     @Composable
@@ -35,12 +36,11 @@ internal class DeckListManager(
             Row {
                 LargeText(text = item.name)
                 Spacer(modifier = Modifier.weight(1f))
-                LargeText(text = "0", modifier = Modifier.padding(end = 10.dp)) // TODO: Get count of cards
+                LargeText(text = cardsCountByDeckId[item.id].toString(), modifier = Modifier.padding(end = 10.dp))
             }
             MediumText(
                 text = item.description.toString(),
                 maxLines = 1,
-                //modifier = Modifier.background(if (item.isFavorite) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.background)
             )
         }
     }

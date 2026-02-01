@@ -30,6 +30,9 @@ internal interface CardDao : BaseDao<CardEntity> {
     """)
     fun observeByLevelId(id: Long): Flow<List<CardEntity>>
 
+    @Query("SELECT count(*) FROM card WHERE deck_id = :id")
+    fun countCardsByDeckId(id: Long): Flow<Int?>
+
     @Query("SELECT * FROM card WHERE id = :id")
     override suspend fun getById(id: Long): CardEntity
 

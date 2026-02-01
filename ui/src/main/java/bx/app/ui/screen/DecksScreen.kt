@@ -1,6 +1,5 @@
 package bx.app.ui.screen
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +23,6 @@ import bx.app.ui.composable.listmanager.DeckListManager
 /**
  * This screen displays a list of all decks that the user created
  */
-@SuppressLint("ViewModelConstructorInComposable")
 @Composable
 internal fun DecksScreen(
     context: Context,
@@ -38,6 +36,11 @@ internal fun DecksScreen(
     topBarViewModel.setTitle("Decks")
     val decks by deckViewModel.decks.collectAsState()
     val selectedIds = remember { mutableStateSetOf<Long>() }
+    val cardsCountByDeckId by cardWithSidesViewModel.cardViewModel.cardsCountByDeckId.collectAsState()
+
+    decks.forEach {
+        cardWithSidesViewModel.cardViewModel.countCardsByDeckId(it.id)
+    }
 
     Column(
         modifier = ModifierManager.paddingMostTopModifier
@@ -51,6 +54,7 @@ internal fun DecksScreen(
             onClick = onClickDeck,
             onSelect = { if (!selectedIds.add(it)) selectedIds.remove(it) },
             selectedIds = selectedIds,
+            cardsCountByDeckId = cardsCountByDeckId
         )
         deckListManager.List()
     }
