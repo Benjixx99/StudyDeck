@@ -1,12 +1,14 @@
 package bx.app.ui.screen
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,12 +30,14 @@ import bx.app.ui.composable.SwitchTextRow
  */
 @Composable
 internal fun DeckSettingsScreen(
-    context: Context,
     deckViewModel: DeckViewModel,
     topBarViewModel: TopBarViewModel,
     hideNavigationBarViewModel: HideNavigationBarViewModel,
 ) {
     val deck by deckViewModel.deck.collectAsState()
+    var deckName by remember { mutableStateOf(deck.name) }
+    LaunchedEffect(deck.name) { deckName = deck.name }
+
     if (deck.id.hasValidId()) hideNavigationBarViewModel.setHide(false)
 
     topBarViewModel.setTitle("Deck settings")
@@ -47,16 +51,13 @@ internal fun DeckSettingsScreen(
     ) {
         SingleLineTextField(
             modifier = ModifierManager.paddingTopModifier,
-            valueText = if (!deck.name.isEmpty()) deck.name else "Name",
+            valueText = if (!deck.name.isEmpty()) deckName else "",
             labelText = "Name",
             onValueChange = {
-                if (it.isEmpty()) {
-                    deckViewModel.changeName(deck.name)
-                    Toast.makeText(context, "Name is missing!", Toast.LENGTH_SHORT).show()
-                }
-                else {
+                if (it.isNotEmpty()) {
                     deckViewModel.changeName(it)
                 }
+                deckName = it
             },
         )
         MultiLineTextField(
