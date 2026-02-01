@@ -29,10 +29,9 @@ import kotlin.math.abs
 import kotlin.math.max
 
 @Composable
-internal fun ColorPicker(
+internal fun colorPicker(
     modifier: Modifier = Modifier,
     initialColor: Color = Color.Green,
-    onColorChanged: (Color) -> Unit = {}
 ): Color {
     val initialHsv = FloatArray(3)
 
@@ -47,7 +46,6 @@ internal fun ColorPicker(
     var saturation by remember { mutableFloatStateOf(initialHsv[1]) } // 0..1
     var value by remember { mutableFloatStateOf(initialHsv[2]) }      // 0..1
     val selectedColor = remember(hue, saturation, value) { hsvToColor(hue, saturation, value) }
-    //LaunchedEffect(selectedColor) { onColorChanged(selectedColor) } // Not needed right now!
 
     Row(modifier = modifier) {
         Box(modifier = Modifier.aspectRatio(1f).padding(end = 8.dp)) {

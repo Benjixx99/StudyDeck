@@ -1,8 +1,8 @@
 package bx.app.ui.composable
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -85,7 +85,7 @@ internal fun ColorPickerDialog(
 ) {
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
-            modifier = modifier.fillMaxWidth().height(400.dp),
+            modifier = modifier.fillMaxWidth().height(375.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
             Column(
@@ -98,10 +98,10 @@ internal fun ColorPickerDialog(
                         .fillMaxWidth()
                         .height(30.dp)
                         .wrapContentSize(Alignment.Center)
-                        .padding(top = 5.dp),
+                        .padding(top = 10.dp),
                     textAlign = TextAlign.Center,
                 )
-                var color = ColorPicker(
+                var color = colorPicker(
                     modifier = Modifier.size(250.dp).padding(top = 20.dp),
                     initialColor = selectedColor
                 )
@@ -109,11 +109,15 @@ internal fun ColorPickerDialog(
                     text = Integer.toHexString(color.toArgb()),
                     modifier = Modifier.padding(top = 5.dp)
                 )
-
-                Row {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
                     TextButton(onClick = onDismissRequest) { MediumText("Cancel") }
-                    Spacer(Modifier.weight(1.0f))
-                    TextButton(onClick = { onSaveColorClick(color) }) { MediumText("Save") }
+                    TextButton(
+                        modifier = Modifier.padding(end = 25.dp),
+                        onClick = { onSaveColorClick(color) }
+                    ) { MediumText("Save") }
                 }
             }
         }
