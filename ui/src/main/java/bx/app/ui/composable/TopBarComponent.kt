@@ -44,13 +44,13 @@ object TopBarComponent {
         onBackClick: () -> Unit,
         actions: @Composable (RowScope.() -> Unit) = {}
     ) {
-        // TODO: Display this info only while developing
+        // TODO: Display this info only while developing - $versionName DEV
         val context = LocalContext.current
         val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
         val versionName = packageInfo.versionName
 
         TopAppBar(
-            title = { Text(text = "$title - $versionName DEV", fontSize = 20.sp) },
+            title = { Text(text = title, fontSize = 20.sp) },
             navigationIcon = {},
             actions = actions
         )

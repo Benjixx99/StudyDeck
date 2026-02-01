@@ -72,13 +72,13 @@ class ScreenManager(
         }
 
     init {
-        context.deleteDatabase(DatabaseBuilder.DATABASE_NAME)
-        DatabaseMockData.decks.forEach { deckViewModel.insertDeck(it) }
-        DatabaseMockData.cards.forEach { cardViewModel.insertCard(it) }
-        DatabaseMockData.levels.forEach { levelViewModel.insertLevel(it) }
-        DatabaseMockData.cardInLevel.forEach { cardInLevelViewModel.insertCardInLevel(it) }
-        DatabaseMockData.textSide.forEach { textSideViewModel.insertTextSide(it) }
-        DatabaseMockData.audioSide.forEach { audioSideViewModel.insertAudioSide(it) }
+//        context.deleteDatabase(DatabaseBuilder.DATABASE_NAME)
+//        DatabaseMockData.decks.forEach { deckViewModel.insertDeck(it) }
+//        DatabaseMockData.cards.forEach { cardViewModel.insertCard(it) }
+//        DatabaseMockData.levels.forEach { levelViewModel.insertLevel(it) }
+//        DatabaseMockData.cardInLevel.forEach { cardInLevelViewModel.insertCardInLevel(it) }
+//        DatabaseMockData.textSide.forEach { textSideViewModel.insertTextSide(it) }
+//        DatabaseMockData.audioSide.forEach { audioSideViewModel.insertAudioSide(it) }
     }
 
     @Composable
