@@ -1,12 +1,16 @@
 package bx.app.ui.composable.listmanager
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import bx.app.data.model.IdentifiedModel
 import bx.app.data.model.DeckModel
@@ -41,6 +45,13 @@ internal class DeckListManager(
             MediumText(
                 text = item.description.toString(),
                 maxLines = 1,
+            )
+            Spacer(
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth()
+                    .height(2.dp)
+                    .background(Color(item.color))
             )
         }
     }
