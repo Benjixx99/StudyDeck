@@ -36,8 +36,8 @@ internal interface DeckDao : BaseDao<DeckEntity> {
             database.levelDao().insert(
                 LevelEntity(
                     name = "Once a day",
-                    intervalNumber = 7,
-                    intervalType = IntervalType.WEEK,
+                    intervalNumber = 1,
+                    intervalType = IntervalType.DAY,
                     deckId = id
                 )
             )
