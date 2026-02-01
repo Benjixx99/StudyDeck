@@ -47,11 +47,15 @@ internal fun LearningPhase(
 ) {
     var isFront by remember(params.card.id, params.lastTimeLearnedFront) { mutableStateOf(
         when {
+    var isFront by remember { mutableStateOf(true) }
+    LaunchedEffect(params.card.id, params.lastTimeLearnedFront, learningMode, learnBothSides) {
+        isFront = when {
             learningMode.isRandom() && learnBothSides -> Random.nextBoolean()
             learningMode.isLevelBased() && learnBothSides -> !params.lastTimeLearnedFront
             else -> true
         }
-    )}
+    }
+
     val fileName = if (isFront) params.frontFileName else params.backFileName
     val path = if (isFront) params.frontPath else params.backPath
     val audioUri = path.takeIf { it.isNotEmpty() }?.toUri()
