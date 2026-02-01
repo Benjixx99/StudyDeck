@@ -25,6 +25,7 @@ class CardInLevelRepository(private val database: AppDatabase) {
         onFailing: CardFailing,
     ) = cardInLevelDao.update(levelId, cardId, learnBothSides, onFailing, database)
 
+    suspend fun moveCardsToPriorLevel(levelId: Long) = cardInLevelDao.moveCardsToPriorLevel(levelId, database)
     suspend fun delete(cardInLevel: CardInLevelModel) = baseRepo.delete(cardInLevel.toEntity())
 
     fun getLastTimeLearnedFrontByCardId(id: Long) = cardInLevelDao.getLastTimeLearnedFrontByCardId(id)

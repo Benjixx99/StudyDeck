@@ -21,7 +21,7 @@ import java.time.LocalDateTime
             entity = LevelEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("level_id"),
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.NO_ACTION
     )],
     indices = [Index(value = ["card_id"], unique = true)]
 )

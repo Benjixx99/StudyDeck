@@ -55,4 +55,6 @@ class CardInLevelViewModel(private val repo: CardInLevelRepository) : ViewModel(
         learnBothSides: Boolean,
         onFailing: CardFailing,
     ) = viewModelScope.launch { repo.update(levelId, cardId, learnBothSides, onFailing) }
+
+    fun moveCardsToPriorLevel(levelId: Long) = viewModelScope.launch { repo.moveCardsToPriorLevel(levelId) }
 }

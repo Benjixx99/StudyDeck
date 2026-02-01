@@ -36,7 +36,7 @@ internal interface LevelDao : BaseDao<LevelEntity> {
         ORDER BY (interval_number * interval_type) DESC
         LIMIT 1
     """)
-    suspend fun getPriorLevelId(intervalInDays: Int, id: Long): Long?
+    suspend fun getPreviousLevelId(intervalInDays: Int, id: Long): Long?
 
     @Query("DELETE FROM level")
     override suspend fun deleteAll()

@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
+import bx.app.presentation.viewmodel.CardInLevelViewModel
 import bx.app.presentation.viewmodel.LevelViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
@@ -27,6 +28,7 @@ import bx.app.ui.composable.listmanager.LevelListManager.LevelListType
 internal fun DeckLevelsScreen(
     context: Context,
     levelViewModel: LevelViewModel,
+    cardInLevelViewModel: CardInLevelViewModel,
     topBarViewModel: TopBarViewModel,
     hideNavigationBarViewModel: HideNavigationBarViewModel,
     onClickCreateNewLevel: () -> Unit = {},
@@ -63,6 +65,7 @@ internal fun DeckLevelsScreen(
         DeleteSelectionBar(
             selectedIds = selectedIds,
             deleteAction = {
+                cardInLevelViewModel.moveCardsToPriorLevel(it)
                 levelViewModel.deleteLevelById(it)
                 hideNavigationBarViewModel.setHide(false)
             }

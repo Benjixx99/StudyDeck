@@ -17,12 +17,15 @@ internal interface CardInLevelDao : BaseDao<CardInLevelEntity> {
     @Query("SELECT * FROM card_in_level")
     override suspend fun getAll(): List<CardInLevelEntity>
 
-    // TODO: This query is useless because the primary key consists of level id and card id
+    // TODO: This query is useless
     @Query("SELECT * FROM card_in_level WHERE level_id = :id")
     override suspend fun getById(id: Long): CardInLevelEntity
 
     @Query("SELECT * FROM card_in_level WHERE card_id = :id")
     suspend fun getByCardId(id: Long): CardInLevelEntity
+
+    @Query("SELECT * FROM card_in_level WHERE level_id = :id")
+    suspend fun getByLevelId(id: Long): List<CardInLevelEntity>
 
     @Query("DELETE FROM card_in_level")
     override suspend fun deleteAll()
@@ -48,7 +51,6 @@ internal interface CardInLevelDao : BaseDao<CardInLevelEntity> {
         ) 
     """)
     fun countLearnableCardsByLevelId(levelId: Long): Flow<Int?>
-
 
     @Query("""
         UPDATE card_in_level SET 
@@ -95,12 +97,35 @@ internal interface CardInLevelDao : BaseDao<CardInLevelEntity> {
         updateHelper(
             cardInLevel = getByCardId(cardId),
             newLevelId = when (onFailing) {
-                CardFailing.MOVE_ONE_LEVE_DOWN -> levelDao.getPriorLevelId(intervalInDays, level.deckId)
+                CardFailing.MOVE_ONE_LEVE_DOWN -> levelDao.getPreviousLevelId(intervalInDays, level.deckId)
                 CardFailing.MOVE_TO_START -> levelDao.getFirstByDeckId(level.deckId)
                 CardFailing.STAY_ON_CURRENT_LEVEL -> null
             },
             learnBothSides = learnBothSides
         )
+    }
+
+    @Transaction
+    suspend fun moveCardsToPriorLevel(
+        levelId: Long,
+        database: AppDatabase,
+    ) {
+        val levelDao = database.levelDao()
+        val level = levelDao.getById(levelId)
+        val intervalInDays = level.intervalNumber * level.intervalType.days
+        val previousLevelId = levelDao.getPreviousLevelId(intervalInDays, level.deckId)
+
+        if (previousLevelId == null) return
+
+        val cardsInLevel = getByLevelId(levelId)
+        cardsInLevel.forEach {
+            update(
+                cardId = it.cardId,
+                levelId = previousLevelId,
+                lastTimeLearnedFront = it.lastTimeLearnedFront,
+                lastTimeLearnedDate = it.lastTimeLearnedDate ?: LocalDateTime.now()
+            )
+        }
     }
 
     private suspend fun updateHelper(

@@ -139,6 +139,7 @@ class ScreenManager(
         DeckLevelsScreen(
             context = context,
             levelViewModel = levelViewModel,
+            cardInLevelViewModel = cardInLevelViewModel,
             topBarViewModel = topBarViewModel,
             hideNavigationBarViewModel = hideNavigationBarViewModel,
             onClickCreateNewLevel = onClickCreateNewLevel,
