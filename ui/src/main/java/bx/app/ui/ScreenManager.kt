@@ -39,8 +39,6 @@ import bx.app.data.repository.CardWithSidesRepository
 import bx.app.presentation.viewmodel.CardInLevelViewModel
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
-import bx.app.ui.composable.DialogHost
-import bx.app.ui.data.InformationDialog
 import bx.app.ui.navigation.data.NavigationBarItems
 import bx.app.ui.screen.LevelLearningPhaseScreen
 
@@ -124,7 +122,6 @@ class ScreenManager(
     fun DeckSettings(id: Long) {
         if (id.hasInsertId()) deckViewModel.resetDeck()
         DeckSettingsScreen(
-            context = context,
             deckViewModel = deckViewModel,
             topBarViewModel = topBarViewModel,
             hideNavigationBarViewModel = hideNavigationBarViewModel
@@ -155,7 +152,7 @@ class ScreenManager(
         onClickLearn: (id: Long) -> Unit = {},
     ) {
         deckId = id
-        DeckLearnScreen(context, topBarViewModel, onClickLearn)
+        DeckLearnScreen(context, cardViewModel, topBarViewModel, onClickLearn)
     }
 
     @Composable
@@ -214,15 +211,18 @@ class ScreenManager(
 
         if (shuffledCards.isNotEmpty()) {
             cardViewModel.getCardById(shuffledCards.first().id)
-
-            RandomLearningPhaseScreen(
-                learnBothSides = learnBothSides,
-                cardWithSidesViewModel = cardWithSidesViewModel,
-                navHostController = navHostController,
-                topBarViewModel = topBarViewModel,
-                shuffledCards = shuffledCards
-            )
         }
+        else {
+            cardViewModel.resetCard()
+        }
+
+        RandomLearningPhaseScreen(
+            learnBothSides = learnBothSides,
+            cardWithSidesViewModel = cardWithSidesViewModel,
+            navHostController = navHostController,
+            topBarViewModel = topBarViewModel,
+            shuffledCards = shuffledCards
+        )
     }
 
     @Composable
@@ -267,6 +267,4 @@ class ScreenManager(
             shuffledCards = shuffledCards
         )
     }
-
-
 }
