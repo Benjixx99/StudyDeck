@@ -26,7 +26,7 @@ internal interface LevelDao : BaseDao<LevelEntity> {
     @Query("""
         SELECT id FROM level
         WHERE (interval_number * interval_type) > :intervalInDays AND deck_id = :id
-        ORDER BY (interval_number * interval_type) DESC
+        ORDER BY (interval_number * interval_type)
         LIMIT 1
     """)
     suspend fun getNextLevelId(intervalInDays: Int, id: Long): Long?

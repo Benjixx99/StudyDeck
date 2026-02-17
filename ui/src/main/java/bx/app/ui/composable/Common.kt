@@ -95,7 +95,7 @@ private fun BaseTextField(
 ) {
     TextField(
         value = value,
-        onValueChange = { if (it.length < 100) onValueChange(it) },
+        onValueChange = onValueChange,
         modifier = modifier.fillMaxWidth(),
         readOnly = readOnly,
         label = label,
@@ -134,7 +134,7 @@ internal fun MultiLineTextField(
         keyboardOptions = keyboardOptions,
         isSingleLine = false,
         maxLines = maxLines,
-        onValueChange = onValueChange,
+        onValueChange = { if (it.length < 500) onValueChange(it) },
         colors = colors,
     )
 }
@@ -162,7 +162,7 @@ internal fun SingleLineTextField(
         readOnly = readOnly,
         isError = isError,
         keyboardOptions = keyboardOptions,
-        onValueChange = onValueChange,
+        onValueChange = { if (it.length < 100) onValueChange(it) },
         colors = colors,
     )
 }

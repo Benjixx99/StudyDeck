@@ -101,6 +101,7 @@ internal fun LearningPhase(
                 if (params.card.frontSideType.isText() && isFront
                     || params.card.backSideType.isText() && !isFront) {
                     LargeText(
+                        modifier = Modifier.padding(horizontal = 20.dp),
                         text = if (isFront) params.frontText else params.backText,
                         color = MaterialTheme.colorScheme.onSurface
                     )
