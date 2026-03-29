@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import bx.app.presentation.viewmodel.AudioSideViewModel
 import bx.app.presentation.viewmodel.CardViewModel
@@ -38,6 +41,7 @@ internal fun DeckCardsScreen(
     onClickCard: (id: Long) -> Unit = {},
 ) {
     topBarViewModel.setTitle("Cards")
+    var searchText by rememberSaveable { mutableStateOf("") }
     val cards by cardViewModel.cards.collectAsState()
     val textById by textSideViewModel.textById.collectAsState()
     val fileNameById by audioSideViewModel.fileNameById.collectAsState()
@@ -48,7 +52,10 @@ internal fun DeckCardsScreen(
     Column(
         modifier = ModifierManager.paddingMostTopModifier
     ) {
-        val searchText = SearchBar()
+        SearchBar(
+            searchText = searchText,
+            onChangeSearchText = { searchText = it }
+        )
         val cardListManager = CardListManager(
             items = cards,
             context = context,

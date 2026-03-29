@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
 import bx.app.presentation.viewmodel.DeckViewModel
@@ -34,6 +37,7 @@ internal fun DecksScreen(
     onClickDeck: (id: Long) -> Unit = {},
 ) {
     topBarViewModel.setTitle("Decks")
+    var searchText by rememberSaveable { mutableStateOf("") }
     val decks by deckViewModel.decks.collectAsState()
     val selectedIds = remember { mutableStateSetOf<Long>() }
     val cardsCountByDeckId by cardWithSidesViewModel.cardViewModel.cardsCountByDeckId.collectAsState()
@@ -45,7 +49,10 @@ internal fun DecksScreen(
     Column(
         modifier = ModifierManager.paddingMostTopModifier
     ) {
-        val searchText = SearchBar()
+        SearchBar(
+            searchText = searchText,
+            onChangeSearchText = { searchText = it }
+        )
         val deckListManager = DeckListManager(
             items = decks,
             context = context,

@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import bx.app.presentation.viewmodel.CardInLevelViewModel
 import bx.app.presentation.viewmodel.LevelViewModel
@@ -35,13 +38,17 @@ internal fun DeckLevelsScreen(
     onClickLevel: (id: Long) -> Unit = {},
 ) {
     topBarViewModel.setTitle("Levels")
+    var searchText by rememberSaveable { mutableStateOf("") }
     val levels by levelViewModel.levels.collectAsState()
     val selectedIds = remember { mutableStateSetOf<Long>() }
 
     Column(
         modifier = ModifierManager.paddingMostTopModifier
     ) {
-        val searchText = SearchBar()
+        SearchBar(
+            searchText = searchText,
+            onChangeSearchText = { searchText = it }
+        )
         val levelListManager = LevelListManager(
             items = levels,
             context = context,

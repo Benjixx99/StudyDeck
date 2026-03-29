@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -313,37 +314,51 @@ internal fun MainDropdownMenu(
 /**
  * This component is used to search a specific text
  */
-@SuppressLint("ComposableNaming")
 @Composable
-internal fun SearchBar(modifier: Modifier = Modifier): String {
-    var basicTextField by remember { mutableStateOf("") }
-
+internal fun SearchBar(
+    searchText: String,
+    onChangeSearchText: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     TextField(
-        value = basicTextField,
-        onValueChange = {
-            basicTextField = it
-        },
+        value = searchText,
+        onValueChange = { onChangeSearchText(it) },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 contentDescription = "Search icon",
             )
+        },
+        trailingIcon = {
+            if (searchText.isNotBlank()) {
+                IconButton(
+                    onClick = { onChangeSearchText("") },
+                    content = {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                            contentDescription = "Clear search"
+                        )
+                    }
+                )
+            }
         },
         maxLines = 1,
         placeholder = {
             Text(stringResource(R.string.placeholder_search))
         },
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer
+            focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            focusedIndicatorColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.onSecondaryContainer,
         ),
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 20.dp)
             .padding(horizontal = 10.dp)
     )
-    return basicTextField
 }
 
 /**
