@@ -45,8 +45,14 @@ internal fun LearningPhase(
     isActive: Boolean,
     learningMode: LearningMode,
 ) {
-    var isFront by remember(params.card.id, params.lastTimeLearnedFront) { mutableStateOf(
-        when {
+//    var isFront by remember(params.lastTimeLearnedFront) { mutableStateOf(
+//        when {
+//            learningMode.isRandom() && learnBothSides -> Random.nextBoolean()
+//            learningMode.isLevelBased() && learnBothSides -> !params.lastTimeLearnedFront
+//            else -> true
+//        }
+//    )}
+    // This version seems to work.. test it a little bit more and find out what is the differance between them
     var isFront by remember { mutableStateOf(true) }
     LaunchedEffect(params.card.id, params.lastTimeLearnedFront, learningMode, learnBothSides) {
         isFront = when {
