@@ -132,10 +132,9 @@ private fun TextSide(
         modifier = ModifierManager.paddingTopModifier
             .fillMaxSize()
             .padding(start = 10.dp, end = 10.dp, bottom = 40.dp)
-            .imePadding()
     ) {
         MultiLineTextField(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().imePadding(),
             labelText = "Text to learn",
             valueText = textSide.text,
             maxLines = 20,
