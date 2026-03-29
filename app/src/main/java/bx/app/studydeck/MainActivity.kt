@@ -22,6 +22,8 @@ import bx.app.ui.composable.TopBarComponent
 import bx.app.ui.navigation.data.NavigationRoute
 import bx.app.ui.navigation.navHostDestinations
 import bx.app.ui.theme.StudyDeckTheme
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : ComponentActivity() {
     private val topBarViewModel = TopBarViewModel()
@@ -65,7 +67,9 @@ class MainActivity : ComponentActivity() {
                     title = title,
                     navHostController = navHostController,
                     onImportClick = { openDocumentLauncher.launch(arrayOf("application/json")) },
-                    onExportClick = { createDocumentLauncher.launch("export.json") }
+                    onExportClick = { createDocumentLauncher.launch("study_deck_export_${LocalDateTime.now().format(
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd_hh:mm:ss"))}.json") },
+                    isDebug = BuildConfig.DEBUG
                 )
             },
             bottomBar = { BottomBarComponent.Manager(hide, navHostController) }

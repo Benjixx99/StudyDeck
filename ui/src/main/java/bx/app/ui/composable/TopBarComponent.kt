@@ -18,14 +18,17 @@ object TopBarComponent {
         title: String,
         navHostController: NavHostController,
         onImportClick: () -> Unit,
-        onExportClick: () -> Unit
+        onExportClick: () -> Unit,
+        isDebug: Boolean
     ) {
         val currentBackStack by navHostController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
         val currentRoute = NavigationRoute.getCurrentNavigationRoute(currentDestination?.route)
+        val context = LocalContext.current
+        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
 
         TopBar(
-            title = title,
+            title = title + if (isDebug) " ${packageInfo.versionName}" else "",
             onBackClick = {},
             actions = {
                 GetTopBarMenuAction(
@@ -44,11 +47,6 @@ object TopBarComponent {
         onBackClick: () -> Unit,
         actions: @Composable (RowScope.() -> Unit) = {}
     ) {
-        // TODO: Display this info only while developing - $versionName DEV
-        val context = LocalContext.current
-        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-        val versionName = packageInfo.versionName
-
         TopAppBar(
             title = { Text(text = title, fontSize = 20.sp) },
             navigationIcon = {},
