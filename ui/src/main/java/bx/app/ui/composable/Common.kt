@@ -268,50 +268,6 @@ internal fun LargeText(
 }
 
 /**
- * The MainDropdownMenu lets users import and export data
- */
-@Composable
-internal fun MainDropdownMenu(
-    onImportClick: () -> Unit,
-    onExportClick: () -> Unit,
-) {
-    var expanded by remember { mutableStateOf(false) }
-    Box {
-        IconButton(onClick = { expanded = !expanded }) {
-            Icon(
-                imageVector = Icons.Filled.MoreVert,
-                contentDescription = ""
-            )
-        }
-        IconButton(onClick = { expanded = !expanded }) {
-            Icon(
-                imageVector = Icons.Default.MoreVert,
-                contentDescription = "More options"
-            )
-        }
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            DropdownMenuItem(
-                text = { Text("Import") },
-                onClick = {
-                    expanded = false
-                    onImportClick()
-                }
-            )
-            DropdownMenuItem(
-                text = { Text("Export") },
-                onClick = {
-                    expanded = false
-                    onExportClick()
-                }
-            )
-        }
-    }
-}
-
-/**
  * This component is used to search a specific text
  */
 @Composable
