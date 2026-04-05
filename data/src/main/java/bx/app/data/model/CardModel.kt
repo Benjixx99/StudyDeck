@@ -12,6 +12,10 @@ data class CardModel(
     val backSideType: CardSideType,
     val backSideId: Long,
     val deckId: Long,
+    val frontText: String = "",
+    val backText: String = "",
+    val frontPath: String = "",
+    val backPath: String = "",
 ) : IdentifiedModel() {
     override fun toEntity(): CardEntity {
         return CardEntity(
