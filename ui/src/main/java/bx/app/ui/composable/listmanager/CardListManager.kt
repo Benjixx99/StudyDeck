@@ -32,8 +32,6 @@ internal class CardListManager(
     onClick: (id: Long) -> Unit,
     onSelect: (id: Long) -> Unit,
     selectedIds: Set<Long>,
-    val textById: Map<Long, String?>,
-    val fileNameById: Map<Long, String?>,
 ) : BaseListManager(items, context, modifier, searchText, onClick, onSelect, selectedIds) {
 
     @Composable
@@ -43,7 +41,7 @@ internal class CardListManager(
 
         Row(modifier = ModifierManager.paddingListItemRowModifier) {
             LargeText(
-                text = if (isFront) getFrontValue(item) else getBackValue(item),
+                text = if (isFront) item.frontText else item.backText,
                 maxLines = 2,
                 modifier = Modifier.weight(6.0f)
             )
@@ -63,28 +61,8 @@ internal class CardListManager(
         }
     }
 
-    private fun getFrontValue(item: CardModel): String {
-        return (
-            if (item.frontSideType.isText())
-                textById[item.frontSideId]
-            else
-                fileNameById[item.frontSideId]
-        ).toString()
-    }
-
-    private fun getBackValue(item: CardModel): String {
-        return (
-            if (item.backSideType.isText())
-                textById[item.backSideId]
-            else
-                fileNameById[item.backSideId]
-        ).toString()
-    }
-
     override fun displayItem(item: IdentifiedModel): Boolean {
         item as CardModel
-        val frontValue = getFrontValue(item)
-        val backValue = getBackValue(item)
-        return frontValue.contains(searchText, true) || backValue.contains(searchText, true)
+        return item.frontText.contains(searchText, true) || item.backText.contains(searchText, true)
     }
 }

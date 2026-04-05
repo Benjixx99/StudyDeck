@@ -32,16 +32,11 @@ internal fun RandomLearningPhaseScreen(
 ) {
     topBarViewModel.setTitle("Random learning phase")
 
-    val textById by cardWithSidesViewModel.textSideViewModel.textById.collectAsStateWithLifecycle()
-    val fileNameById by cardWithSidesViewModel.audioSideViewModel.fileNameById.collectAsStateWithLifecycle()
-    val pathById by cardWithSidesViewModel.audioSideViewModel.pathById.collectAsStateWithLifecycle()
     val card by cardWithSidesViewModel.cardViewModel.card.collectAsStateWithLifecycle()
     var knownCounter by remember { mutableIntStateOf(0) }
     var notKnownCounter by remember { mutableIntStateOf(0) }
     var learningState by remember { mutableStateOf(LearningState.IN_PROGRESS) }
     var anotherRound by remember { mutableStateOf(false) }
-
-    shuffledCards.forEach { cardWithSidesViewModel.getCardSideValues(it) }
 
     BackHandler { learningState = LearningState.CANCELLED }
     DialogHost(
@@ -66,12 +61,7 @@ internal fun RandomLearningPhaseScreen(
     }
 
     LearningPhase(
-        params = LearningPhaseParams.from(
-            textById = textById,
-            fileNameById = fileNameById,
-            pathById = pathById,
-            card = card
-        ),
+        params = LearningPhaseParams.from(card),
         onNotKnown = {
             proceedToNextCard(
                 shuffledCards = shuffledCards,

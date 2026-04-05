@@ -20,8 +20,6 @@ import bx.app.ui.data.LearningMode
 import bx.app.ui.LearningPhaseFactory
 import bx.app.ui.data.LearningPhaseParams
 import bx.app.ui.data.LearningState
-import kotlin.collections.forEach
-
 
 /**
  * This screen displays the level based learning phase
@@ -39,19 +37,13 @@ internal fun LevelLearningPhaseScreen(
 ) {
     topBarViewModel.setTitle("Level learning phase")
 
-    val textById by cardWithSidesViewModel.textSideViewModel.textById.collectAsStateWithLifecycle()
-    val fileNameById by cardWithSidesViewModel.audioSideViewModel.fileNameById.collectAsStateWithLifecycle()
-    val pathById by cardWithSidesViewModel.audioSideViewModel.pathById.collectAsStateWithLifecycle()
     val card by cardWithSidesViewModel.cardViewModel.card.collectAsStateWithLifecycle()
-
     cardInLevelViewModel.getLastTimeLearnedFrontByCardId(card.id)
     val lastTimeLearnedFront by cardInLevelViewModel.lastTimeLearnedFront.collectAsStateWithLifecycle()
 
     var knownCounter by remember { mutableIntStateOf(0) }
     var notKnownCounter by remember { mutableIntStateOf(0) }
     var learningState by remember { mutableStateOf(LearningState.IN_PROGRESS) }
-
-    shuffledCards.forEach { cardWithSidesViewModel.getCardSideValues(it) }
 
     BackHandler { learningState = LearningState.CANCELLED }
     DialogHost(
@@ -67,9 +59,6 @@ internal fun LevelLearningPhaseScreen(
 
     LearningPhase(
         params = LearningPhaseParams.from(
-            textById = textById,
-            fileNameById = fileNameById,
-            pathById = pathById,
             card = card,
             lastTimeLearnedFront = lastTimeLearnedFront
         ),

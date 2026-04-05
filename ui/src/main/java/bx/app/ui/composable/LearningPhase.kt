@@ -45,14 +45,6 @@ internal fun LearningPhase(
     isActive: Boolean,
     learningMode: LearningMode,
 ) {
-//    var isFront by remember(params.lastTimeLearnedFront) { mutableStateOf(
-//        when {
-//            learningMode.isRandom() && learnBothSides -> Random.nextBoolean()
-//            learningMode.isLevelBased() && learnBothSides -> !params.lastTimeLearnedFront
-//            else -> true
-//        }
-//    )}
-    // This version seems to work.. test it a little bit more and find out what is the differance between them
     var isFront by remember { mutableStateOf(true) }
     LaunchedEffect(params.card.id, params.lastTimeLearnedFront, learningMode, learnBothSides) {
         isFront = when {
@@ -62,8 +54,8 @@ internal fun LearningPhase(
         }
     }
 
-    val fileName = if (isFront) params.frontFileName else params.backFileName
-    val path = if (isFront) params.frontPath else params.backPath
+    val text = if (isFront) params.card.frontText else params.card.backText
+    val path = if (isFront) params.card.frontPath else params.card.backPath
     val audioUri = path.takeIf { it.isNotEmpty() }?.toUri()
 
     val context = LocalContext.current
@@ -108,7 +100,7 @@ internal fun LearningPhase(
                     || params.card.backSideType.isText() && !isFront) {
                     LargeText(
                         modifier = Modifier.padding(horizontal = 20.dp),
-                        text = if (isFront) params.frontText else params.backText,
+                        text = text,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -119,7 +111,7 @@ internal fun LearningPhase(
                         AudioPlayer(mediaPlayer)
                         Spacer(Modifier.padding(top = 10.dp))
                         LargeText(
-                            text = fileName,
+                            text = text,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                     }

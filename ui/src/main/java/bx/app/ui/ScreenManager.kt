@@ -108,8 +108,6 @@ class ScreenManager(
             context = context,
             cardWithSidesViewModel = cardWithSidesViewModel,
             cardViewModel = cardViewModel,
-            textSideViewModel = textSideViewModel,
-            audioSideViewModel = audioSideViewModel,
             topBarViewModel = topBarViewModel,
             hideNavigationBarViewModel = hideNavigationBarViewModel,
             onClickCreateNewCard = onClickCreateNewCard,

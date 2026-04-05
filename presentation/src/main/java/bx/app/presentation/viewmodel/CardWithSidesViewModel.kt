@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import bx.app.core.hasInvalidId
 import bx.app.data.enums.CardSide
 import bx.app.data.enums.CardSideType
-import bx.app.data.model.CardModel
 import bx.app.data.repository.CardWithSidesRepository
 import kotlinx.coroutines.launch
 
@@ -49,19 +48,6 @@ class CardWithSidesViewModel(
                 CardSideType.TEXT -> textSideViewModel.getTextSideById(id)
                 CardSideType.AUDIO -> audioSideViewModel.getAudioSideById(id)
             }
-        }
-    }
-
-    fun getCardSideValues(card: CardModel) {
-        if (card.frontSideType.isText()) { textSideViewModel.getTextById(card.frontSideId) }
-        if (card.backSideType.isText()) { textSideViewModel.getTextById(card.backSideId) }
-        if (card.frontSideType.isAudio()) {
-            audioSideViewModel.getFileNameById(card.frontSideId)
-            audioSideViewModel.getPathById(card.frontSideId)
-        }
-        if (card.backSideType.isAudio()) {
-            audioSideViewModel.getFileNameById(card.backSideId)
-            audioSideViewModel.getPathById(card.backSideId)
         }
     }
 

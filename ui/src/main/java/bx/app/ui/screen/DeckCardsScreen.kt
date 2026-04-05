@@ -13,11 +13,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import bx.app.presentation.viewmodel.AudioSideViewModel
 import bx.app.presentation.viewmodel.CardViewModel
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
-import bx.app.presentation.viewmodel.TextSideViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ModifierManager
 import bx.app.ui.composable.ButtonInCorner
@@ -33,8 +31,6 @@ internal fun DeckCardsScreen(
     context: Context,
     cardWithSidesViewModel: CardWithSidesViewModel,
     cardViewModel: CardViewModel,
-    textSideViewModel: TextSideViewModel,
-    audioSideViewModel: AudioSideViewModel,
     topBarViewModel: TopBarViewModel,
     hideNavigationBarViewModel: HideNavigationBarViewModel,
     onClickCreateNewCard: () -> Unit = {},
@@ -43,11 +39,7 @@ internal fun DeckCardsScreen(
     topBarViewModel.setTitle("Cards")
     var searchText by rememberSaveable { mutableStateOf("") }
     val cards by cardViewModel.cards.collectAsStateWithLifecycle()
-    val textById by textSideViewModel.textById.collectAsStateWithLifecycle()
-    val fileNameById by audioSideViewModel.fileNameById.collectAsStateWithLifecycle()
     val selectedIds = remember { mutableStateSetOf<Long>() }
-
-    cards.forEach { cardWithSidesViewModel.getCardSideValues(it) }
 
     Column(
         modifier = ModifierManager.paddingMostTopModifier
@@ -67,8 +59,6 @@ internal fun DeckCardsScreen(
                 hideNavigationBarViewModel.setHide(selectedIds.isNotEmpty())
             },
             selectedIds = selectedIds,
-            textById = textById,
-            fileNameById = fileNameById,
         )
         cardListManager.List()
     }
