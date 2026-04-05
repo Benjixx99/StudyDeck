@@ -3,6 +3,7 @@ package bx.app.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bx.app.data.enums.CardSideType
+import bx.app.data.enums.SortMode
 import bx.app.data.model.CardModel
 import bx.app.data.repository.CardRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,9 +15,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.collections.plus
 
-class CardViewModel(private val repo: CardRepository) : ViewModel() {
+class CardViewModel(
+    private val repo: CardRepository,
+    private val topBarViewModel: TopBarViewModel,
+) : ViewModel() {
     private val _deckId = MutableStateFlow(0L)
     private val _levelId = MutableStateFlow(0L)
+    private val _sortMode = topBarViewModel.cardsSortMode
     private val _card = MutableStateFlow<CardModel>(getInitialCard())
     private val _cardsCountByDeckId = MutableStateFlow<Map<Long, Int?>>(emptyMap())
 
@@ -24,14 +29,14 @@ class CardViewModel(private val repo: CardRepository) : ViewModel() {
     val card: StateFlow<CardModel> = _card
     val cardsCountByDeckId: StateFlow<Map<Long, Int?>> = _cardsCountByDeckId
     val cards: StateFlow<List<CardModel>> =
-        repo.observeById(_deckId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+        repo.observeById(_deckId, _sortMode).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
     val cardsInLevel: StateFlow<List<CardModel>> =
         repo.observeByLevelId(_levelId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     fun countCardsByDeckId(id: Long) = viewModelScope.launch {
         if (_cardsCountByDeckId.value.containsKey(id)) return@launch
         repo.countCardsByDeckId(id).filterNotNull().collect {
-                count -> _cardsCountByDeckId.update { current -> current + (id to count) }
+            count -> _cardsCountByDeckId.update { current -> current + (id to count) }
         }
     }
 
@@ -40,6 +45,7 @@ class CardViewModel(private val repo: CardRepository) : ViewModel() {
 
     fun setDeckId(id: Long) { _deckId.value = id }
     fun setLevelId(id: Long) { _levelId.value = id }
+    fun setSortMode(sortMode: SortMode) { topBarViewModel.setCardsSortMode(sortMode)}
     fun resetCard() { _card.value = getInitialCard() }
 
     private fun getInitialCard(): CardModel {

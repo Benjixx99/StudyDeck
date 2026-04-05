@@ -58,13 +58,12 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun StudyDeck() {
         val navHostController = rememberNavController()
-        val title by topBarViewModel.title.collectAsStateWithLifecycle()
         val hide by hideNavigationBarViewModel.hide.collectAsStateWithLifecycle()
 
         Scaffold(
             topBar = {
                 TopBarComponent.Manager(
-                    title = title,
+                    topBarViewModel = topBarViewModel,
                     navHostController = navHostController,
                     onImportClick = { openDocumentLauncher.launch(arrayOf("application/json")) },
                     onExportClick = { createDocumentLauncher.launch("study_deck_export_${LocalDateTime.now().format(

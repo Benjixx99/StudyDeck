@@ -53,7 +53,7 @@ class ScreenManager(
 ) {
     private val database: AppDatabase = DatabaseBuilder.getInstance(context)
     private val deckViewModel = DeckViewModel(DeckRepository(database))
-    private val cardViewModel = CardViewModel(CardRepository(database))
+    private val cardViewModel = CardViewModel(CardRepository(database), topBarViewModel)
     private val levelViewModel = LevelViewModel(LevelRepository(database))
     private val cardInLevelViewModel = CardInLevelViewModel(CardInLevelRepository(database))
     private val textSideViewModel = TextSideViewModel(TextSideRepository(database))

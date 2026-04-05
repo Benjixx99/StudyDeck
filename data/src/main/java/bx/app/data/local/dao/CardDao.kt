@@ -2,6 +2,10 @@ package bx.app.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.RawQuery
+import androidx.room.RoomRawQuery
+import bx.app.data.local.CardQuery
+import bx.app.data.local.dto.CardWithSideContentDto
 import bx.app.data.local.entity.CardEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -15,6 +19,9 @@ internal interface CardDao : BaseDao<CardEntity> {
 
     @Query("SELECT * FROM card WHERE deck_id = :id")
     fun observeById(id: Long): Flow<List<CardEntity>>
+
+    @RawQuery(observedEntities = [CardEntity::class])
+    fun observeById(query: RoomRawQuery): Flow<List<CardWithSideContentDto>>
 
     @Query("""
         SELECT c.* 
@@ -35,6 +42,9 @@ internal interface CardDao : BaseDao<CardEntity> {
 
     @Query("SELECT * FROM card WHERE id = :id")
     override suspend fun getById(id: Long): CardEntity
+
+    @Query(CardQuery.CARD_WITH_SIDES_CONTENT + " WHERE c.id = :id")
+    suspend fun getCardWithSideContentById(id: Long): CardWithSideContentDto
 
     @Query("DELETE FROM card")
     override suspend fun deleteAll()
