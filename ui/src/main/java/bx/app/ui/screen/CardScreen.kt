@@ -24,7 +24,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import bx.app.core.hasInvalidId
 import bx.app.core.hasValidId
@@ -65,7 +65,7 @@ internal fun CardScreen(
 ) {
     topBarViewModel.setTitle("Card")
 
-    val card by cardWithSidesViewModel.cardViewModel.card.collectAsState()
+    val card by cardWithSidesViewModel.cardViewModel.card.collectAsStateWithLifecycle()
     val activeId = if (cardSide.isFront()) card.frontSideId else card.backSideId
     val activeType = if (cardSide.isFront()) card.frontSideType else card.backSideType
     var showExitDialog by remember { mutableStateOf(false) }
@@ -126,7 +126,7 @@ private fun TextSide(
     cardWithSidesViewModel: CardWithSidesViewModel,
     cardSide: CardSide
 ) {
-    val textSide by cardWithSidesViewModel.textSideViewModel.textSide.collectAsState()
+    val textSide by cardWithSidesViewModel.textSideViewModel.textSide.collectAsStateWithLifecycle()
 
     Column(
         modifier = ModifierManager.paddingTopModifier
@@ -149,7 +149,7 @@ private fun AudioSide(
     cardWithSidesViewModel: CardWithSidesViewModel,
     cardSide: CardSide
 ) {
-    val audioSide by cardWithSidesViewModel.audioSideViewModel.audioSide.collectAsState()
+    val audioSide by cardWithSidesViewModel.audioSideViewModel.audioSide.collectAsStateWithLifecycle()
     var mediaPlayer = if (audioSide.path.isNotEmpty()) MediaPlayer.create(context, audioSide.path.toUri()) else null
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
         cardWithSidesViewModel.changeAudioData(

@@ -3,13 +3,13 @@ package bx.app.ui.screen
 import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bx.app.core.IdPolicy
 import bx.app.data.model.LearnModel
 import bx.app.presentation.viewmodel.CardViewModel
@@ -45,8 +45,8 @@ internal fun DeckLearnScreen(
         ),
     )
 
-    val deckId by cardViewModel.deckId.collectAsState()
-    val cardsCountByDeckId by cardViewModel.cardsCountByDeckId.collectAsState()
+    val deckId by cardViewModel.deckId.collectAsStateWithLifecycle()
+    val cardsCountByDeckId by cardViewModel.cardsCountByDeckId.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
 
     cardViewModel.countCardsByDeckId(deckId)

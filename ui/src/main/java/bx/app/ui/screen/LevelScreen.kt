@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import bx.app.data.enums.IntervalType
 import bx.app.presentation.viewmodel.LevelViewModel
@@ -42,8 +42,8 @@ internal fun LevelScreen(
 ) {
     topBarViewModel.setTitle("Level")
 
-    val intervalExists by levelViewModel.intervalExists.collectAsState()
-    val level by levelViewModel.level.collectAsState()
+    val intervalExists by levelViewModel.intervalExists.collectAsStateWithLifecycle()
+    val level by levelViewModel.level.collectAsStateWithLifecycle()
     var showExitDialog by remember { mutableStateOf(false) }
     val options = listOf<String>("Day", "Week", "Month", "Year")
 

@@ -2,12 +2,12 @@ package bx.app.ui.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import bx.app.data.model.CardModel
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
@@ -32,10 +32,10 @@ internal fun RandomLearningPhaseScreen(
 ) {
     topBarViewModel.setTitle("Random learning phase")
 
-    val textById by cardWithSidesViewModel.textSideViewModel.textById.collectAsState()
-    val fileNameById by cardWithSidesViewModel.audioSideViewModel.fileNameById.collectAsState()
-    val pathById by cardWithSidesViewModel.audioSideViewModel.pathById.collectAsState()
-    val card by cardWithSidesViewModel.cardViewModel.card.collectAsState()
+    val textById by cardWithSidesViewModel.textSideViewModel.textById.collectAsStateWithLifecycle()
+    val fileNameById by cardWithSidesViewModel.audioSideViewModel.fileNameById.collectAsStateWithLifecycle()
+    val pathById by cardWithSidesViewModel.audioSideViewModel.pathById.collectAsStateWithLifecycle()
+    val card by cardWithSidesViewModel.cardViewModel.card.collectAsStateWithLifecycle()
     var knownCounter by remember { mutableIntStateOf(0) }
     var notKnownCounter by remember { mutableIntStateOf(0) }
     var learningState by remember { mutableStateOf(LearningState.IN_PROGRESS) }
@@ -59,7 +59,7 @@ internal fun RandomLearningPhaseScreen(
     if (anotherRound) {
         anotherRound = false
         shuffledCards.addAll(0, cardWithSidesViewModel.cardViewModel
-            .cards.collectAsState().value.shuffled() as MutableList<CardModel>)
+            .cards.collectAsStateWithLifecycle().value.shuffled() as MutableList<CardModel>)
         cardWithSidesViewModel.cardViewModel.getCardById(shuffledCards.first().id)
         knownCounter = 0
         notKnownCounter = 0

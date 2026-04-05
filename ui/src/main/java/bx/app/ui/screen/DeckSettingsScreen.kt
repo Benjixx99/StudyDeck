@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bx.app.core.hasValidId
 import bx.app.data.enums.CardFailing
 import bx.app.presentation.viewmodel.DeckViewModel
@@ -34,7 +34,7 @@ internal fun DeckSettingsScreen(
     topBarViewModel: TopBarViewModel,
     hideNavigationBarViewModel: HideNavigationBarViewModel,
 ) {
-    val deck by deckViewModel.deck.collectAsState()
+    val deck by deckViewModel.deck.collectAsStateWithLifecycle()
     var deckName by remember { mutableStateOf(deck.name) }
     LaunchedEffect(deck.name) { deckName = deck.name }
 

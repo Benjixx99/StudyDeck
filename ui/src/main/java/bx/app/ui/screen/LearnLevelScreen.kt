@@ -3,12 +3,12 @@ package bx.app.ui.screen
 import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bx.app.presentation.viewmodel.CardInLevelViewModel
 import bx.app.presentation.viewmodel.LevelViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
@@ -30,9 +30,9 @@ internal fun LearnLevelScreen(
     onClickLearn: (id: Long) -> Unit
 ) {
     topBarViewModel.setTitle("Level system learning")
-    val levels by levelViewModel.levels.collectAsState()
-    val cardsCountByLevelId by cardInLevelViewModel.cardsCountByLevelId.collectAsState()
-    val learnableCardsCountByLevelId by cardInLevelViewModel.learnableCardsCountByLevelId.collectAsState()
+    val levels by levelViewModel.levels.collectAsStateWithLifecycle()
+    val cardsCountByLevelId by cardInLevelViewModel.cardsCountByLevelId.collectAsStateWithLifecycle()
+    val learnableCardsCountByLevelId by cardInLevelViewModel.learnableCardsCountByLevelId.collectAsStateWithLifecycle()
 
     var showDialog by remember { mutableStateOf(false) }
 

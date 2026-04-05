@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateSetOf
@@ -13,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bx.app.presentation.viewmodel.CardInLevelViewModel
 import bx.app.presentation.viewmodel.LevelViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
@@ -39,7 +39,7 @@ internal fun DeckLevelsScreen(
 ) {
     topBarViewModel.setTitle("Levels")
     var searchText by rememberSaveable { mutableStateOf("") }
-    val levels by levelViewModel.levels.collectAsState()
+    val levels by levelViewModel.levels.collectAsStateWithLifecycle()
     val selectedIds = remember { mutableStateSetOf<Long>() }
 
     Column(

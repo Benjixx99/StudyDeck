@@ -2,11 +2,11 @@ package bx.app.ui
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import bx.app.core.hasValidId
 import bx.app.core.hasInsertId
@@ -207,8 +207,8 @@ class ScreenManager(
 
     @Composable
     fun RandomLearningPhase() {
-        val learnBothSides = deckViewModel.deck.collectAsState().value.learnBothSides
-        val shuffledCards = cardViewModel.cards.collectAsState().value.shuffled().toMutableList()
+        val learnBothSides = deckViewModel.deck.collectAsStateWithLifecycle().value.learnBothSides
+        val shuffledCards = cardViewModel.cards.collectAsStateWithLifecycle().value.shuffled().toMutableList()
 
         if (shuffledCards.isNotEmpty()) {
             cardViewModel.getCardById(shuffledCards.first().id)
@@ -243,8 +243,8 @@ class ScreenManager(
     fun LevelLearningPhase(id: Long) {
         cardViewModel.setLevelId(id)
 
-        val cardsInLevel by cardViewModel.cardsInLevel.collectAsState()
-        val deck by deckViewModel.deck.collectAsState()
+        val cardsInLevel by cardViewModel.cardsInLevel.collectAsStateWithLifecycle()
+        val deck by deckViewModel.deck.collectAsStateWithLifecycle()
         val onFailing = deck.onFailing
         val learnBothSides = deck.learnBothSides
         val shuffledCards = cardsInLevel.shuffled().toMutableList()

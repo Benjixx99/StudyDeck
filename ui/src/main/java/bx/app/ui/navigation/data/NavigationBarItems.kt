@@ -1,10 +1,10 @@
 package bx.app.ui.navigation.data
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import bx.app.presentation.viewmodel.DeckViewModel
 import bx.app.ui.navigation.item.NavigationItem
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bx.app.presentation.viewmodel.CardViewModel
 
 internal object NavigationBarItems {
@@ -22,14 +22,14 @@ internal object NavigationBarItems {
 
     @Composable
     fun SetDeckId(deckViewModel: DeckViewModel) {
-        val deck by deckViewModel.deck.collectAsState()
+        val deck by deckViewModel.deck.collectAsStateWithLifecycle()
         deckItems.forEach { (it.route as NavigationRoute.WithId).id = deck.id.toString() }
         cardItems.forEach { (it.backStackRoute as NavigationRoute.WithId).id = deck.id.toString() }
     }
 
     @Composable
     fun SetCardId(cardViewModel: CardViewModel) {
-        val card by cardViewModel.card.collectAsState()
+        val card by cardViewModel.card.collectAsStateWithLifecycle()
         cardItems.forEach { (it.route as NavigationRoute.WithId).id = card.id.toString() }
     }
 

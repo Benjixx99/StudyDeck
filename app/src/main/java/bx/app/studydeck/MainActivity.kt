@@ -8,8 +8,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import bx.app.data.local.DatabaseBuilder
@@ -58,8 +58,8 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun StudyDeck() {
         val navHostController = rememberNavController()
-        val title by topBarViewModel.title.collectAsState()
-        val hide by hideNavigationBarViewModel.hide.collectAsState()
+        val title by topBarViewModel.title.collectAsStateWithLifecycle()
+        val hide by hideNavigationBarViewModel.hide.collectAsStateWithLifecycle()
 
         Scaffold(
             topBar = {
