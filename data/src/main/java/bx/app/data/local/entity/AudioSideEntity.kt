@@ -20,7 +20,7 @@ internal data class AudioSideEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val path: String,
-    @ColumnInfo(name = "file_mame")
+    @ColumnInfo(name = "file_name")
     val fileName: String,
     val side: CardSide,
     @ColumnInfo(name = "card_id")

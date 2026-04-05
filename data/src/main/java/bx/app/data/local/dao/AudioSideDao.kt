@@ -17,7 +17,7 @@ internal interface AudioSideDao : BaseDao<AudioSideEntity> {
     @Query("SELECT * FROM audio_side WHERE id = :id")
     override suspend fun getById(id: Long): AudioSideEntity
 
-    @Query("SELECT file_mame FROM audio_side WHERE id = :id")
+    @Query("SELECT file_name FROM audio_side WHERE id = :id")
     fun getFileNameById(id: Long): Flow<String?>
 
     @Query("SELECT path FROM audio_side WHERE id = :id")

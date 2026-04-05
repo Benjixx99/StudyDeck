@@ -5,6 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import bx.app.data.converter.IntervalTypeConverter
 import bx.app.data.converter.LocalDateTimeConverter
 import bx.app.data.local.dao.AudioSideDao
@@ -46,16 +48,25 @@ abstract class AppDatabase : RoomDatabase() {
     internal abstract fun cardWithSidesDao(): CardWithSidesDao
 }
 
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("""
+            ALTER TABLE audio_side
+            RENAME COLUMN file_mame TO file_name
+        """.trimIndent())
+    }
+}
 object DatabaseBuilder {
     private var instance: AppDatabase? = null
     const val DATABASE_NAME = "dev-database"
-    const val LATEST_VERSION = 1
+    const val LATEST_VERSION = 2
 
     fun getInstance(context: Context): AppDatabase {
         if (instance == null) {
             synchronized(AppDatabase::class) {
                 instance = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
                     //.fallbackToDestructiveMigration(true)
+                    .addMigrations(MIGRATION_1_2)
                     .build()
             }
         }
