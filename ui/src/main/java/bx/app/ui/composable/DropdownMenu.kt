@@ -58,6 +58,7 @@ internal fun MainDropdownMenu(
 @Composable
 internal fun DeckCardsDropdownMenu(
     onClickSortBy: () -> Unit,
+    onClickImportCards: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     Box {
@@ -76,6 +77,13 @@ internal fun DeckCardsDropdownMenu(
                 onClick = {
                     expanded = false
                     onClickSortBy()
+                }
+            )
+            DropdownMenuItem(
+                text = { Text("Import text cards") },
+                onClick = {
+                    expanded = false
+                    onClickImportCards()
                 }
             )
         }

@@ -4,6 +4,7 @@ import bx.app.core.maxLength
 import bx.app.data.backup.BackupBundle
 import bx.app.data.enums.CardSideType
 import bx.app.data.local.AppDatabase
+import bx.app.data.local.entity.CardInLevelEntity
 import bx.app.data.model.AudioSideModel
 import bx.app.data.model.CardInLevelModel
 import bx.app.data.model.CardModel
@@ -30,6 +31,32 @@ class BackupRepository(private val database: AppDatabase) {
         val cardIdMap = importCards(backupBundle.cards, backupBundle.textSides, backupBundle.audioSides, deckIdMap)
         val levelIdMap = importLevels(backupBundle.levels, deckIdMap)
         importCardInLevels(backupBundle.cardInLevels, cardIdMap, levelIdMap)
+    }
+
+    suspend fun importTextSideCards(backupBundle: BackupBundle, deckId: Long) {
+        if (backupBundle.textSides.count() % 2 != 0) return
+        for (pair in backupBundle.textSides.chunked(2)) {
+            val front = pair[0]
+            val back = pair[1]
+            val newCardId = database.cardDao().insert(CardModel().copy(id = 0, deckId = deckId).toEntity())
+            val newFrontSideId = database.textSideDao().insert(front.copy(cardId = newCardId).toEntity())
+            val newBackSideId = database.textSideDao().insert(back.copy(cardId = newCardId).toEntity())
+            val card = database.cardDao().getById(newCardId)
+            database.cardDao().update(
+                card.copy(
+                    frontSideId = newFrontSideId,
+                    frontSideType = CardSideType.TEXT,
+                    backSideId = newBackSideId,
+                    backSideType = CardSideType.TEXT
+                )
+            )
+            database.cardInLevelDao().insert(
+                CardInLevelEntity(
+                    cardId = newCardId,
+                    levelId = database.levelDao().getFirstByDeckId(deckId)
+                )
+            )
+        }
     }
 
     private suspend fun importDecks(decks: List<DeckModel>): Map<Long, Long> {

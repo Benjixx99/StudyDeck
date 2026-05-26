@@ -6,15 +6,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import bx.app.data.local.DatabaseBuilder
 import bx.app.data.repository.BackupRepository
+import bx.app.presentation.enums.ImportMode
 import bx.app.presentation.viewmodel.BackupViewModel
+import bx.app.presentation.viewmodel.DeckSharedViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.composable.BottomBarComponent
@@ -22,12 +26,15 @@ import bx.app.ui.composable.TopBarComponent
 import bx.app.ui.navigation.data.NavigationRoute
 import bx.app.ui.navigation.navHostDestinations
 import bx.app.ui.theme.StudyDeckTheme
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class MainActivity : ComponentActivity() {
     private val topBarViewModel = TopBarViewModel()
     private val hideNavigationBarViewModel = HideNavigationBarViewModel()
+    private val deckSharedViewModel: DeckSharedViewModel by viewModels()
     private val backupViewModel by lazy {
         BackupViewModel(BackupRepository(DatabaseBuilder.getInstance(applicationContext)))
     }
@@ -41,7 +48,21 @@ class MainActivity : ComponentActivity() {
     private val openDocumentLauncher = registerForActivityResult(
         ActivityResultContracts.OpenDocument()
     ) {
-        uri -> uri?.let { backupViewModel.importAll(it, application.contentResolver, applicationContext) }
+        uri -> uri?.let {
+            lifecycleScope.launch {
+                when (topBarViewModel.importMode.first()) {
+                    ImportMode.ALL ->
+                        backupViewModel.importAll(it, application.contentResolver, applicationContext)
+                    ImportMode.CARDS ->
+                        backupViewModel.importTextSideCards(
+                            uri = it,
+                            deckId = deckSharedViewModel.deckId.first(),
+                            contentResolver = application.contentResolver,
+                            context = applicationContext
+                        )
+                }
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

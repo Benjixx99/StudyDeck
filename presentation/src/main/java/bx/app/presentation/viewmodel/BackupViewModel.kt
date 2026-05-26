@@ -48,13 +48,31 @@ class BackupViewModel(private val repo: BackupRepository) : ViewModel() {
             }
         }
         catch (e: Exception) {
-            when (e) {
-                is IOException -> {
-                    Toast.makeText(context, "Open file failed!", Toast.LENGTH_LONG).show()
+            handleImportException(e, context)
+        }
+    }
+
+    fun importTextSideCards(uri: Uri, deckId: Long, contentResolver: ContentResolver, context: Context) = viewModelScope.launch {
+        try {
+            withContext(Dispatchers.IO) {
+                contentResolver.openInputStream(uri)?.use { input ->
+                    val jsonString = BufferedReader(InputStreamReader(input)).use { it.readText() }
+                    repo.importTextSideCards(JsonManager.import(jsonString), deckId)
                 }
-                is SerializationException -> {
-                    Toast.makeText(context, "Wrong JSON schema!", Toast.LENGTH_LONG).show()
-                }
+            }
+        }
+        catch (e: Exception) {
+            handleImportException(e, context)
+        }
+    }
+
+    private fun handleImportException(exception: Exception, context: Context) {
+        when (exception) {
+            is IOException -> {
+                Toast.makeText(context, "Open file failed!", Toast.LENGTH_LONG).show()
+            }
+            is SerializationException -> {
+                Toast.makeText(context, "Wrong JSON schema!", Toast.LENGTH_LONG).show()
             }
         }
     }

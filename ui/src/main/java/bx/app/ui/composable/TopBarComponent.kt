@@ -15,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import bx.app.data.enums.SortMode
+import bx.app.presentation.enums.ImportMode
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.navigation.data.NavigationRoute
 
@@ -72,7 +73,10 @@ object TopBarComponent {
         return when(route) {
             is NavigationRoute.Decks -> {
                 MainDropdownMenu(
-                    onClickImport = onClickImport,
+                    onClickImport = {
+                        topBarViewModel.setImportMode(ImportMode.ALL)
+                        onClickImport()
+                    },
                     onClickExport = onClickExport
                 )
             }
@@ -88,7 +92,11 @@ object TopBarComponent {
                     SortMode.LENGTH_DESC.asString()
                 )
                 DeckCardsDropdownMenu(
-                    onClickSortBy = { showDialog = true }
+                    onClickSortBy = { showDialog = true },
+                    onClickImportCards = {
+                        topBarViewModel.setImportMode(ImportMode.CARDS)
+                        onClickImport()
+                    }
                 )
                 if (!showDialog) return
 

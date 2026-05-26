@@ -1,18 +1,21 @@
 package bx.app.ui
 
 import android.content.Context
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import bx.app.core.hasValidId
 import bx.app.core.hasInsertId
 import bx.app.data.local.AppDatabase
 import bx.app.data.local.DatabaseBuilder
-import bx.app.data.local.mock.DatabaseMockData
 import bx.app.data.repository.AudioSideRepository
 import bx.app.data.repository.CardRepository
 import bx.app.data.repository.DeckRepository
@@ -38,6 +41,7 @@ import bx.app.data.repository.CardInLevelRepository
 import bx.app.data.repository.CardWithSidesRepository
 import bx.app.presentation.viewmodel.CardInLevelViewModel
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
+import bx.app.presentation.viewmodel.DeckSharedViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.ui.navigation.data.NavigationBarItems
 import bx.app.ui.screen.LevelLearningPhaseScreen
@@ -71,16 +75,6 @@ class ScreenManager(
             }
         }
 
-    init {
-//        context.deleteDatabase(DatabaseBuilder.DATABASE_NAME)
-//        DatabaseMockData.decks.forEach { deckViewModel.insertDeck(it) }
-//        DatabaseMockData.cards.forEach { cardViewModel.insertCard(it) }
-//        DatabaseMockData.levels.forEach { levelViewModel.insertLevel(it) }
-//        DatabaseMockData.cardInLevel.forEach { cardInLevelViewModel.insertCardInLevel(it) }
-//        DatabaseMockData.textSide.forEach { textSideViewModel.insertTextSide(it) }
-//        DatabaseMockData.audioSide.forEach { audioSideViewModel.insertAudioSide(it) }
-    }
-
     @Composable
     fun Decks(
         onClickCreateNewDeck: () -> Unit = {},
@@ -103,6 +97,11 @@ class ScreenManager(
         onClickCreateNewCard: () -> Unit = {},
         onClickCard: (id: Long) -> Unit = {},
     ) {
+        val deckSharedViewModel: DeckSharedViewModel = viewModel(
+            viewModelStoreOwner = LocalActivity.current as ViewModelStoreOwner
+        )
+        LaunchedEffect(id) { deckSharedViewModel.setDeckId(id) }
+
         deckId = id
         DeckCardsScreen(
             context = context,

@@ -7,11 +7,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CardModel(
     override val id: Long = 0,
-    val frontSideType: CardSideType,
-    val frontSideId: Long,
-    val backSideType: CardSideType,
-    val backSideId: Long,
-    val deckId: Long,
+    val frontSideType: CardSideType = CardSideType.TEXT,
+    val frontSideId: Long = 0,
+    val backSideType: CardSideType = CardSideType.TEXT,
+    val backSideId: Long = 0,
+    val deckId: Long = 0,
     val frontText: String = "",
     val backText: String = "",
     val frontPath: String = "",

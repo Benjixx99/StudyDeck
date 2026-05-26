@@ -2,6 +2,7 @@ package bx.app.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import bx.app.data.enums.SortMode
+import bx.app.presentation.enums.ImportMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,9 +10,12 @@ import kotlinx.coroutines.flow.asStateFlow
 class TopBarViewModel : ViewModel() {
     private val _title = MutableStateFlow("")
     private val _cardsSortMode = MutableStateFlow(SortMode.ID_ASC)
+    private val _importMode = MutableStateFlow(ImportMode.ALL)
     val title: StateFlow<String> = _title.asStateFlow()
     val cardsSortMode: StateFlow<SortMode> = _cardsSortMode.asStateFlow()
+    val importMode: StateFlow<ImportMode> = _importMode.asStateFlow()
 
     fun setTitle(title: String) { _title.value = title }
     fun setCardsSortMode(sortMode: SortMode) { _cardsSortMode.value = sortMode }
+    fun setImportMode(importMode: ImportMode) { _importMode.value = importMode }
 }
