@@ -39,8 +39,8 @@ class BackupRepository(private val database: AppDatabase) {
             val front = pair[0]
             val back = pair[1]
             val newCardId = database.cardDao().insert(CardModel().copy(id = 0, deckId = deckId).toEntity())
-            val newFrontSideId = database.textSideDao().insert(front.copy(cardId = newCardId).toEntity())
-            val newBackSideId = database.textSideDao().insert(back.copy(cardId = newCardId).toEntity())
+            val newFrontSideId = database.textSideDao().insert(front.copy(id = 0, cardId = newCardId).toEntity())
+            val newBackSideId = database.textSideDao().insert(back.copy(id = 0, cardId = newCardId).toEntity())
             val card = database.cardDao().getById(newCardId)
             database.cardDao().update(
                 card.copy(
@@ -113,7 +113,7 @@ class BackupRepository(private val database: AppDatabase) {
 
         for (textSide in textSides) {
             val newCardId = cardIdMap[textSide.cardId] ?: continue
-            val newNextSideId = database.textSideDao().insert(textSide.copy(cardId = newCardId).toEntity())
+            val newNextSideId = database.textSideDao().insert(textSide.copy(id = 0, cardId = newCardId).toEntity())
 
             if (!oldCardTextSideIds.contains(textSide.id)) continue
             database.cardDao().update(
@@ -123,7 +123,7 @@ class BackupRepository(private val database: AppDatabase) {
 
         for (audioSide in audioSides) {
             val newCardId = cardIdMap[audioSide.cardId] ?: continue
-            val newAudioSideId = database.audioSideDao().insert(audioSide.copy(cardId = newCardId).toEntity())
+            val newAudioSideId = database.audioSideDao().insert(audioSide.copy(id = 0, cardId = newCardId).toEntity())
 
             if (!oldCardAudioSideIds.contains(audioSide.id)) continue
             database.cardDao().update(
