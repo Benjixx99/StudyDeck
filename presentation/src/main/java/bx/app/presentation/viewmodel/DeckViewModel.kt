@@ -18,7 +18,6 @@ class DeckViewModel(private val repo: DeckRepository) : DebouncedAutoSaveViewMod
     val deck: StateFlow<DeckModel> = _deck
 
     fun getDeckById(id: Long) = viewModelScope.launch { _deck.value = repo.getById(id) }
-    fun insertDeck(deck: DeckModel) = viewModelScope.launch { repo.insert(deck) }
     fun deleteDeckByIe(id: Long) = viewModelScope.launch { repo.deleteById(id) }
 
     fun resetDeck() { _deck.value = getInitialDeck() }

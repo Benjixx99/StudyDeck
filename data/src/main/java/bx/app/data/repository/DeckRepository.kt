@@ -13,7 +13,6 @@ class DeckRepository(private val database: AppDatabase) {
 
     fun getAll(): Flow<List<DeckModel>> = baseRepo.flowList.map { it.filterIsInstance<DeckModel>() }
     suspend fun getById(id: Long) = baseRepo.getById(id) as DeckModel
-    suspend fun insert(deck: DeckModel) = baseRepo.insert(deck.toEntity())
     suspend fun deleteById(id: Long) = deckDao.deleteById(id)
 
     suspend fun upsert(deck: DeckModel): Long {
