@@ -14,6 +14,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
+@Composable
+private fun DropdownMenuItem(
+    text: String,
+    onClick: () -> Unit,
+    closeMenu: () -> Unit
+) {
+    DropdownMenuItem(
+        text = { Text(text) },
+        onClick = {
+            closeMenu()
+            onClick()
+        }
+    )
+}
+
 /**
  * MainDropdownMenu has the items "Import" and "Export"
  */
@@ -21,6 +36,7 @@ import androidx.compose.runtime.setValue
 internal fun MainDropdownMenu(
     onClickImport: () -> Unit,
     onClickExport: () -> Unit,
+    onClickSortBy: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     Box {
@@ -34,20 +50,9 @@ internal fun MainDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            DropdownMenuItem(
-                text = { Text("Import") },
-                onClick = {
-                    expanded = false
-                    onClickImport()
-                }
-            )
-            DropdownMenuItem(
-                text = { Text("Export") },
-                onClick = {
-                    expanded = false
-                    onClickExport()
-                }
-            )
+            DropdownMenuItem("Sort by", onClick = onClickSortBy, closeMenu = { expanded = false })
+            DropdownMenuItem("Import", onClick = onClickImport, closeMenu = { expanded = false })
+            DropdownMenuItem("Export", onClick = onClickExport, closeMenu = { expanded = false })
         }
     }
 }
@@ -72,20 +77,8 @@ internal fun DeckCardsDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            DropdownMenuItem(
-                text = { Text("Sort by") },
-                onClick = {
-                    expanded = false
-                    onClickSortBy()
-                }
-            )
-            DropdownMenuItem(
-                text = { Text("Import text cards") },
-                onClick = {
-                    expanded = false
-                    onClickImportCards()
-                }
-            )
+            DropdownMenuItem("Sort by", onClick = onClickSortBy, closeMenu = { expanded = false })
+            DropdownMenuItem("Import text cards", onClick = onClickImportCards, closeMenu = { expanded = false })
         }
     }
 }
