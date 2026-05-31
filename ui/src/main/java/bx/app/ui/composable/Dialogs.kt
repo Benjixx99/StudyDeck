@@ -28,6 +28,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import bx.app.data.enums.ConfigScope
+import bx.app.data.enums.SortMode
+import bx.app.presentation.viewmodel.ConfigViewModel
 import bx.app.ui.data.ConfirmationDialog
 import bx.app.ui.data.DialogModel
 
@@ -70,6 +74,37 @@ internal fun RadioButtonGroupDialog(
             }
         }
     }
+}
+
+/**
+ * A dialog to select a sorting mode
+ */
+@Composable
+internal fun SortDialog(
+    scope: ConfigScope,
+    optionList: List<String>,
+    showDialog: Boolean,
+    onDismiss: () -> Unit,
+    configViewModel: ConfigViewModel
+) {
+    configViewModel.loadSortMode(scope)
+    val sortMode by
+    if (scope == ConfigScope.DECKS)
+        configViewModel.decksSortMode.collectAsStateWithLifecycle()
+    else
+        configViewModel.cardsSortMode.collectAsStateWithLifecycle()
+
+    if (!showDialog) return
+    RadioButtonGroupDialog(
+        headerText = "Sort by",
+        selectedOption = sortMode.ordinal,
+        optionList = optionList,
+        onDismissRequest = onDismiss,
+        onSelectOption = { id, _ ->
+            onDismiss()
+            configViewModel.updateSortMode(scope, SortMode.fromInt(id))
+        }
+    )
 }
 
 /**
