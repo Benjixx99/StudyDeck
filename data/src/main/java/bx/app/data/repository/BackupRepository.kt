@@ -34,7 +34,7 @@ class BackupRepository(private val database: AppDatabase) {
     }
 
     suspend fun importTextSideCards(backupBundle: BackupBundle, deckId: Long) {
-        if (backupBundle.textSides.count() % 2 != 0) return
+        if (backupBundle.textSides.count() % 2 != 0) throw RuntimeException("textSides count must be even")
         for (pair in backupBundle.textSides.chunked(2)) {
             val front = pair[0]
             val back = pair[1]

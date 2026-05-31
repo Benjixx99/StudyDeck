@@ -74,6 +74,9 @@ class BackupViewModel(private val repo: BackupRepository) : ViewModel() {
             is SerializationException -> {
                 Toast.makeText(context, "Wrong JSON schema!", Toast.LENGTH_LONG).show()
             }
+            else -> {
+                Toast.makeText(context, exception.message, Toast.LENGTH_LONG).show()
+            }
         }
     }
 }
