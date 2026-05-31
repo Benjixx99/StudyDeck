@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import bx.app.core.IdPolicy
 import bx.app.core.hasRandomId
 import bx.app.data.enums.CardSide
+import bx.app.presentation.viewmodel.ConfigViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.ScreenManager
@@ -24,12 +25,14 @@ fun NavGraphBuilder.navHostDestinations(
     navHostController: NavHostController,
     context: Context,
     topBarViewModel: TopBarViewModel,
+    configViewModel: ConfigViewModel,
     hideNavigationBarViewModel: HideNavigationBarViewModel,
 ) {
     val screenManager = ScreenManager(
         context = context,
         navHostController = navHostController,
         topBarViewModel = topBarViewModel,
+        configViewModel = configViewModel,
         hideNavigationBarViewModel = hideNavigationBarViewModel
     )
 

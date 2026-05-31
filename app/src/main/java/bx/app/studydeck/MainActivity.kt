@@ -16,8 +16,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import bx.app.data.local.DatabaseBuilder
 import bx.app.data.repository.BackupRepository
+import bx.app.data.repository.ConfigRepository
 import bx.app.presentation.enums.ImportMode
 import bx.app.presentation.viewmodel.BackupViewModel
+import bx.app.presentation.viewmodel.ConfigViewModel
 import bx.app.presentation.viewmodel.DeckSharedViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
@@ -35,6 +37,9 @@ class MainActivity : ComponentActivity() {
     private val topBarViewModel = TopBarViewModel()
     private val hideNavigationBarViewModel = HideNavigationBarViewModel()
     private val deckSharedViewModel: DeckSharedViewModel by viewModels()
+    private val configViewModel by lazy {
+        ConfigViewModel(ConfigRepository(DatabaseBuilder.getInstance(applicationContext)))
+    }
     private val backupViewModel by lazy {
         BackupViewModel(BackupRepository(DatabaseBuilder.getInstance(applicationContext)))
     }
@@ -85,6 +90,7 @@ class MainActivity : ComponentActivity() {
             topBar = {
                 TopBarComponent.Manager(
                     topBarViewModel = topBarViewModel,
+                    configViewModel = configViewModel,
                     navHostController = navHostController,
                     onImportClick = { openDocumentLauncher.launch(arrayOf("application/json")) },
                     onExportClick = { createDocumentLauncher.launch("study_deck_export_${LocalDateTime.now().format(
@@ -103,6 +109,7 @@ class MainActivity : ComponentActivity() {
                     navHostController = navHostController,
                     context = applicationContext,
                     topBarViewModel = topBarViewModel,
+                    configViewModel = configViewModel,
                     hideNavigationBarViewModel = hideNavigationBarViewModel
                 )
             }

@@ -17,11 +17,11 @@ import kotlin.collections.plus
 
 class CardViewModel(
     private val repo: CardRepository,
-    private val topBarViewModel: TopBarViewModel,
+    configViewModel: ConfigViewModel,
 ) : ViewModel() {
     private val _deckId = MutableStateFlow(0L)
     private val _levelId = MutableStateFlow(0L)
-    private val _sortMode = topBarViewModel.cardsSortMode
+    private val _sortMode: StateFlow<SortMode> = configViewModel.cardsSortMode
     private val _card = MutableStateFlow<CardModel>(getInitialCard())
     private val _cardsCountByDeckId = MutableStateFlow<Map<Long, Int?>>(emptyMap())
 
@@ -45,7 +45,6 @@ class CardViewModel(
 
     fun setDeckId(id: Long) { _deckId.value = id }
     fun setLevelId(id: Long) { _levelId.value = id }
-    fun setSortMode(sortMode: SortMode) { topBarViewModel.setCardsSortMode(sortMode)}
     fun resetCard() { _card.value = getInitialCard() }
 
     private fun getInitialCard(): CardModel {

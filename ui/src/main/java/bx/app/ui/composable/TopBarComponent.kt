@@ -1,5 +1,6 @@
 package bx.app.ui.composable
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -14,8 +15,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import bx.app.data.enums.ConfigScope
 import bx.app.data.enums.SortMode
 import bx.app.presentation.enums.ImportMode
+import bx.app.presentation.viewmodel.ConfigViewModel
 import bx.app.presentation.viewmodel.TopBarViewModel
 import bx.app.ui.navigation.data.NavigationRoute
 
@@ -23,6 +26,7 @@ object TopBarComponent {
     @Composable
     fun Manager(
         topBarViewModel: TopBarViewModel,
+        configViewModel: ConfigViewModel,
         navHostController: NavHostController,
         onImportClick: () -> Unit,
         onExportClick: () -> Unit,
@@ -43,7 +47,8 @@ object TopBarComponent {
                     route = currentRoute,
                     onClickImport = onImportClick,
                     onClickExport = onExportClick,
-                    topBarViewModel = topBarViewModel
+                    topBarViewModel = topBarViewModel,
+                    configViewModel = configViewModel
                 )
             },
         )
@@ -63,34 +68,42 @@ object TopBarComponent {
         )
     }
 
+    @SuppressLint("ViewModelConstructorInComposable")
     @Composable
     private fun GetTopBarMenuAction(
         route: NavigationRoute,
         onClickImport: () -> Unit,
         onClickExport: () -> Unit,
         topBarViewModel: TopBarViewModel,
+        configViewModel: ConfigViewModel,
     ) {
+        var showDialog by remember { mutableStateOf(false) }
         return when(route) {
             is NavigationRoute.Decks -> {
                 MainDropdownMenu(
+                    onClickSortBy = { showDialog = true },
                     onClickImport = {
                         topBarViewModel.setImportMode(ImportMode.ALL)
                         onClickImport()
                     },
-                    onClickExport = onClickExport
+                    onClickExport = onClickExport,
+                )
+                SortDialog(
+                    scope = ConfigScope.DECKS,
+                    optionList = listOf<String>(
+                        SortMode.ID_ASC.asString(ConfigScope.DECKS),
+                        SortMode.ID_DESC.asString(ConfigScope.DECKS),
+                        SortMode.TEXT_ASC.asString(ConfigScope.DECKS),
+                        SortMode.TEXT_DESC.asString(ConfigScope.DECKS),
+                        SortMode.LENGTH_ASC.asString(ConfigScope.DECKS),
+                        SortMode.LENGTH_DESC.asString(ConfigScope.DECKS)
+                    ),
+                    showDialog = showDialog,
+                    onDismiss = { showDialog = false },
+                    configViewModel = configViewModel
                 )
             }
             is NavigationRoute.DeckCards -> {
-                var showDialog by remember { mutableStateOf(false) }
-                val sortMode by topBarViewModel.cardsSortMode.collectAsStateWithLifecycle()
-                val optionList = listOf<String>(
-                    SortMode.ID_ASC.asString(),
-                    SortMode.ID_DESC.asString(),
-                    SortMode.TEXT_ASC.asString(),
-                    SortMode.TEXT_DESC.asString(),
-                    SortMode.LENGTH_ASC.asString(),
-                    SortMode.LENGTH_DESC.asString()
-                )
                 DeckCardsDropdownMenu(
                     onClickSortBy = { showDialog = true },
                     onClickImportCards = {
@@ -98,18 +111,19 @@ object TopBarComponent {
                         onClickImport()
                     }
                 )
-                if (!showDialog) return
-
-                RadioButtonGroupDialog(
-                    headerText = "Sort by",
-                    selectedOption = sortMode.ordinal,
-                    optionList = optionList,
-                    onDismissRequest = { showDialog = false },
-                    onSelectOption = {
-                        id, text ->
-                        showDialog = false
-                        topBarViewModel.setCardsSortMode(SortMode.fromInt(id))
-                    }
+                SortDialog(
+                    scope = ConfigScope.CARDS,
+                    optionList = listOf<String>(
+                        SortMode.ID_ASC.asString(ConfigScope.CARDS),
+                        SortMode.ID_DESC.asString(ConfigScope.CARDS),
+                        SortMode.TEXT_ASC.asString(ConfigScope.CARDS),
+                        SortMode.TEXT_DESC.asString(ConfigScope.CARDS),
+                        SortMode.LENGTH_ASC.asString(ConfigScope.CARDS),
+                        SortMode.LENGTH_DESC.asString(ConfigScope.CARDS)
+                    ),
+                    showDialog = showDialog,
+                    onDismiss = { showDialog = false },
+                    configViewModel = configViewModel
                 )
             }
             else -> {  }

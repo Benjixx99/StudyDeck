@@ -3,7 +3,6 @@ package bx.app.ui
 import android.content.Context
 import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +40,7 @@ import bx.app.data.repository.CardInLevelRepository
 import bx.app.data.repository.CardWithSidesRepository
 import bx.app.presentation.viewmodel.CardInLevelViewModel
 import bx.app.presentation.viewmodel.CardWithSidesViewModel
+import bx.app.presentation.viewmodel.ConfigViewModel
 import bx.app.presentation.viewmodel.DeckSharedViewModel
 import bx.app.presentation.viewmodel.HideNavigationBarViewModel
 import bx.app.ui.navigation.data.NavigationBarItems
@@ -53,11 +53,12 @@ class ScreenManager(
     private val context: Context,
     private val navHostController: NavHostController,
     private val topBarViewModel: TopBarViewModel,
-    private val hideNavigationBarViewModel: HideNavigationBarViewModel
+    private val hideNavigationBarViewModel: HideNavigationBarViewModel,
+    configViewModel: ConfigViewModel
 ) {
     private val database: AppDatabase = DatabaseBuilder.getInstance(context)
-    private val deckViewModel = DeckViewModel(DeckRepository(database))
-    private val cardViewModel = CardViewModel(CardRepository(database), topBarViewModel)
+    private val deckViewModel = DeckViewModel(DeckRepository(database), configViewModel)
+    private val cardViewModel = CardViewModel(CardRepository(database), configViewModel)
     private val levelViewModel = LevelViewModel(LevelRepository(database))
     private val cardInLevelViewModel = CardInLevelViewModel(CardInLevelRepository(database))
     private val textSideViewModel = TextSideViewModel(TextSideRepository(database))
@@ -100,8 +101,8 @@ class ScreenManager(
         val deckSharedViewModel: DeckSharedViewModel = viewModel(
             viewModelStoreOwner = LocalActivity.current as ViewModelStoreOwner
         )
-        LaunchedEffect(id) { deckSharedViewModel.setDeckId(id) }
 
+        deckSharedViewModel.setDeckId(id)
         deckId = id
         DeckCardsScreen(
             context = context,

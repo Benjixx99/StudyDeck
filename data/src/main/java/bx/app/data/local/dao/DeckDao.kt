@@ -2,6 +2,8 @@ package bx.app.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.RawQuery
+import androidx.room.RoomRawQuery
 import androidx.room.Transaction
 import bx.app.data.enums.IntervalType
 import bx.app.data.local.AppDatabase
@@ -16,6 +18,9 @@ internal interface DeckDao : BaseDao<DeckEntity> {
 
     @Query("SELECT * FROM deck")
     override suspend fun getAll(): List<DeckEntity>
+
+    @RawQuery(observedEntities = [DeckEntity::class])
+    fun observeAll(query: RoomRawQuery): Flow<List<DeckEntity>>
 
     @Query("SELECT * FROM deck WHERE id = :id")
     override suspend fun getById(id: Long): DeckEntity

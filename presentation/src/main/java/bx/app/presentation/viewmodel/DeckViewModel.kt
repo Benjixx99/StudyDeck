@@ -3,6 +3,7 @@ package bx.app.presentation.viewmodel
 import android.graphics.Color
 import androidx.lifecycle.viewModelScope
 import bx.app.data.enums.CardFailing
+import bx.app.data.enums.SortMode
 import bx.app.data.model.DeckModel
 import bx.app.data.repository.DeckRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,10 +12,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class DeckViewModel(private val repo: DeckRepository) : DebouncedAutoSaveViewModel() {
+class DeckViewModel(
+    private val repo: DeckRepository,
+    configViewModel: ConfigViewModel
+) : DebouncedAutoSaveViewModel() {
     private val _deck = MutableStateFlow<DeckModel>(getInitialDeck())
+    private val _sortMode: StateFlow<SortMode> = configViewModel.decksSortMode
 
-    val decks: StateFlow<List<DeckModel>> = repo.getAll().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val decks: StateFlow<List<DeckModel>> =
+        repo.observeAll(_sortMode).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
     val deck: StateFlow<DeckModel> = _deck
 
     fun getDeckById(id: Long) = viewModelScope.launch { _deck.value = repo.getById(id) }
