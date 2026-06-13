@@ -56,11 +56,7 @@ To run this project, you'll need:
    git clone https://github.com/Benjixx99/StudyDeck.git
    ```
 
-2. Open the project in Android Studio:
-
-   ```bash
-   cd StudyDeck
-   ```
+2. Open the project in Android Studio.
 
 3. Wait for Gradle to sync all dependencies.
 
